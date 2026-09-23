@@ -51,30 +51,6 @@ export default function Experience() {
       <div className="px-4 pb-20 sm:px-6">
         <div className="max-w-3xl">
           <section className="pb-16">
-            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-              Work
-            </h2>
-            <Separator />
-            <div className="divide-y divide-border">
-              {workExperience.map((role) => (
-                <RoleCard key={role.company + role.dates} role={role} />
-              ))}
-            </div>
-          </section>
-
-          <section className="pb-16">
-            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-              Leadership &amp; Volunteering
-            </h2>
-            <Separator />
-            <div className="divide-y divide-border">
-              {leadership.map((role) => (
-                <RoleCard key={role.company + role.dates} role={role} />
-              ))}
-            </div>
-          </section>
-
-          <section>
             <h2 className="mb-4 text-sm font-medium tracking-wide text-muted-foreground uppercase">
               Certifications
             </h2>
@@ -97,6 +73,30 @@ export default function Experience() {
                     <ExternalLink className="size-3.5" />
                   </span>
                 </a>
+              ))}
+            </div>
+          </section>
+
+          <section className="pb-16">
+            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+              Work
+            </h2>
+            <Separator />
+            <div className="divide-y divide-border">
+              {workExperience.map((role) => (
+                <RoleCard key={role.company + role.dates} role={role} />
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+              Leadership &amp; Volunteering
+            </h2>
+            <Separator />
+            <div className="divide-y divide-border">
+              {leadership.map((role) => (
+                <RoleCard key={role.company + role.dates} role={role} />
               ))}
             </div>
           </section>
