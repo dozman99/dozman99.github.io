@@ -6,13 +6,17 @@ import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
 
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
 export default function Flagships() {
+  const builtCount = flagships.filter((f) => f.slug in canvases).length
+
   return (
     <div>
       <PageHeader
         eyebrow="Flagship Stories"
-        title="Five deep dives, told node by node"
-        description="Each canvas unfolds as you click: pick a node, get the why, the how, and what was hard, plus a link to real code. Two are built so far; the rest are still teasers."
+        title={`${NUMBER_WORDS[flagships.length] ?? flagships.length} deep dives, told node by node`}
+        description={`Each canvas unfolds as you click: pick a node, get the why, the how, and what was hard, plus a link to real code. ${NUMBER_WORDS[builtCount] ?? builtCount} ${builtCount === 1 ? "is" : "are"} built so far; the rest are still teasers.`}
       />
 
       <section className="px-4 pb-20 sm:px-6">

@@ -32,4 +32,7 @@ export interface CanvasData {
   summary: string
   nodes: CanvasNode[]
   sideNodes: SideNode[]
+  /** Optional "currently studying" / "writing" lists, shown below the canvas when present. */
+  studying?: string[]
+  writing?: string[]
 }

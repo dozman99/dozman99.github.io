@@ -27,5 +27,6 @@ export const next = [
     title: "Extending into AI infrastructure and inference engineering",
     detail:
       "Treating GPU orchestration and model serving as a natural extension of the DevOps/Kubernetes work above, not a career switch: MIG and time-slicing for GPU sharing, serving engines like vLLM and SGLang, quantization trade-offs, and the metrics that actually matter for inference (time to first token, KV cache usage, GPU utilization).",
+    flagshipSlug: "ai-inference-lab",
   },
 ]

@@ -14,14 +14,15 @@ Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI)
 - GitHub Actions workflow (`.github/workflows/deploy.yml`) that lints, builds, and deploys to GitHub Pages on push to `main`
 - SPA routing works on GitHub Pages via the standard 404.html redirect trick (`public/404.html` + a small unpack script in `index.html`) — needed because node URLs must be shareable per the plan
 
-**Phase 2 (canvas framework): in progress — 2 of 5 flagships built.**
+**Phase 2 (canvas framework): in progress — 3 of 6 flagships built.**
 
-- Reusable interactive canvas at `/flagships/:slug` (`src/components/canvas/FlagshipCanvas.tsx` + `NodePanel.tsx`): click a node, a shadcn Sheet panel opens with why/how/what-was-hard and a code link, and the URL updates to `?node=<id>` so any node is directly shareable/bookmarkable.
+- Reusable interactive canvas at `/flagships/:slug` (`src/components/canvas/FlagshipCanvas.tsx` + `NodePanel.tsx`): click a node, a shadcn Sheet panel opens with why/how/what-was-hard and a code link, and the URL updates to `?node=<id>` so any node is directly shareable/bookmarkable. A canvas can optionally carry `studying`/`writing` lists (rendered below the canvas on its detail page) — currently only the AI Inference Lab uses them.
 - **FBT** (`src/data/canvases/fbt.ts`) is fully built from the sanitized notes in `docs/PLAN.md`. No sample repo exists yet, so every node shows "Sample repo coming soon" instead of a code link — per `CLAUDE.md`, don't add real (client-derived) code links here.
 - **DozLab** (`src/data/canvases/dozlab.ts`) is fully built from DozLab's own public repos (`github.com/DozLab/*`, pulled via `gh api`, not invented) — architecture, tech stack, and code links are all real. This also resolved the open "what's the Firecracker story?" question: it's DozLab's `dozctl` + `dozlab-rootfs-manager` (Firecracker microVM lifecycle + image building). See `docs/PLAN.md`'s Supporting stories section.
-- To add a flagship: create `src/data/canvases/<slug>.ts`, register it in `src/data/canvases/index.ts`, and it's automatically linked from `/flagships`, and from Experience/Projects if a `flagshipSlug` field points at it.
+- **AI Inference Infrastructure Lab** (`src/data/canvases/ai-inference-lab.ts`) — a 6th flagship, added after the original plan's five (see `docs/PLAN.md`'s note on this), covering GPU orchestration and LLM serving. Its 5 named sub-project repos don't exist publicly yet (confirmed via `gh api`, all 404), so every node is code-link-less for now, same as FBT. Linked from both `/flagships` and the Now/Next page.
+- To add a flagship: create `src/data/canvases/<slug>.ts`, register it in `src/data/canvases/index.ts`, and it's automatically linked from `/flagships`, and from Experience/Projects/Now-Next if a `flagshipSlug` field points at it.
 - Remaining: air-gapped portal (Samsung), Kafka strangler, research (Texas A&M) — still teaser cards on `/flagships`, no canvas yet.
-- Not done: per-node sample repos for FBT, live build-status/uptime badge on the site itself.
+- Not done: per-node sample repos for FBT or the AI Inference Lab, live build-status/uptime badge on the site itself.
 
 ## Local development
 

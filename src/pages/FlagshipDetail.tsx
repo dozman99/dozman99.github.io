@@ -66,6 +66,35 @@ export default function FlagshipDetail() {
         </Link>
 
         <FlagshipCanvas canvas={canvas} openNodeId={openNodeId} onNodeClick={handleNodeClick} />
+
+        {(canvas.studying || canvas.writing) && (
+          <div className="mt-12 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
+            {canvas.studying && (
+              <div>
+                <h2 className="mb-3 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+                  Currently studying
+                </h2>
+                <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+                  {canvas.studying.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {canvas.writing && (
+              <div>
+                <h2 className="mb-3 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+                  Writing
+                </h2>
+                <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+                  {canvas.writing.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <NodePanel node={openNode} open={openNode !== null} onOpenChange={handlePanelOpenChange} />
