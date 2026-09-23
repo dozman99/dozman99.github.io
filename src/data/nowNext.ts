@@ -7,12 +7,12 @@ export const now = [
   {
     title: "Building this site",
     detail:
-      "The portfolio itself is a live DevOps artifact: content-driven, built with a real CI/CD pipeline, deployed and monitored like production — not just a page about the work.",
+      "The portfolio itself is a live DevOps artifact: content-driven, built with a real CI/CD pipeline, deployed and monitored like production, not just a page about the work.",
   },
   {
     title: "Leading engineering at EDAT",
     detail:
-      "VP of Engineering (volunteer), architecting ECO-T — a full-stack GHG accounting and ESG-verification platform — and directing the engineering team.",
+      "VP of Engineering (volunteer), architecting ECO-T (a full-stack GHG accounting and ESG-verification platform) and directing the engineering team.",
   },
 ]
 

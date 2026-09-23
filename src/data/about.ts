@@ -7,7 +7,7 @@ export const aboutIntro = [
 ]
 
 export const dream =
-  "The long-term goal is to build a genuinely robust organization — one that takes on hard, real problems and has the engineering discipline to actually solve them, not just ship around them. Everything from feature-branch testing pipelines to ESG accounting platforms has been practice for that: build it so it holds up under real use, real load, real failure."
+  "The long-term goal is to build a genuinely robust organization: one that takes on hard, real problems and has the engineering discipline to actually solve them, not just ship around them. Everything from feature-branch testing pipelines to ESG accounting platforms has been practice for that: build it so it holds up under real use, real load, real failure."
 
 export interface Interest {
   title: string
@@ -20,17 +20,17 @@ export const interests: Interest[] = [
   {
     title: "Chess",
     description:
-      "TODO: add your specifics — rating/level, what you're studying right now, what the game scratches that engineering doesn't.",
+      "TODO: add your specifics, such as rating/level, what you're studying right now, and what the game scratches that engineering doesn't.",
   },
   {
     title: "Basketball",
     description:
-      "TODO: add your specifics — pickup, league, position, what you like about it.",
+      "TODO: add your specifics, such as pickup, league, position, and what you like about it.",
   },
   {
     title: "What fascinates me",
     description:
-      "TODO: name the actual topics — e.g. distributed systems, agentic AI, autonomous systems, whatever genuinely pulls your attention outside of work hours.",
+      "TODO: name the actual topics (e.g. distributed systems, agentic AI, autonomous systems), whatever genuinely pulls your attention outside of work hours.",
   },
 ]
 

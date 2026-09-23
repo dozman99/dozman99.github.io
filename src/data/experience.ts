@@ -47,16 +47,16 @@ export const workExperience: Role[] = [
     location: "Colorado, USA",
     dates: "Aug 2022 – Jan 2025",
     blurb:
-      "Outsourced infrastructure engineer for healthcare and fintech clients — owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
+      "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
       "Served as outsourced infrastructure engineer across healthcare and fintech client partnerships, owning end-to-end AWS infrastructure including ECS, EC2, CloudFormation, ALB, Route 53, S3, RDS, and CodePipeline/CodeBuild across multiple client environments.",
-      "Architected a Feature Branch Testing (FBT) system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up fully isolated, disposable per-branch environments — enabling developers to test far more frequently and reducing integration risk across client projects.",
+      "Architected a Feature Branch Testing (FBT) system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up fully isolated, disposable per-branch environments, enabling developers to test far more frequently and reducing integration risk across client projects.",
       "Built a full environment replication pipeline (local → FBT → Dev → Staging → Prod) with full infrastructure parity, automated stage promotion, reusable Terraform modules, and per-environment secrets and config management.",
       "Led a strangler-style migration off a large monolith backed by Redis, standing up a Kafka topology and new microservices to peel responsibilities off it incrementally rather than in one cutover.",
       "Hardened client infrastructure via CIS Benchmark adoption, automated certificate regeneration, AWS Firewall Manager consolidation, and rootless Docker runners; deployed a secure SFTP server enabling encrypted B2B data exchange in regulated environments.",
       "Participated in 24/7 on-call rotation with defined SLA response windows, managing P1/P2 incidents via ServiceNow and PagerDuty across healthcare and fintech client infrastructure.",
       "Managed ECS service decomposition, ALB routing, blue/green and rolling deployments, and observability frameworks during monolith-to-microservices migrations, maintaining client SLOs and reducing disaster recovery time by 40% across full lifecycle stages.",
-      "Automated an Azure VM image pipeline that ingested on-premises build artifacts, triggered first-logon software provisioning scripts, and published versioned images to Azure Shared Image Gallery — giving internal teams ready-to-use environments instantly and eliminating manual copy overhead.",
+      "Automated an Azure VM image pipeline that ingested on-premises build artifacts, triggered first-logon software provisioning scripts, and published versioned images to Azure Shared Image Gallery, giving internal teams ready-to-use environments instantly and eliminating manual copy overhead.",
     ],
     flagshipSlug: "fbt",
   },
@@ -77,7 +77,7 @@ export const workExperience: Role[] = [
     role: "Implementation / Software Engineer (Intern)",
     location: "Lagos, Nigeria",
     dates: "Sep 2019 – Oct 2021",
-    blurb: "First engineering role — serverless integrations, an internal asset-management app, and network security.",
+    blurb: "First engineering role: serverless integrations, an internal asset-management app, and network security.",
     bullets: [
       "Developed serverless solutions on Azure/AWS with API and webhook integrations; managed cloud software incidents via ServiceNow.",
       "Built a Django-based IT asset management application with real-time tracking; led network security implementation including VPN and ExpressRoute configurations.",
@@ -87,7 +87,7 @@ export const workExperience: Role[] = [
 
 export const leadership: Role[] = [
   {
-    company: "EDAT — VA (Independent Sustainability Assurance)",
+    company: "EDAT – VA (Independent Sustainability Assurance)",
     role: "VP of Engineering (Volunteer)",
     location: "USA (Remote)",
     dates: "Apr 2025 – Present",
@@ -95,7 +95,7 @@ export const leadership: Role[] = [
       "Leading engineering for a sustainability-assurance platform, and architecting its GHG accounting product end to end.",
     bullets: [
       "Lead engineering team structure, recruitment, and technical direction for a sustainability assurance platform specializing in ESG verification, GHG validation, and voluntary carbon market auditing.",
-      "Architected and built ECO-T — a full-stack GHG accounting platform covering Scope 1/2/3 emissions, API integrations with EPA, ERP systems, and energy grids, carbon pricing & offsets, and Sankey diagram production.",
+      "Architected and built ECO-T, a full-stack GHG accounting platform covering Scope 1/2/3 emissions, API integrations with EPA, ERP systems, and energy grids, carbon pricing & offsets, and Sankey diagram production.",
       "Designed AI/ML pipelines for automated ESG verification and carbon disclosure across GRI, TCFD, CSRD, ISO 14064, VCS, and Gold Standard frameworks.",
       "Built backend APIs and DevOps/cloud infrastructure supporting GHG reporting automation, voluntary carbon market assurance, and third-party audit workflows.",
     ],

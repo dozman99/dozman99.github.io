@@ -19,7 +19,7 @@ export const flagships: Flagship[] = [
     where: "Conclase",
     depth: "Platform engineering, Terraform at scale",
     teaser:
-      "A hybrid system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up and tears down fully isolated, disposable per-branch environments — triggered straight off Bitbucket webhooks.",
+      "A hybrid system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up and tears down fully isolated, disposable per-branch environments, triggered straight off Bitbucket webhooks.",
     status: "coming-soon",
   },
   {
@@ -37,7 +37,7 @@ export const flagships: Flagship[] = [
     where: "Not yet on the resume",
     depth: "Distributed systems, event-driven design",
     teaser:
-      "Peeling responsibility off a large monolith piece by piece — new microservices, a Kafka topology built from scratch, dual writes, and the ordering and state-drift problems that come with it.",
+      "Peeling responsibility off a large monolith piece by piece: new microservices, a Kafka topology built from scratch, dual writes, and the ordering and state-drift problems that come with it.",
     status: "coming-soon",
   },
   {
@@ -46,7 +46,7 @@ export const flagships: Flagship[] = [
     where: "Side project",
     depth: "Building a platform on Kubernetes",
     teaser:
-      "Not just running Kubernetes — building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
+      "Not just running Kubernetes, but building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
     status: "coming-soon",
   },
   {

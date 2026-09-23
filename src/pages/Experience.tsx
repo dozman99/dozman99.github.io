@@ -41,7 +41,7 @@ export default function Experience() {
       <PageHeader
         eyebrow="Experience"
         title="Full timeline"
-        description="The condensed version is on the resume. This is the fuller story — what each role actually involved."
+        description="The condensed version is on the resume. This is the fuller story: what each role actually involved."
       />
 
       <div className="px-4 pb-20 sm:px-6">
