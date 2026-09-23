@@ -50,7 +50,6 @@ export const workExperience: Role[] = [
       "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
       "Served as outsourced infrastructure engineer across healthcare and fintech client partnerships, owning end-to-end AWS infrastructure including ECS, EC2, CloudFormation, ALB, Route 53, S3, RDS, and CodePipeline/CodeBuild across multiple client environments.",
-      "Designed and built a Terraform-based onboarding/offboarding pipeline for 47 managed clients, standardizing SRE infrastructure provisioning and teardown and eliminating manual setup across client environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
       "Architected a Feature Branch Testing (FBT) system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up fully isolated, disposable per-branch environments, enabling developers to test far more frequently and reducing integration risk across client projects.",
       "Built a full environment replication pipeline (local → FBT → Dev → Staging → Prod) with full infrastructure parity, automated stage promotion, reusable Terraform modules, and per-environment secrets and config management.",
