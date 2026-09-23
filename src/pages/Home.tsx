@@ -4,20 +4,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
-import { site } from "@/data/site"
 
 export default function Home() {
   return (
     <div>
-      <section className="mx-auto max-w-5xl px-4 pt-20 pb-14 sm:px-6 sm:pt-28">
-        <p className="mb-4 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-          {site.role}
-        </p>
-        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-          {site.name}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground text-pretty">
-          {site.tagline}
+      <section className="px-4 pt-16 pb-14 sm:px-6 lg:pt-16">
+        <h2 className="max-w-xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+          Infrastructure is the proof. Click into how it was built.
+        </h2>
+        <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">
+          Five engineering stories, each with the why, the how, and what broke along the way.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button render={<Link to="/flagships" />}>
@@ -30,7 +26,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <section className="px-4 pb-20 sm:px-6">
         <div className="mb-6 flex items-baseline justify-between">
           <h2 className="text-xl font-semibold tracking-tight">Flagship stories</h2>
           <Link

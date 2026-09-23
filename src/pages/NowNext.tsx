@@ -7,7 +7,7 @@ export default function NowNext() {
     <div>
       <PageHeader eyebrow="Now / Next" title="What I'm doing, and what's coming" />
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <section className="px-4 pb-20 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2">
           <div>
             <h2 className="mb-4 text-xl font-semibold tracking-tight">Now</h2>

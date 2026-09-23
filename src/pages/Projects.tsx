@@ -9,7 +9,7 @@ export default function Projects() {
     <div>
       <PageHeader eyebrow="Projects" title="Things I've built outside client work" />
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <section className="px-4 pb-20 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2">
           {projects.map((project) => (
             <Card key={project.name}>

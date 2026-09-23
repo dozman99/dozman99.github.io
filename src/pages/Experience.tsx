@@ -44,7 +44,7 @@ export default function Experience() {
         description="The condensed version is on the resume. This is the fuller story — what each role actually involved."
       />
 
-      <div className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <div className="px-4 pb-20 sm:px-6">
         <div className="max-w-3xl">
           <section className="pb-16">
             <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">

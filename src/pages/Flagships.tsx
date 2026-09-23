@@ -12,7 +12,7 @@ export default function Flagships() {
         description="Each of these will unfold into a clickable architecture canvas — click a node, get the why, the how, and what broke, plus a link to real code. The canvases are coming in the next build phase; for now, here's what each one proves."
       />
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <section className="px-4 pb-20 sm:px-6">
         <div className="space-y-4">
           {flagships.map((f) => (
             <Card key={f.slug} id={f.slug} className="scroll-mt-24">

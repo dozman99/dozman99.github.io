@@ -6,7 +6,7 @@ Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI)
 
 ## Status: Phase 1 (Foundation) complete
 
-- Layout, nav (with mobile sheet menu), and footer
+- Brittany Chiang-style two-column layout: sticky left sidebar (name, role, tagline, nav, socials) beside scrolling page content; mobile collapses to a top bar + sheet menu
 - Home, About, Experience (full timeline + certifications), Projects, Flagship Stories (teaser list — no interactive canvases yet), Now/Next
 - Content lives in `src/data/*.ts`, separate from page components, so it can be edited without touching the framework
 - GitHub Actions workflow (`.github/workflows/deploy.yml`) that lints, builds, and deploys to GitHub Pages on push to `main`
@@ -52,8 +52,8 @@ These are marked `TODO` directly in the data files — search for `TODO` under `
 - Which role/dates the Kafka strangler migration belongs to (currently placed under the Conclase role in `src/data/experience.ts`, consistent with the plan's description, but not resume-confirmed dates)
 - What the Firecracker story is, if any
 - GitHub repo hasn't been created yet — this is a local-only git repo for now
-- **Layout mismatch:** `docs/PLAN.md`'s "Design references and final decisions" section specifies a Brittany Chiang-style two-column layout (sticky left intro/nav, scrolling right content). What's built is a conventional top-nav single-column layout instead — this predates that section landing in the plan. Not yet reconciled; see chat.
-- Skills should be labeled production vs. lab experience (`src/data/skills.ts` now has the field, not yet filled in or wired into a page — same reason, holding for the layout decision)
+- Skills should be labeled production vs. lab experience (`src/data/skills.ts` has the field; not filled in — that's a judgment call only you can make — and not yet wired into a page). A natural place to surface it: a Sai Terukula-style skill card grid with a status label per card, possibly on a future dedicated section.
+- Mobile behavior for the new sidebar/top-bar split is built on standard Tailwind breakpoints but not visually verified — the browser automation in this environment can't resize its window to a mobile viewport (tried repeatedly, reported to the user)
 
 ## Deploying
 

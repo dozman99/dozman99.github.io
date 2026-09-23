@@ -7,7 +7,7 @@ export default function About() {
     <div>
       <PageHeader eyebrow="About" title="Who I am, outside the bullet points" />
 
-      <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
+      <section className="px-4 pb-14 sm:px-6">
         <div className="max-w-3xl space-y-4 text-base text-muted-foreground">
           {aboutIntro.map((p, i) => (
             <p key={i}>{p}</p>
@@ -15,14 +15,14 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
+      <section className="px-4 pb-14 sm:px-6">
         <div className="max-w-3xl">
           <h2 className="mb-3 text-xl font-semibold tracking-tight">The dream</h2>
           <p className="text-base text-muted-foreground">{dream}</p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
+      <section className="px-4 pb-14 sm:px-6">
         <h2 className="mb-6 text-xl font-semibold tracking-tight">Outside of work</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {interests.map((interest) => (
@@ -38,7 +38,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-20 sm:px-6">
+      <section className="px-4 pb-20 sm:px-6">
         <div className="max-w-3xl">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">Education</h2>
           <ul className="space-y-3">
