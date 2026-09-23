@@ -14,14 +14,15 @@ export const now = [
     detail:
       "VP of Engineering (volunteer), architecting ECO-T (a full-stack GHG accounting and ESG-verification platform) and directing the engineering team.",
   },
+  {
+    // TODO: name the actual project/context this RAG work is part of, and what it's grounding answers in.
+    title: "Building retrieval-augmented generation (RAG) systems",
+    detail:
+      "TODO: add the specific project and what it's for — what's being retrieved, and why RAG over a plain prompt.",
+  },
 ]
 
 export const next = [
-  {
-    title: "Distributed systems and event-driven architecture",
-    detail:
-      "Deepening the Kafka/strangler-migration work from Conclase into a documented flagship story, with a sample repo showing the topology and dual-write handling.",
-  },
   {
     title: "Extending into AI infrastructure and inference engineering",
     detail:
