@@ -34,7 +34,7 @@ export default function Flagships() {
                       </p>
                     </div>
                     <Badge variant={hasCanvas ? "default" : "outline"}>
-                      {hasCanvas ? "Explore the canvas" : "Coming soon"}
+                      {hasCanvas ? "Explore the canvas" : f.slug === "air-gapped-portal" ? "Under NDA" : "Coming soon"}
                     </Badge>
                   </div>
                 </CardHeader>
