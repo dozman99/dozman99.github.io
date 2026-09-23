@@ -47,7 +47,6 @@ Until then, installs in this repo were run with `npm_config_cache=/tmp/npm-cache
 These are marked `TODO` directly in the data files — search for `TODO` under `src/data/`:
 
 - `src/data/about.ts` — chess/basketball specifics, what actually fascinates you
-- `src/data/nowNext.ts` — the specific agentic-AI project(s) you want to highlight
 - `src/data/site.ts` — whether to publish your phone number
 - `src/data/projects.ts` — GitHub links for ECO-T, Sherloc, ML Infrastructure (DozLab and your profile links are already filled in from your resume's PDF link annotations)
 

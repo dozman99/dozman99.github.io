@@ -23,10 +23,8 @@ export const next = [
       "Deepening the Kafka/strangler-migration work from Conclase into a documented flagship story, with a sample repo showing the topology and dual-write handling.",
   },
   {
-    // TODO: name the specific agentic projects/ideas you're pursuing next —
-    // the plan calls for this explicitly and it's currently a placeholder.
-    title: "Agentic solutions",
+    title: "Extending into AI infrastructure and inference engineering",
     detail:
-      "TODO: add the specific agentic-AI project(s) or direction you want to highlight here.",
+      "Treating GPU orchestration and model serving as a natural extension of the DevOps/Kubernetes work above, not a career switch: MIG and time-slicing for GPU sharing, serving engines like vLLM and SGLang, quantization trade-offs, and the metrics that actually matter for inference (time to first token, KV cache usage, GPU utilization).",
   },
 ]
