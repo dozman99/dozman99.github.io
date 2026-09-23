@@ -1,6 +1,8 @@
 # Portfolio Site
 
-Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI), deployed statically. See `PLAN.md` for the full vision and phased build plan.
+Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI), deployed statically. See `CLAUDE.md` for the working rules (sanitization, sourcing) and `docs/PLAN.md` for the full vision and phased build plan.
+
+`docs/` is gitignored — it holds private planning material, including an unsanitized FBT write-up with real client/account identifiers (`docs/fbt-original-PRIVATE.md`). Never remove it from `.gitignore`, and never copy content out of that specific file into anything public-facing; use the sanitized FBT notes in `docs/PLAN.md` instead.
 
 ## Status: Phase 1 (Foundation) complete
 
@@ -44,12 +46,14 @@ These are marked `TODO` directly in the data files — search for `TODO` under `
 - `src/data/site.ts` — whether to publish your phone number
 - `src/data/projects.ts` — GitHub links for ECO-T, Sherloc, ML Infrastructure (DozLab and your profile links are already filled in from your resume's PDF link annotations)
 
-## Open decisions from PLAN.md
+## Open decisions from docs/PLAN.md
 
-- Domain: not yet registered. `vite.config.ts`'s `base: '/'` assumes a custom domain at the repo root — if you deploy to `<user>.github.io/<repo>` instead, change it to `/<repo>/` and update `public/404.html`'s `segmentCount` to `1`.
-- Which role/dates the Kafka strangler migration belongs to (currently placed under the Conclase role in `src/data/experience.ts`, consistent with 2PLAN.md's description, but not resume-confirmed dates)
+- Domain: not yet registered (plan wants a `.dev` domain via the GitHub Student Pack / Name.com). `vite.config.ts`'s `base: '/'` assumes a custom domain at the repo root — if you deploy to `<user>.github.io/<repo>` instead, change it to `/<repo>/` and update `public/404.html`'s `segmentCount` to `1`.
+- Which role/dates the Kafka strangler migration belongs to (currently placed under the Conclase role in `src/data/experience.ts`, consistent with the plan's description, but not resume-confirmed dates)
 - What the Firecracker story is, if any
 - GitHub repo hasn't been created yet — this is a local-only git repo for now
+- **Layout mismatch:** `docs/PLAN.md`'s "Design references and final decisions" section specifies a Brittany Chiang-style two-column layout (sticky left intro/nav, scrolling right content). What's built is a conventional top-nav single-column layout instead — this predates that section landing in the plan. Not yet reconciled; see chat.
+- Skills should be labeled production vs. lab experience (`src/data/skills.ts` now has the field, not yet filled in or wired into a page — same reason, holding for the layout decision)
 
 ## Deploying
 

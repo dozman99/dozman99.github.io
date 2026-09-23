@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Private planning material — contains an unsanitized FBT write-up with real
+# client/account identifiers. Never commit, never let it near the site build.
+docs/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
