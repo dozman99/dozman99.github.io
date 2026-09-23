@@ -50,7 +50,7 @@ These are marked `TODO` directly in the data files — search for `TODO` under `
 - `src/data/about.ts` — chess/basketball specifics, what actually fascinates you
 - `src/data/site.ts` — whether to publish your phone number
 - `src/data/projects.ts` — GitHub links for ECO-T, Sherloc, ML Infrastructure (DozLab and your profile links are already filled in from your resume's PDF link annotations)
-- `src/data/experience.ts` — the Conclase bullets have several `[X]` placeholders (client counts, timings, percentages) that need real numbers before this goes public
+- `src/data/experience.ts` — the Conclase bullets' metrics (client/account/team counts, timings, percentages) are plausible estimates the user asked to have filled in, not remembered facts — verify each one against what actually happened before this goes public (see the NOTE comment above the bullets array)
 
 ## Open decisions from docs/PLAN.md
 

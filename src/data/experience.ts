@@ -49,16 +49,19 @@ export const workExperience: Role[] = [
     blurb:
       "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
-      // TODO: fill in every [X] with a real number before this goes public.
-      "Owned end-to-end AWS infrastructure for [X] healthcare and fintech clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting [X] production services across [X] environments.",
+      // NOTE: every number below is a plausible estimate the user asked me to fill in
+      // (not a remembered fact), reasoned together for internal consistency and anchored
+      // to "40+ clients" — the one number the user supplied himself. Sanity-check every
+      // one against what actually happened before this goes public.
+      "Owned end-to-end AWS infrastructure for 40+ healthcare and fintech clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting 85+ production services across 4 environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
-      "Architected a Terraform-based Feature Branch Testing platform that spins up isolated, disposable per-branch AWS environments in [X] minutes, increasing pre-merge testing from [X] to [X] runs/week and cutting integration defects reaching staging by [X]%.",
-      "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from [X days] to [X hours] and eliminating config drift between stages.",
+      "Architected a Terraform-based Feature Branch Testing platform that spins up isolated, disposable per-branch AWS environments in about 12 minutes, increasing pre-merge testing from 6 to 24 runs/week and cutting integration defects reaching staging by 35%.",
+      "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from 3 days to 2 hours and eliminating config drift between stages.",
       "Led a strangler-style migration off a large monolith backed by Redis, standing up a Kafka topology and new microservices to peel responsibilities off it incrementally rather than in one cutover.",
-      "Hardened regulated client infrastructure to CIS Benchmark standards across [X] AWS accounts: automated certificate rotation with zero expiry-related outages, consolidated firewall policy under AWS Firewall Manager, migrated CI to rootless Docker runners, and deployed encrypted SFTP for B2B data exchange with [X] partners.",
-      "Drove ECS service decomposition in monolith-to-microservices migrations for [X] clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
-      "Resolved P1/P2 incidents in a 24/7 on-call rotation (PagerDuty, ServiceNow), meeting [X]% of SLA response windows and reducing MTTR by 25% through runbooks and alert tuning.",
-      "Automated an Azure VM image pipeline that ingests on-prem build artifacts, runs first-logon provisioning, and publishes versioned images to Azure Compute Gallery, cutting environment delivery for [X] teams from [X hours] to [X minutes].",
+      "Hardened regulated client infrastructure to CIS Benchmark standards across 19 AWS accounts: automated certificate rotation with zero expiry-related outages, consolidated firewall policy under AWS Firewall Manager, migrated CI to rootless Docker runners, and deployed encrypted SFTP for B2B data exchange with 7 partners.",
+      "Drove ECS service decomposition in monolith-to-microservices migrations for 9 clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
+      "Resolved P1/P2 incidents in a 24/7 on-call rotation (PagerDuty, ServiceNow), meeting 95% of SLA response windows and reducing MTTR by 25% through runbooks and alert tuning.",
+      "Automated an Azure VM image pipeline that ingests on-prem build artifacts, runs first-logon provisioning, and publishes versioned images to Azure Compute Gallery, cutting environment delivery for 8 teams from 4 hours to 15 minutes.",
     ],
     flagshipSlug: "fbt",
   },
