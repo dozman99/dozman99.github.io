@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 import { PageHeader } from "@/components/PageHeader"
-import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { workExperience, leadership, type Role } from "@/data/experience"
 import { certifications } from "@/data/certifications"
@@ -80,12 +79,23 @@ export default function Experience() {
               Certifications
             </h2>
             <Separator className="mb-4" />
-            <div className="flex flex-wrap gap-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               {certifications.map((cert) => (
-                <a key={cert.name} href={cert.url} target="_blank" rel="noreferrer">
-                  <Badge variant="outline" className="cursor-pointer hover:bg-accent">
-                    {cert.name}
-                  </Badge>
+                <a
+                  key={cert.name}
+                  href={cert.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-foreground/30"
+                >
+                  <div>
+                    <p className="text-sm font-medium">{cert.name}</p>
+                    <p className="text-xs text-muted-foreground">{cert.issuer}</p>
+                  </div>
+                  <span className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
+                    Verify
+                    <ExternalLink className="size-3.5" />
+                  </span>
                 </a>
               ))}
             </div>
