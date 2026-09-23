@@ -49,15 +49,16 @@ export const workExperience: Role[] = [
     blurb:
       "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
-      "Served as outsourced infrastructure engineer across healthcare and fintech client partnerships, owning end-to-end AWS infrastructure including ECS, EC2, CloudFormation, ALB, Route 53, S3, RDS, and CodePipeline/CodeBuild across multiple client environments.",
+      // TODO: fill in every [X] with a real number before this goes public.
+      "Owned end-to-end AWS infrastructure for [X] healthcare and fintech clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting [X] production services across [X] environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
-      "Architected a Feature Branch Testing (FBT) system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up fully isolated, disposable per-branch environments, enabling developers to test far more frequently and reducing integration risk across client projects.",
-      "Built a full environment replication pipeline (local → FBT → Dev → Staging → Prod) with full infrastructure parity, automated stage promotion, reusable Terraform modules, and per-environment secrets and config management.",
+      "Architected a Terraform-based Feature Branch Testing platform that spins up isolated, disposable per-branch AWS environments in [X] minutes, increasing pre-merge testing from [X] to [X] runs/week and cutting integration defects reaching staging by [X]%.",
+      "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from [X days] to [X hours] and eliminating config drift between stages.",
       "Led a strangler-style migration off a large monolith backed by Redis, standing up a Kafka topology and new microservices to peel responsibilities off it incrementally rather than in one cutover.",
-      "Hardened client infrastructure via CIS Benchmark adoption, automated certificate regeneration, AWS Firewall Manager consolidation, and rootless Docker runners; deployed a secure SFTP server enabling encrypted B2B data exchange in regulated environments.",
-      "Participated in 24/7 on-call rotation with defined SLA response windows, managing P1/P2 incidents via ServiceNow and PagerDuty across healthcare and fintech client infrastructure.",
-      "Managed ECS service decomposition, ALB routing, blue/green and rolling deployments, and observability frameworks during monolith-to-microservices migrations, maintaining client SLOs and reducing disaster recovery time by 40% across full lifecycle stages.",
-      "Automated an Azure VM image pipeline that ingested on-premises build artifacts, triggered first-logon software provisioning scripts, and published versioned images to Azure Shared Image Gallery, giving internal teams ready-to-use environments instantly and eliminating manual copy overhead.",
+      "Hardened regulated client infrastructure to CIS Benchmark standards across [X] AWS accounts: automated certificate rotation with zero expiry-related outages, consolidated firewall policy under AWS Firewall Manager, migrated CI to rootless Docker runners, and deployed encrypted SFTP for B2B data exchange with [X] partners.",
+      "Drove ECS service decomposition in monolith-to-microservices migrations for [X] clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
+      "Resolved P1/P2 incidents in a 24/7 on-call rotation (PagerDuty, ServiceNow), meeting [X]% of SLA response windows and reducing MTTR by 25% through runbooks and alert tuning.",
+      "Automated an Azure VM image pipeline that ingests on-prem build artifacts, runs first-logon provisioning, and publishes versioned images to Azure Compute Gallery, cutting environment delivery for [X] teams from [X hours] to [X minutes].",
     ],
     flagshipSlug: "fbt",
   },
