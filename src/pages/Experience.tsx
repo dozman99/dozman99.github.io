@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { workExperience, leadership, type Role } from "@/data/experience"
 import { certifications } from "@/data/certifications"
+import { canvases } from "@/data/canvases"
 
 function RoleCard({ role }: { role: Role }) {
   return (
@@ -24,7 +25,11 @@ function RoleCard({ role }: { role: Role }) {
       </ul>
       {role.flagshipSlug && (
         <Link
-          to={`/flagships#${role.flagshipSlug}`}
+          to={
+            role.flagshipSlug in canvases
+              ? `/flagships/${role.flagshipSlug}`
+              : `/flagships#${role.flagshipSlug}`
+          }
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
         >
           Full flagship story

@@ -4,19 +4,24 @@ Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI)
 
 `docs/` is gitignored — it holds private planning material, including an unsanitized FBT write-up with real client/account identifiers (`docs/fbt-original-PRIVATE.md`). Never remove it from `.gitignore`, and never copy content out of that specific file into anything public-facing; use the sanitized FBT notes in `docs/PLAN.md` instead.
 
-## Status: Phase 1 (Foundation) complete
+## Status
+
+**Phase 1 (Foundation): complete.**
 
 - Brittany Chiang-style two-column layout: sticky left sidebar (name, role, tagline, nav, socials) beside scrolling page content; mobile collapses to a top bar + sheet menu
-- Home, About, Experience (full timeline + certifications), Projects, Flagship Stories (teaser list — no interactive canvases yet), Now/Next
+- Home, About, Experience (full timeline + certifications), Projects, Flagship Stories, Now/Next
 - Content lives in `src/data/*.ts`, separate from page components, so it can be edited without touching the framework
 - GitHub Actions workflow (`.github/workflows/deploy.yml`) that lints, builds, and deploys to GitHub Pages on push to `main`
 - SPA routing works on GitHub Pages via the standard 404.html redirect trick (`public/404.html` + a small unpack script in `index.html`) — needed because node URLs must be shareable per the plan
 
-## Not done yet (Phase 2+)
+**Phase 2 (canvas framework): in progress — 2 of 5 flagships built.**
 
-- The five flagship interactive architecture canvases (FBT, air-gapped portal, Kafka strangler, DozLab, research) — currently just teaser cards on `/flagships`
-- Per-node sample repos and code links
-- Live build-status / uptime badge on the site itself
+- Reusable interactive canvas at `/flagships/:slug` (`src/components/canvas/FlagshipCanvas.tsx` + `NodePanel.tsx`): click a node, a shadcn Sheet panel opens with why/how/what-was-hard and a code link, and the URL updates to `?node=<id>` so any node is directly shareable/bookmarkable.
+- **FBT** (`src/data/canvases/fbt.ts`) is fully built from the sanitized notes in `docs/PLAN.md`. No sample repo exists yet, so every node shows "Sample repo coming soon" instead of a code link — per `CLAUDE.md`, don't add real (client-derived) code links here.
+- **DozLab** (`src/data/canvases/dozlab.ts`) is fully built from DozLab's own public repos (`github.com/DozLab/*`, pulled via `gh api`, not invented) — architecture, tech stack, and code links are all real. This also resolved the open "what's the Firecracker story?" question: it's DozLab's `dozctl` + `dozlab-rootfs-manager` (Firecracker microVM lifecycle + image building). See `docs/PLAN.md`'s Supporting stories section.
+- To add a flagship: create `src/data/canvases/<slug>.ts`, register it in `src/data/canvases/index.ts`, and it's automatically linked from `/flagships`, and from Experience/Projects if a `flagshipSlug` field points at it.
+- Remaining: air-gapped portal (Samsung), Kafka strangler, research (Texas A&M) — still teaser cards on `/flagships`, no canvas yet.
+- Not done: per-node sample repos for FBT, live build-status/uptime badge on the site itself.
 
 ## Local development
 
@@ -50,10 +55,9 @@ These are marked `TODO` directly in the data files — search for `TODO` under `
 
 - Domain: not yet registered (plan wants a `.dev` domain via the GitHub Student Pack / Name.com). `vite.config.ts`'s `base: '/'` assumes a custom domain at the repo root — if you deploy to `<user>.github.io/<repo>` instead, change it to `/<repo>/` and update `public/404.html`'s `segmentCount` to `1`.
 - Which role/dates the Kafka strangler migration belongs to (currently placed under the Conclase role in `src/data/experience.ts`, consistent with the plan's description, but not resume-confirmed dates)
-- What the Firecracker story is, if any
 - GitHub repo hasn't been created yet — this is a local-only git repo for now
 - Skills should be labeled production vs. lab experience (`src/data/skills.ts` has the field; not filled in — that's a judgment call only you can make — and not yet wired into a page). A natural place to surface it: a Sai Terukula-style skill card grid with a status label per card, possibly on a future dedicated section.
-- Mobile behavior for the new sidebar/top-bar split is built on standard Tailwind breakpoints but not visually verified — the browser automation in this environment can't resize its window to a mobile viewport (tried repeatedly, reported to the user)
+- Mobile behavior for the sidebar/top-bar split is built on standard Tailwind breakpoints. Window resize still doesn't work in this sandboxed browser for deliberate testing, but a canvas page was incidentally verified at an 802px-wide tab (below the `lg` breakpoint) and the mobile header/sheet menu rendered and worked correctly there.
 
 ## Deploying
 

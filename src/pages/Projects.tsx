@@ -1,4 +1,5 @@
-import { ExternalLink } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
+import { Link } from "react-router-dom"
 import { PageHeader } from "@/components/PageHeader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -38,6 +39,15 @@ export default function Projects() {
                     </Badge>
                   ))}
                 </div>
+                {project.flagshipSlug && (
+                  <Link
+                    to={`/flagships/${project.flagshipSlug}`}
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+                  >
+                    Explore the architecture
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}

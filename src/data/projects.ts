@@ -4,15 +4,18 @@ export interface Project {
   tags: string[]
   // TODO: add real repo URLs as they become public/shareable. Empty = no link rendered.
   githubUrl: string
+  /** Slug into src/data/canvases, if this project has a full interactive flagship canvas. */
+  flagshipSlug?: string
 }
 
 export const projects: Project[] = [
   {
     name: "DozLab",
     description:
-      "Cloud-native Kubernetes SaaS platform for DevOps/cybersecurity education: microservice architecture with sidecar containers, VM-based hands-on labs, and real-time WebSocket proxying.",
-    tags: ["Kubernetes", "Microservices", "WebSockets"],
+      "A Kubernetes-native lab platform for DevOps/cybersecurity education: a custom LabSession CRD and controller orchestrate per-student pods running an isolated Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar, built with Go, Nuxt.js/Vue, and PostgreSQL.",
+    tags: ["Kubernetes", "Firecracker", "Go", "Nuxt/Vue", "WebSockets"],
     githubUrl: "https://github.com/DozLab",
+    flagshipSlug: "dozlab",
   },
   {
     name: "ECO-T",
