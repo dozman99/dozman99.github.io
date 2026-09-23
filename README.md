@@ -1,5 +1,7 @@
 # Portfolio Site
 
+**Live at [dozman99.github.io](https://dozman99.github.io/).**
+
 Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI), deployed statically. See `CLAUDE.md` for the working rules (sanitization, sourcing) and `docs/PLAN.md` for the full vision and phased build plan.
 
 `docs/` is gitignored — it holds private planning material, including an unsanitized FBT write-up with real client/account identifiers (`docs/fbt-original-PRIVATE.md`). Never remove it from `.gitignore`, and never copy content out of that specific file into anything public-facing; use the sanitized FBT notes in `docs/PLAN.md` instead.
@@ -54,17 +56,16 @@ These are marked `TODO` directly in the data files — search for `TODO` under `
 
 ## Open decisions from docs/PLAN.md
 
-- Domain: not yet registered (plan wants a `.dev` domain via the GitHub Student Pack / Name.com). `vite.config.ts`'s `base: '/'` assumes a custom domain at the repo root — if you deploy to `<user>.github.io/<repo>` instead, change it to `/<repo>/` and update `public/404.html`'s `segmentCount` to `1`.
+- Custom `.dev` domain (plan wants one via the GitHub Student Pack / Name.com): not yet registered. Currently live at `dozman99.github.io` instead, which also serves from the root, so `vite.config.ts`'s `base: '/'` needs no change either way. If this ever moves to `<user>.github.io/<repo>` (a non-user-site repo) instead, change `base` to `/<repo>/` and `public/404.html`'s `segmentCount` to `1`.
 - Which role/dates the Kafka strangler migration belongs to (currently placed under the Conclase role in `src/data/experience.ts`, consistent with the plan's description, but not resume-confirmed dates)
-- GitHub repo hasn't been created yet — this is a local-only git repo for now
 - Skills should be labeled production vs. lab experience (`src/data/skills.ts` has the field; not filled in — that's a judgment call only you can make — and not yet wired into a page). A natural place to surface it: a Sai Terukula-style skill card grid with a status label per card, possibly on a future dedicated section.
 - Mobile behavior for the sidebar/top-bar split is built on standard Tailwind breakpoints. Window resize still doesn't work in this sandboxed browser for deliberate testing, but a canvas page was incidentally verified at an 802px-wide tab (below the `lg` breakpoint) and the mobile header/sheet menu rendered and worked correctly there.
 
 ## Deploying
 
-Once you're ready to push:
+Live via the `dozman99.github.io` user-site repo, which serves from the root (`https://dozman99.github.io/`) — matching `vite.config.ts`'s `base: '/'`, no path-prefix changes needed. Two gotchas hit while setting this up, in case this ever needs redoing (e.g. a repo rename or a fresh account):
 
-1. Create a GitHub repo and add it as `origin`
-2. In the repo's Settings → Pages, set Source to "GitHub Actions"
-3. If using a custom domain, add a `public/CNAME` file containing the domain, and configure DNS
-4. Push to `main` — the workflow in `.github/workflows/deploy.yml` builds and deploys automatically
+1. **Pages defaults to the legacy Jekyll/branch build**, not our Actions workflow, the moment a `<user>.github.io` repo is pushed to, even though `.github/workflows/deploy.yml` also fires. Both deploy, and whichever finishes last wins — which was the legacy one, serving the raw unbuilt `index.html`. Fix: `gh api -X PUT repos/<user>/<repo>/pages -f build_type=workflow`, then re-run the Actions workflow so only it deploys from then on.
+2. **The 404.html-redirect SPA-routing trick had a bug from Phase 1** that nothing caught until a real deep link was tested against real GitHub Pages: `404.html` encoded the path as `?p=/path`, but `index.html`'s decode script expects the bare `?/path` format with no key. Deep links (`/flagships/fbt`, `?node=<id>` links) silently landed on Home instead of erroring, so this was easy to miss. Fixed in both files — they now match the standard rafgraph/spa-github-pages format exactly. Verified live: a compound link like `/flagships/fbt?node=sqs-fifo` correctly opens that exact node's panel.
+
+If using a custom domain instead: add a `public/CNAME` file containing the domain and configure DNS; `base: '/'` needs no change since the domain also serves from the root.
