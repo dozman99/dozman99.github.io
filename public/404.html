@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <script>
+      // GitHub Pages has no server-side rewrites, so a direct hit on a client
+      // route (e.g. a shared /flagships#fbt link) 404s. This repacks the path
+      // into a query string and index.html's inline script below unpacks it,
+      // handing off to react-router. See rafgraph/spa-github-pages.
+      //
+      // segmentCount is 0 because this site is served from the domain root
+      // (custom domain via CNAME, per PLAN.md). If instead deployed to
+      // <user>.github.io/<repo>/, set this to 1.
+      var segmentCount = 0
+      var l = window.location
+      l.replace(
+        l.protocol +
+          "//" +
+          l.hostname +
+          (l.port ? ":" + l.port : "") +
+          l.pathname
+            .split("/")
+            .slice(0, 1 + segmentCount)
+            .join("/") +
+          "/?p=/" +
+          l.pathname
+            .slice(1)
+            .split("/")
+            .slice(segmentCount)
+            .join("/")
+            .replace(/&/g, "~and~") +
+          (l.search ? "&q=" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>

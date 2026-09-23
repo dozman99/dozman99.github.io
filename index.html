@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chiedozie Onyekwum — DevOps &amp; MLOps Engineer</title>
+    <meta
+      name="description"
+      content="DevOps/MLOps engineer portfolio: platform engineering, cloud infrastructure, and AI systems, told story by story."
+    />
+    <script>
+      // Applied before paint to avoid a flash of the wrong theme.
+      if (
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
+    <script>
+      // Unpacks the redirect from 404.html (see that file for why) before
+      // react-router mounts, so a shared deep link resolves to the right page.
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash,
+          )
+        }
+      })(window.location)
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
