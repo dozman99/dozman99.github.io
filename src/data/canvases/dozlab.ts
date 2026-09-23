@@ -18,7 +18,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["api"],
       detail: {
-        why: "Students need a real, in-browser lab experience with a live terminal and editor, not a description of one — so the UI needed real-time WebSocket access, not just static pages.",
+        why: "Students need a real, in-browser lab experience with a live terminal and editor, not a description of one, so the UI needed real-time WebSocket access, not just static pages.",
         how: "Built with Nuxt.js 4, Vue 3, and TypeScript, styled with Nuxt UI and Tailwind, state managed with Pinia. Talks to the API over REST and opens a direct WebSocket connection for the terminal.",
         codeLink: "https://github.com/DozLab/dozlab-frontend",
       },
@@ -31,7 +31,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["controller"],
       detail: {
-        why: "One service needs to own lab orchestration end to end — auth, talking to Kubernetes, and routing WebSocket traffic to the right sidecar — rather than spreading that logic across the frontend.",
+        why: "One service needs to own lab orchestration end to end (auth, talking to Kubernetes, and routing WebSocket traffic to the right sidecar) rather than spreading that logic across the frontend.",
         how: "A Go service that authenticates with JWTs, creates multi-container lab pods directly through the Kubernetes API, and proxies terminal WebSocket connections to the correct sidecar container for a session.",
         codeLink: "https://github.com/DozLab/dozlab-api",
       },
@@ -44,7 +44,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["init-container"],
       detail: {
-        why: "Lab lifecycle — deploy, track, clean up — needed to be a first-class Kubernetes concept, not just API-side bookkeeping, so it reconciles itself even if the API restarts.",
+        why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, not just API-side bookkeeping, so it reconciles itself even if the API restarts.",
         how: "A Kubebuilder-based controller (Go, controller-runtime) that watches a custom LabSession CRD and reconciles it: creating the pods, services, and volumes for a session, and tearing them down when it ends. Each LabSession spec pins its own resource requests/limits and networking ports.",
         codeLink: "https://github.com/DozLab/dozlab-controller",
       },
@@ -57,7 +57,7 @@ export const dozlabCanvas: CanvasData = {
       row: 2,
       connectsTo: ["vm"],
       detail: {
-        why: "The VM inside the pod needs a real, routable IP before anything else can talk to it — and that has to be settled before the other sidecars start.",
+        why: "The VM inside the pod needs a real, routable IP before anything else can talk to it, and that has to be settled before the other sidecars start.",
         how: "A lightweight init container calculates the VM's IP from the pod's IP and writes it to a shared volume the other containers read from, instead of relying on DNS for a VM that has no service record of its own.",
       },
     },
@@ -113,7 +113,7 @@ export const dozlabCanvas: CanvasData = {
       sublabel: "Firecracker tooling",
       detail: {
         why: "Every lab needs a purpose-built, bootable VM image, and building and distributing those by hand doesn't scale.",
-        how: "dozctl, a bash CLI, automates pulling kernel/rootfs images, wiring up CNI networking, and managing a Firecracker VM's full lifecycle — create, stop, destroy. The rootfs manager repo builds the actual images on top of it: a common base, then specialized per lab type.",
+        how: "dozctl, a bash CLI, automates pulling kernel/rootfs images, wiring up CNI networking, and managing a Firecracker VM's full lifecycle: create, stop, destroy. The rootfs manager repo builds the actual images on top of it: a common base, then specialized per lab type.",
         codeLink: "https://github.com/DozLab/dozctl",
       },
     },

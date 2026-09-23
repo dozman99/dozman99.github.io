@@ -18,7 +18,7 @@ export const now = [
     // TODO: name the actual project/context this RAG work is part of, and what it's grounding answers in.
     title: "Building retrieval-augmented generation (RAG) systems",
     detail:
-      "TODO: add the specific project and what it's for — what's being retrieved, and why RAG over a plain prompt.",
+      "TODO: add the specific project and what it's for: what's being retrieved, and why RAG over a plain prompt.",
   },
 ]
 

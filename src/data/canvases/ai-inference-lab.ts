@@ -20,7 +20,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["engines"],
       detail: {
-        why: "Needed a single entry point in front of multiple serving engines, and a way to generate realistic, repeatable load to actually measure them under — not just eyeball latency on a few manual requests.",
+        why: "Needed a single entry point in front of multiple serving engines, and a way to generate realistic, repeatable load to actually measure them under, not just eyeball latency on a few manual requests.",
         how: "A Go service fronts the serving engines and doubles as the load generator for benchmarking: the same client sends real inference requests and records latency, throughput, and errors.",
       },
     },
@@ -32,7 +32,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["gpu-node"],
       detail: {
-        why: "Which engine is fastest depends on model, hardware, and quantization — not something you can answer without measuring, and the honest answer is usually 'it depends.'",
+        why: "Which engine is fastest depends on model, hardware, and quantization: not something you can answer without measuring, and the honest answer is usually 'it depends.'",
         how: "The same open-weight model is deployed across vLLM, SGLang, and Ollama (GGUF), so requests can be benchmarked apples-to-apples across BF16, FP8, and INT4/GGUF quantization.",
       },
     },

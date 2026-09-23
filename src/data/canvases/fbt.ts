@@ -21,7 +21,7 @@ export const fbtCanvas: CanvasData = {
       row: 1,
       connectsTo: ["api-gateway"],
       detail: {
-        why: "Only branches named fbt/<ticket> should spin up a full disposable environment — most pushes shouldn't trigger anything at all.",
+        why: "Only branches named fbt/<ticket> should spin up a full disposable environment. Most pushes shouldn't trigger anything at all.",
         how: "Bitbucket's push webhook hits the build Lambda's API handler, which confirms the push is a new fbt/ branch and extracts the Jira ticket ID with a regex before anything else happens.",
       },
     },
@@ -34,7 +34,7 @@ export const fbtCanvas: CanvasData = {
       connectsTo: ["sqs-fifo"],
       detail: {
         why: "A custom (non-proxy) integration in front of the Lambda, with the Lambda permission scoped so only this specific API deployment can invoke it.",
-        how: "Two separate REGIONAL REST APIs — one for build, one for destroy — each with a single POST /webhook resource registered as the Bitbucket webhook target. Access logs go to a dedicated CloudWatch log group; throttling is set to 1000 req/s steady-state, 500 burst.",
+        how: "Two separate REGIONAL REST APIs (one for build, one for destroy), each with a single POST /webhook resource registered as the Bitbucket webhook target. Access logs go to a dedicated CloudWatch log group; throttling is set to 1000 req/s steady-state, 500 burst.",
       },
     },
     {
@@ -59,7 +59,7 @@ export const fbtCanvas: CanvasData = {
       row: 2,
       connectsTo: ["per-branch-ecs"],
       detail: {
-        why: "Keep short-lived, per-branch resources out of shared Terraform state. Running terraform apply per branch would be slow and would put dozens of disposable resources into shared state — lock contention, drift, plan noise.",
+        why: "Keep short-lived, per-branch resources out of shared Terraform state. Running terraform apply per branch would be slow and would put dozens of disposable resources into shared state: lock contention, drift, plan noise.",
         how: "The build worker checks whether a cluster already exists for the ticket, builds a per-branch database, then renders and applies an ECS + CodePipeline CloudFormation template for that branch. CloudFormation is used deliberately in exactly two places system-wide: here, and for one-time Terraform backend bootstrapping (see the side node below).",
       },
     },
@@ -83,7 +83,7 @@ export const fbtCanvas: CanvasData = {
       row: 2,
       detail: {
         why: "Nobody should have to remember to delete branch infrastructure by hand.",
-        how: "This isn't a continuation of the build pipeline above — it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which tears down that branch's CloudFormation stack.",
+        how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which tears down that branch's CloudFormation stack.",
       },
     },
   ],
@@ -93,7 +93,7 @@ export const fbtCanvas: CanvasData = {
       label: "Shared layer",
       sublabel: "persistent infra",
       detail: {
-        why: "FBT needs infrastructure that exists all the time, regardless of which feature branches are currently active — kept separate from the ephemeral per-branch stacks.",
+        why: "FBT needs infrastructure that exists all the time, regardless of which feature branches are currently active, kept separate from the ephemeral per-branch stacks.",
         how: "FBT lives in its own AWS region and VPC inside the same account as staging, rather than a fully separate account. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster, networking, KMS keys, and secrets, all namespaced per environment.",
         whatBroke:
           "Isolating FBT into its own region, not just a separate VPC in the same region as staging, was the deliberate call: it keeps branch churn from ever touching staging's blast radius, at the cost of running an extra region.",
@@ -104,7 +104,7 @@ export const fbtCanvas: CanvasData = {
       label: "Terraform backend bootstrap",
       sublabel: "one-time CFN stack",
       detail: {
-        why: "Terraform can't manage the S3 bucket and DynamoDB lock table that hold its own state — that's a circular dependency.",
+        why: "Terraform can't manage the S3 bucket and DynamoDB lock table that hold its own state: that's a circular dependency.",
         how: "A one-time CloudFormation stack creates the versioned, KMS-encrypted, deletion-protected state bucket, the KMS key, and the lock table. The outputs get pasted into each backend.tf. This runs once per AWS account, not as part of the normal release flow.",
       },
     },
