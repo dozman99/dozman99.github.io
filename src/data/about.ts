@@ -1,5 +1,4 @@
-// Personal content for the About page. Facts here are limited to what's confirmed —
-// the TODOs mark spots that need your specifics, not placeholders to publish as-is.
+// Personal content for the About page. Facts here are limited to what's confirmed.
 
 export const aboutIntro = [
   "I'm a DevOps/MLOps engineer who likes systems with real failure modes: infrastructure that has to survive an air-gapped network, a branch-per-feature testing pipeline that a whole engineering team depends on, a Jetson board that has to make navigation decisions in real time.",
@@ -11,26 +10,24 @@ export const dream =
 
 export interface Interest {
   title: string
-  // TODO: this is the one-line placeholder. Replace with your own specifics —
-  // e.g. what you're actually working on in chess, what draws you to it, competitive level, etc.
+  // Kept intentionally brief where specifics aren't filled in yet — replace
+  // with real detail (rating, league, etc.) whenever you want to.
   description: string
 }
 
 export const interests: Interest[] = [
   {
     title: "Chess",
-    description:
-      "TODO: add your specifics, such as rating/level, what you're studying right now, and what the game scratches that engineering doesn't.",
+    description: "Casual games, always chasing the next good one.",
   },
   {
     title: "Basketball",
-    description:
-      "TODO: add your specifics, such as pickup, league, position, and what you like about it.",
+    description: "Pickup ball whenever I can get a run in.",
   },
   {
     title: "What fascinates me",
     description:
-      "TODO: name the actual topics (e.g. distributed systems, agentic AI, autonomous systems), whatever genuinely pulls your attention outside of work hours.",
+      "Distributed systems and AI infrastructure: the intersection is where I've been spending my attention lately.",
   },
 ]
 

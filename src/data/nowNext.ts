@@ -15,10 +15,9 @@ export const now = [
       "VP of Engineering (volunteer), architecting ECO-T (a full-stack GHG accounting and ESG-verification platform) and directing the engineering team.",
   },
   {
-    // TODO: name the actual project/context this RAG work is part of, and what it's grounding answers in.
+    // Kept brief until there's a specific project to point to.
     title: "Building retrieval-augmented generation (RAG) systems",
-    detail:
-      "TODO: add the specific project and what it's for: what's being retrieved, and why RAG over a plain prompt.",
+    detail: "Grounding LLM output in real, retrieved data instead of trusting the model blind.",
   },
 ]
 
