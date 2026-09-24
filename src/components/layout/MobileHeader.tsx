@@ -11,6 +11,7 @@ import {
 import { navItems } from "@/data/nav"
 import { site } from "@/data/site"
 import { cn } from "@/lib/utils"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 export function MobileHeader() {
   return (
@@ -19,37 +20,40 @@ export function MobileHeader() {
         {site.name}
       </NavLink>
 
-      <Sheet>
-        <SheetTrigger
-          render={
-            <Button variant="ghost" size="icon" aria-label="Open menu">
-              <Menu className="size-5" />
-            </Button>
-          }
-        />
-        <SheetContent side="right" className="w-64">
-          <SheetHeader>
-            <SheetTitle>{site.name}</SheetTitle>
-          </SheetHeader>
-          <nav className="flex flex-col gap-1 px-4">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === "/"}
-                className={({ isActive }) =>
-                  cn(
-                    "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-foreground",
-                    isActive ? "text-foreground" : "text-muted-foreground",
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
-        </SheetContent>
-      </Sheet>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <Sheet>
+          <SheetTrigger
+            render={
+              <Button variant="ghost" size="icon" aria-label="Open menu">
+                <Menu className="size-5" />
+              </Button>
+            }
+          />
+          <SheetContent side="right" className="w-64">
+            <SheetHeader>
+              <SheetTitle>{site.name}</SheetTitle>
+            </SheetHeader>
+            <nav className="flex flex-col gap-1 px-4">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.to === "/"}
+                  className={({ isActive }) =>
+                    cn(
+                      "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-foreground",
+                      isActive ? "bg-accent text-primary" : "text-muted-foreground",
+                    )
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   )
 }

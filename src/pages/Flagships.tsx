@@ -43,7 +43,7 @@ export default function Flagships() {
                   {hasCanvas && (
                     <Link
                       to={`/flagships/${f.slug}`}
-                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
                     >
                       Explore the architecture
                       <ArrowRight className="size-3.5" />

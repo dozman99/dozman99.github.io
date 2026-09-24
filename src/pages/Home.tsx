@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
 
+const NUMBER_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+
 export default function Home() {
   return (
     <div>
@@ -13,7 +15,7 @@ export default function Home() {
           Infrastructure is the proof. Click into how it was built.
         </h2>
         <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">
-          Five engineering stories, each with the why, the how, and what broke along the way.
+          {NUMBER_WORDS[flagships.length] ?? flagships.length} engineering stories, each with the why, the how, and what broke along the way.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button render={<Link to="/flagships" />}>
@@ -38,7 +40,7 @@ export default function Home() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {flagships.map((f) => (
-            <Card key={f.slug} className="transition-colors hover:border-foreground/20">
+            <Card key={f.slug} className="transition-colors hover:border-primary/40">
               <CardHeader>
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base">{f.title}</CardTitle>

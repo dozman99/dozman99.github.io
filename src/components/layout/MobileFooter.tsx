@@ -1,4 +1,5 @@
-import { ExternalLink, Mail } from "lucide-react"
+import { Mail } from "lucide-react"
+import { GitHubIcon, LinkedInIcon } from "@/components/BrandIcons"
 import { site } from "@/data/site"
 
 // Desktop shows contact/social links in the Sidebar instead — this is mobile-only.
@@ -26,7 +27,7 @@ export function MobileFooter() {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <ExternalLink className="size-4" />
+              <LinkedInIcon className="size-4" />
               LinkedIn
             </a>
           )}
@@ -37,7 +38,7 @@ export function MobileFooter() {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <ExternalLink className="size-4" />
+              <GitHubIcon className="size-4" />
               GitHub
             </a>
           )}

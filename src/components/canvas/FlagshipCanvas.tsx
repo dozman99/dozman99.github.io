@@ -91,7 +91,7 @@ export function FlagshipCanvas({
               markerHeight="6"
               orient="auto-start-reverse"
             >
-              <path d="M 0 0 L 10 5 L 0 10 z" className="fill-border" />
+              <path d="M 0 0 L 10 5 L 0 10 z" className="fill-primary/40" />
             </marker>
           </defs>
           {lines.map((line) => (
@@ -101,7 +101,7 @@ export function FlagshipCanvas({
               y1={line.y1}
               x2={line.x2}
               y2={line.y2}
-              className="stroke-border"
+              className="stroke-primary/35"
               strokeWidth={1.5}
               markerEnd={`url(#arrow-${canvas.slug})`}
             />
@@ -126,8 +126,8 @@ export function FlagshipCanvas({
               aria-expanded={openNodeId === node.id}
               style={{ gridColumn: node.col, gridRow: node.row }}
               className={cn(
-                "rounded-lg border bg-card px-4 py-3 text-left shadow-sm transition-colors hover:border-foreground/30",
-                openNodeId === node.id ? "border-foreground" : "border-border",
+                "rounded-lg border bg-card px-4 py-3 text-left shadow-sm transition-colors hover:border-primary/50",
+                openNodeId === node.id ? "border-primary bg-accent" : "border-border",
               )}
             >
               <p className="text-sm font-semibold">{node.label}</p>
@@ -151,8 +151,8 @@ export function FlagshipCanvas({
                 onClick={() => onNodeClick(node.id)}
                 aria-expanded={openNodeId === node.id}
                 className={cn(
-                  "rounded-lg border border-dashed bg-card px-4 py-3 text-left shadow-sm transition-colors hover:border-foreground/30",
-                  openNodeId === node.id ? "border-foreground" : "border-border",
+                  "rounded-lg border border-dashed bg-card px-4 py-3 text-left shadow-sm transition-colors hover:border-primary/50",
+                  openNodeId === node.id ? "border-primary bg-accent" : "border-border",
                 )}
               >
                 <p className="text-sm font-semibold">{node.label}</p>

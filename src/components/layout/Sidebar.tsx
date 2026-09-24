@@ -1,7 +1,9 @@
 /** @format */
 
 import { NavLink } from 'react-router-dom';
-import { ExternalLink, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { GitHubIcon, LinkedInIcon } from '@/components/BrandIcons';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { navItems } from '@/data/nav';
 import { site } from '@/data/site';
 import { cn } from '@/lib/utils';
@@ -50,11 +52,13 @@ export function Sidebar() {
                     className={cn(
                       'h-px bg-current transition-all',
                       isActive
-                        ? 'w-10 bg-foreground'
+                        ? 'w-10 bg-primary'
                         : 'w-5 bg-muted-foreground group-hover:w-10',
                     )}
                   />
-                  {item.label}
+                  <span className={cn(isActive && 'text-primary')}>
+                    {item.label}
+                  </span>
                 </>
               )}
             </NavLink>
@@ -76,7 +80,7 @@ export function Sidebar() {
             rel='noreferrer'
             aria-label='LinkedIn'
             className='transition-colors hover:text-foreground'>
-            <ExternalLink className='size-4' />
+            <LinkedInIcon className='size-4' />
           </a>
         )}
         {site.github && (
@@ -86,9 +90,10 @@ export function Sidebar() {
             rel='noreferrer'
             aria-label='GitHub'
             className='transition-colors hover:text-foreground'>
-            <ExternalLink className='size-4' />
+            <GitHubIcon className='size-4' />
           </a>
         )}
+        <ThemeToggle className='ml-auto' />
       </div>
     </aside>
   );

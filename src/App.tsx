@@ -7,6 +7,7 @@ import FlagshipDetail from "@/pages/FlagshipDetail"
 import Experience from "@/pages/Experience"
 import Projects from "@/pages/Projects"
 import NowNext from "@/pages/NowNext"
+import NotFound from "@/pages/NotFound"
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/experience" element={<Experience />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/now-next" element={<NowNext />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )
