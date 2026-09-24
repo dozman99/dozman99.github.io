@@ -8,10 +8,19 @@ export default function About() {
       <PageHeader eyebrow="About" title="Who I am, outside the bullet points" />
 
       <section className="px-4 pb-14 sm:px-6">
-        <div className="max-w-3xl space-y-4 text-base text-muted-foreground">
-          {aboutIntro.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
+        <div className="flex max-w-3xl flex-col gap-6 sm:flex-row">
+          <img
+            src="/chiedozie.webp"
+            alt="Chiedozie Onyekwum"
+            width={160}
+            height={240}
+            className="h-60 w-40 shrink-0 rounded-lg object-cover"
+          />
+          <div className="space-y-4 text-base text-muted-foreground">
+            {aboutIntro.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
         </div>
       </section>
 

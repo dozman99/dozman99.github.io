@@ -12,6 +12,13 @@ export function Sidebar() {
     <aside className="hidden shrink-0 lg:sticky lg:top-0 lg:flex lg:h-svh lg:w-80 lg:flex-col lg:justify-between lg:py-16">
       <div>
         <NavLink to="/" className="inline-block">
+          <img
+            src="/chiedozie.webp"
+            alt={site.name}
+            width={64}
+            height={64}
+            className="mb-4 size-16 rounded-full object-cover"
+          />
           <h1 className="text-3xl font-semibold tracking-tight">{site.name}</h1>
         </NavLink>
         <p className="mt-1 text-base font-medium text-foreground/80">{site.role}</p>
