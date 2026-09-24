@@ -8,8 +8,9 @@ import { fileURLToPath } from "node:url"
 
 const rootDir = fileURLToPath(new URL("..", import.meta.url))
 const distDir = join(rootDir, "dist")
+const siteOrigin = "https://dozman99.github.io"
 
-const { render, flagshipSlugs } = await import(
+const { render, flagshipSlugs, getRouteMeta } = await import(
   join(rootDir, "dist-server", "entry-server.js")
 )
 
@@ -23,13 +24,32 @@ const routes = [
   ...flagshipSlugs.map((slug) => `/flagships/${slug}`),
 ]
 
+function escapeHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+}
+
 const template = await readFile(join(distDir, "index.html"), "utf-8")
+const sitemapUrls = []
 
 for (const route of routes) {
   const appHtml = render(route)
-  const pageHtml = template.replace(
+  const { title, description } = getRouteMeta(route)
+
+  let pageHtml = template.replace(
     '<div id="root"></div>',
     `<div id="root">${appHtml}</div>`,
+  )
+  pageHtml = pageHtml.replace(
+    /<title>.*?<\/title>/s,
+    `<title>${escapeHtml(title)}</title>`,
+  )
+  pageHtml = pageHtml.replace(
+    /(<meta\s+name="description"[\s\S]*?content=")[^"]*(")/,
+    `$1${escapeHtml(description)}$2`,
   )
 
   const outPath =
@@ -40,4 +60,14 @@ for (const route of routes) {
   await mkdir(dirname(outPath), { recursive: true })
   await writeFile(outPath, pageHtml)
   console.log(`prerendered ${route} -> ${outPath.replace(rootDir, "")}`)
+
+  sitemapUrls.push(`${siteOrigin}${route === "/" ? "/" : route + "/"}`)
 }
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
+</urlset>
+`
+await writeFile(join(distDir, "sitemap.xml"), sitemap)
+console.log(`wrote sitemap.xml with ${sitemapUrls.length} URLs`)

@@ -84,9 +84,15 @@ export default function FlagshipDetail() {
         <PageHeader
           eyebrow="Flagship Story"
           title={flagship?.title ?? "Not found"}
-          description="This flagship's interactive canvas isn't built yet."
+          description={flagship ? `${flagship.where} · ${flagship.depth}` : undefined}
         />
         <div className="px-4 pb-20 sm:px-6">
+          {flagship && (
+            <p className="mb-8 max-w-2xl text-base text-muted-foreground">{flagship.teaser}</p>
+          )}
+          <p className="mb-8 text-sm text-muted-foreground">
+            The interactive architecture canvas for this one isn't built yet.
+          </p>
           <Link
             to="/flagships"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
