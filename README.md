@@ -15,6 +15,7 @@ Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI)
 - Content lives in `src/data/*.ts`, separate from page components, so it can be edited without touching the framework
 - GitHub Actions workflow (`.github/workflows/deploy.yml`) that lints, builds, and deploys to GitHub Pages on push to `main`
 - SPA routing works on GitHub Pages via the standard 404.html redirect trick (`public/404.html` + a small unpack script in `index.html`) — needed because node URLs must be shareable per the plan
+- Every route is prerendered to static HTML at build time (`src/entry-server.tsx` + `scripts/prerender.mjs`, run automatically as part of `npm run build`), so a plain fetch — crawlers, link-preview bots, AI agents that don't execute JavaScript — sees real content instead of an empty `<div id="root">`. Not hydration: the client bundle still does a normal `createRoot().render()` over the prerendered markup, so the app stays fully interactive; see the comment at the top of `src/entry-server.tsx`.
 
 **Phase 2 (canvas framework): in progress — 3 of 6 flagships built.**
 
@@ -31,7 +32,7 @@ Personal site: Vite + React + TypeScript + Tailwind CSS v4 + shadcn/ui (Base UI)
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # type-check + production build to dist/
+npm run build    # type-check, build, SSR build, and prerender every route to dist/
 npm run lint
 ```
 
