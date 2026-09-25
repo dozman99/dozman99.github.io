@@ -33,7 +33,7 @@ export const flagships: Flagship[] = [
     where: "Conclase",
     depth: "Distributed systems, event-driven design",
     teaser:
-      "Peeling responsibility off a large monolith piece by piece: new microservices, a Kafka topology built from scratch, dual writes, and the ordering and state-drift problems that come with it.",
+      "Moving a monolith off RabbitMQ's push delivery, strangler style: responsibility shifted into microservices one environment at a time, with Kafka as a pull-based backbone so one stuck worker can't stall the whole pipeline.",
   },
   {
     slug: "dozlab",
