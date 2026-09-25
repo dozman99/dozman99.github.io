@@ -6,9 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
 import { flagshipStatus } from "@/lib/flagshipStatus"
+import { countWord } from "@/lib/numberWords"
 
-const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 export default function Flagships() {
   const builtCount = flagships.filter((f) => f.slug in canvases).length
@@ -17,7 +16,7 @@ export default function Flagships() {
     <div>
       <PageHeader
         title="Engineering stories, told node by node"
-        description={`${capitalize(String(NUMBER_WORDS[flagships.length] ?? flagships.length))} stories. ${capitalize(String(NUMBER_WORDS[builtCount] ?? builtCount))} ${builtCount === 1 ? "has" : "have"} an interactive architecture canvas so far: pick a node for why it exists and how it works. The rest are teasers.`}
+        description={`${countWord(flagships.length)} stories. ${countWord(builtCount)} ${builtCount === 1 ? "has" : "have"} an interactive architecture canvas so far: pick a node for why it exists and how it works. The rest are teasers.`}
       />
 
       <section className="px-4 pb-20 sm:px-6">

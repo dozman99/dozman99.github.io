@@ -16,4 +16,3 @@ export const site = {
   resume: "/resume.pdf",
 }
 
-export const flagshipsStatus = "coming-soon" as const

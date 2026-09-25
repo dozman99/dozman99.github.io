@@ -27,3 +27,6 @@ docs/
 *.sln
 *.sw?
 dist-server
+
+# Impeccable critique snapshots (local design-review history)
+.impeccable/
