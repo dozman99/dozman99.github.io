@@ -156,6 +156,11 @@
   html {
     scroll-behavior: smooth;
   }
+  /* The full-bleed home banner is sized with 100vw, which includes the
+     scrollbar on some platforms; clip rather than allow sideways scroll. */
+  body {
+    overflow-x: clip;
+  }
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

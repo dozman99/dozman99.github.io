@@ -17,11 +17,28 @@ export default function Home() {
   return (
     <div>
       <section className="px-4 pt-16 pb-14 sm:px-6 lg:pt-16">
-        <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-          Infrastructure is the proof. Click into how it was built.
-        </h1>
+        {/* Photo: Pexels (marstion, #10875411), free to use. Full bleed: the
+            negative margins cancel the section padding and, on desktop, reach
+            past the centered layout's padding to the right edge of the window. */}
+        <div className="relative isolate -mx-4 -mt-16 mb-8 flex h-80 items-end px-4 pb-8 sm:-mx-6 sm:h-[26rem] sm:px-6 lg:-mr-[max(3rem,calc((100vw-72rem)/2+3rem))]">
+          <img
+            src="/robot-banner.webp"
+            alt="A white modular robot on a dark table, with more robots blurred behind it"
+            width={1200}
+            height={1800}
+            fetchPriority="high"
+            className="absolute inset-0 -z-10 size-full object-cover object-[50%_60%]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/40 to-background/10"
+          />
+          <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            Infrastructure is the proof. Click into how it was built.
+          </h1>
+        </div>
         <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">
-          {NUMBER_WORDS[flagships.length] ?? flagships.length} engineering stories, told node by node: why each piece exists, how it works, and what was hard where it bit.
+          {NUMBER_WORDS[flagships.length] ?? flagships.length} engineering stories told node by node: why each piece exists, how it works, and where it got hard.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
           <Button size="lg" className="h-10 px-4" render={<Link to="/flagships" />}>

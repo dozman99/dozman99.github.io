@@ -17,7 +17,7 @@ export const workExperience: Role[] = [
     company: "Samsung Austin Semiconductor",
     role: "AI/ML Engineer Co-op",
     location: "Austin, TX, USA",
-    dates: "Jan 2026 – Aug 2026",
+    dates: "Jan 2026 - Aug 2026",
     blurb:
       "Built and shipped a full-stack ban/alerting portal into a secured, air-gapped environment, plus the AI feature that makes it self-service.",
     bullets: [
@@ -31,7 +31,7 @@ export const workExperience: Role[] = [
     company: "Texas A&M University",
     role: "Graduate Research Assistant",
     location: "Texas, USA",
-    dates: "Apr 2025 – Dec 2025",
+    dates: "Apr 2025 - Dec 2025",
     blurb:
       "Research spanning machine unlearning, PKI/blockchain for CA decentralization, and a Jetson-based autonomous vehicle proof of concept.",
     bullets: [
@@ -45,7 +45,7 @@ export const workExperience: Role[] = [
     company: "Conclase",
     role: "DevOps Engineer",
     location: "Colorado, USA",
-    dates: "Aug 2022 – Jan 2025",
+    dates: "Aug 2022 - Jan 2025",
     blurb:
       "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
@@ -69,7 +69,7 @@ export const workExperience: Role[] = [
     company: "Gwrite",
     role: "DevOps Engineer",
     location: "Port Harcourt, Nigeria",
-    dates: "Jan 2021 – Jun 2022",
+    dates: "Jan 2021 - Jun 2022",
     blurb: "Secrets management, a major cloud migration, and standing up Kubernetes CI/CD from scratch.",
     bullets: [
       "Implemented HashiCorp Vault for Kubernetes secrets management and led SAP migration to Azure, achieving 70% RTO reduction.",
@@ -81,7 +81,7 @@ export const workExperience: Role[] = [
     company: "Parkway Projects Africa",
     role: "Implementation / Software Engineer (Intern)",
     location: "Lagos, Nigeria",
-    dates: "Sep 2019 – Oct 2021",
+    dates: "Sep 2019 - Oct 2021",
     blurb: "First engineering role: serverless integrations, an internal asset-management app, and network security.",
     bullets: [
       "Developed serverless solutions on Azure/AWS with API and webhook integrations; managed cloud software incidents via ServiceNow.",
@@ -92,10 +92,10 @@ export const workExperience: Role[] = [
 
 export const leadership: Role[] = [
   {
-    company: "EDAT – VA (Independent Sustainability Assurance)",
+    company: "EDAT - VA (Independent Sustainability Assurance)",
     role: "VP of Engineering (Volunteer)",
     location: "USA (Remote)",
-    dates: "Apr 2025 – Present",
+    dates: "Apr 2025 - Present",
     blurb:
       "Leading engineering for a sustainability-assurance platform, and architecting its GHG accounting product end to end.",
     bullets: [
@@ -109,7 +109,7 @@ export const leadership: Role[] = [
     company: "National Society of Black Engineers, Texas A&M",
     role: "Vice President",
     location: "Texas, USA",
-    dates: "Jan 2025 – Present",
+    dates: "Jan 2025 - Present",
     blurb: "",
     bullets: [
       "Facilitate career development and cross-disciplinary collaboration through targeted projects that expand members' competitive edge and professional opportunities.",
@@ -119,7 +119,7 @@ export const leadership: Role[] = [
     company: "Microsoft",
     role: "Student Ambassador",
     location: "DC, USA",
-    dates: "Jan 2018 – Nov 2021",
+    dates: "Jan 2018 - Nov 2021",
     blurb: "",
     bullets: [
       "Mentored students in software development; developed school data analytics tools with Azure integration and organized community tech events.",

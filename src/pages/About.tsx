@@ -1,6 +1,5 @@
 import { PageHeader } from "@/components/PageHeader"
 import { Headshot } from "@/components/Headshot"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { aboutIntro, dream, education, interests } from "@/data/about"
 
 export default function About() {
@@ -29,18 +28,15 @@ export default function About() {
 
       <section className="px-4 pb-14 sm:px-6">
         <h2 className="mb-6 text-xl font-semibold tracking-tight">Outside of work</h2>
-        <div className="grid gap-4 sm:grid-cols-3">
+        {/* A term/description list, not a row of three identical cards. */}
+        <dl className="max-w-3xl divide-y divide-border border-y border-border">
           {interests.map((interest) => (
-            <Card key={interest.title}>
-              <CardHeader>
-                <CardTitle className="text-base">{interest.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{interest.description}</p>
-              </CardContent>
-            </Card>
+            <div key={interest.title} className="grid gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
+              <dt className="text-base font-semibold tracking-tight">{interest.title}</dt>
+              <dd className="text-base text-muted-foreground">{interest.description}</dd>
+            </div>
           ))}
-        </div>
+        </dl>
       </section>
 
       <section className="px-4 pb-20 sm:px-6">

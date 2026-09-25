@@ -52,6 +52,20 @@ for (const route of routes) {
     `$1${escapeHtml(description)}$2`,
   )
 
+  // Open Graph / Twitter card tags, so a shared link previews this page.
+  const pageUrl = `${siteOrigin}${route === "/" ? "/" : route + "/"}`
+  const setMeta = (attr, key, value) => {
+    pageHtml = pageHtml.replace(
+      new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`),
+      `$1${escapeHtml(value)}$2`,
+    )
+  }
+  setMeta("property", "og:title", title)
+  setMeta("property", "og:description", description)
+  setMeta("property", "og:url", pageUrl)
+  setMeta("name", "twitter:title", title)
+  setMeta("name", "twitter:description", description)
+
   const outPath =
     route === "/"
       ? join(distDir, "index.html")
@@ -61,7 +75,7 @@ for (const route of routes) {
   await writeFile(outPath, pageHtml)
   console.log(`prerendered ${route} -> ${outPath.replace(rootDir, "")}`)
 
-  sitemapUrls.push(`${siteOrigin}${route === "/" ? "/" : route + "/"}`)
+  sitemapUrls.push(pageUrl)
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
