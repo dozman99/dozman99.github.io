@@ -8,7 +8,7 @@ import { projects } from "@/data/projects"
 export default function Projects() {
   return (
     <div>
-      <PageHeader eyebrow="Projects" title="Things I've built outside client work" />
+      <PageHeader title="Things I've built outside client work" />
 
       <section className="px-4 pb-20 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2">
@@ -42,7 +42,7 @@ export default function Projects() {
                 {project.flagshipSlug && (
                   <Link
                     to={`/flagships/${project.flagshipSlug}`}
-                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
                   >
                     Explore the architecture
                     <ArrowRight className="size-3.5" />

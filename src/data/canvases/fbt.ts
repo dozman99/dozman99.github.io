@@ -12,29 +12,31 @@ export const fbtCanvas: CanvasData = {
   title: "Feature Branch Testing + Environment Replication",
   summary:
     "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, built and torn down automatically off Bitbucket webhooks. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state.",
+  // Row 2 continues the build path, so it has no label of its own.
+  lanes: ["Build path", "", "Teardown path"],
   nodes: [
-    {
-      id: "webhook-filter",
-      label: "Webhook filter",
-      sublabel: "Bitbucket push → fbt/*",
-      col: 1,
-      row: 1,
-      connectsTo: ["api-gateway"],
-      detail: {
-        why: "Only branches named fbt/<ticket> should spin up a full disposable environment. Most pushes shouldn't trigger anything at all.",
-        how: "Bitbucket's push webhook hits the build Lambda's API handler, which confirms the push is a new fbt/ branch and extracts the Jira ticket ID with a regex before anything else happens.",
-      },
-    },
     {
       id: "api-gateway",
       label: "API Gateway",
-      sublabel: "POST /webhook",
+      sublabel: "build API · POST /webhook",
+      col: 1,
+      row: 1,
+      connectsTo: ["webhook-filter"],
+      detail: {
+        why: "A custom (non-proxy) integration in front of the Lambda, with the Lambda permission scoped so only this specific API deployment can invoke it.",
+        how: "Two separate REGIONAL REST APIs (one for build, one for destroy), each with a single POST /webhook resource registered as the Bitbucket webhook target. Access logs go to a dedicated CloudWatch log group; throttling is set to 1000 req/s steady-state, 500 burst.",
+      },
+    },
+    {
+      id: "webhook-filter",
+      label: "Webhook filter",
+      sublabel: "fbt/* + ticket ID, in Lambda",
       col: 2,
       row: 1,
       connectsTo: ["sqs-fifo"],
       detail: {
-        why: "A custom (non-proxy) integration in front of the Lambda, with the Lambda permission scoped so only this specific API deployment can invoke it.",
-        how: "Two separate REGIONAL REST APIs (one for build, one for destroy), each with a single POST /webhook resource registered as the Bitbucket webhook target. Access logs go to a dedicated CloudWatch log group; throttling is set to 1000 req/s steady-state, 500 burst.",
+        why: "Only branches named fbt/<ticket> should spin up a full disposable environment. Most pushes shouldn't trigger anything at all.",
+        how: "Bitbucket's push webhook hits the build Lambda's API handler, which confirms the push is a new fbt/ branch and extracts the Jira ticket ID with a regex before anything else happens.",
       },
     },
     {
@@ -69,18 +71,29 @@ export const fbtCanvas: CanvasData = {
       sublabel: "+ CodePipeline",
       col: 2,
       row: 2,
-      connectsTo: ["teardown"],
       detail: {
         why: "Full isolation per feature branch: its own ECS service and CodePipeline, running against the shared FBT database.",
         how: "The CloudFormation stack stands up a dedicated ECS service and pipeline scoped to that branch, so testing one feature can't collide with testing another.",
       },
     },
     {
+      id: "api-gateway-destroy",
+      label: "API Gateway",
+      sublabel: "destroy API · POST /webhook",
+      col: 1,
+      row: 3,
+      connectsTo: ["teardown"],
+      detail: {
+        why: "Teardown has its own entry point instead of sharing the build API.",
+        how: "The second of the two REGIONAL REST APIs: a single POST /webhook resource registered as the Bitbucket webhook target for PR-merged events on fbt/ branches.",
+      },
+    },
+    {
       id: "teardown",
       label: "Merge-triggered teardown",
       sublabel: "PR merged → destroy",
-      col: 3,
-      row: 2,
+      col: 2,
+      row: 3,
       detail: {
         why: "Nobody should have to remember to delete branch infrastructure by hand.",
         how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which tears down that branch's CloudFormation stack.",

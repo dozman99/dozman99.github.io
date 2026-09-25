@@ -29,7 +29,7 @@ function RoleCard({ role }: { role: Role }) {
               ? `/flagships/${role.flagshipSlug}`
               : `/flagships#${role.flagshipSlug}`
           }
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
         >
           Full flagship story
           <ArrowRight className="size-3.5" />
@@ -43,7 +43,6 @@ export default function Experience() {
   return (
     <div>
       <PageHeader
-        eyebrow="Experience"
         title="Full timeline"
         description="The condensed version is on the resume. This is the fuller story: what each role actually involved."
       />
@@ -51,36 +50,7 @@ export default function Experience() {
       <div className="px-4 pb-20 sm:px-6">
         <div className="max-w-3xl">
           <section className="pb-16">
-            <h2 className="mb-4 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-              Certifications
-            </h2>
-            <Separator className="mb-4" />
-            <div className="grid gap-3 sm:grid-cols-2">
-              {certifications.map((cert) => (
-                <a
-                  key={cert.name}
-                  href={cert.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-foreground/30"
-                >
-                  <div>
-                    <p className="text-sm font-medium">{cert.name}</p>
-                    <p className="text-xs text-muted-foreground">{cert.issuer}</p>
-                  </div>
-                  <span className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
-                    Verify
-                    <ExternalLink className="size-3.5" />
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          <section className="pb-16">
-            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-              Work
-            </h2>
+            <h2 className="mb-4 text-xl font-semibold tracking-tight">Work</h2>
             <Separator />
             <div className="divide-y divide-border">
               {workExperience.map((role) => (
@@ -89,10 +59,8 @@ export default function Experience() {
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
-              Leadership &amp; Volunteering
-            </h2>
+          <section className="pb-16">
+            <h2 className="mb-4 text-xl font-semibold tracking-tight">Leadership &amp; Volunteering</h2>
             <Separator />
             <div className="divide-y divide-border">
               {leadership.map((role) => (
@@ -100,6 +68,31 @@ export default function Experience() {
               ))}
             </div>
           </section>
+          <section>
+            <h2 className="mb-4 text-xl font-semibold tracking-tight">Certifications</h2>
+            <Separator className="mb-4" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              {certifications.map((cert) => (
+                <a
+                  key={cert.name}
+                  href={cert.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-primary/50"
+                >
+                  <div>
+                    <p className="text-sm font-medium">{cert.name}</p>
+                    <p className="text-xs text-muted-foreground">{cert.issuer}</p>
+                  </div>
+                  <span className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-primary">
+                    Verify
+                    <ExternalLink className="size-3.5" />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+
         </div>
       </div>
     </div>

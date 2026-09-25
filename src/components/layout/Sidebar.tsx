@@ -1,9 +1,10 @@
 /** @format */
 
 import { NavLink } from 'react-router-dom';
-import { Mail } from 'lucide-react';
+import { FileText, Mail } from 'lucide-react';
 import { GitHubIcon, LinkedInIcon } from '@/components/BrandIcons';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { Headshot } from '@/components/Headshot';
 import { navItems } from '@/data/nav';
 import { site } from '@/data/site';
 import { cn } from '@/lib/utils';
@@ -16,14 +17,9 @@ export function Sidebar() {
     <aside className='hidden shrink-0 lg:sticky lg:top-0 lg:flex lg:h-svh lg:w-80 lg:flex-col lg:justify-between lg:py-16'>
       <div>
         <NavLink to='/' className='inline-block'>
-          <img
-            src='/chiedozie.webp'
-            alt={site.name}
-            width={200}
-            height={200}
-            className='mb-4 size-24 rounded-full object-cover object-top'
-          />
-          <h1 className='text-3xl font-semibold tracking-tight'>{site.name}</h1>
+          <Headshot width={144} height={144} className='mb-5 size-36 rounded-full' />
+          {/* Each page owns its <h1>; the name is identity, not a page heading. */}
+          <p className='text-3xl font-semibold tracking-tight'>{site.name}</p>
         </NavLink>
         <p className='mt-1 text-base font-medium text-foreground/80'>
           {site.role}
@@ -50,10 +46,11 @@ export function Sidebar() {
                 <>
                   <span
                     className={cn(
-                      'h-px bg-current transition-all',
+                      // Animate transform, not width: no layout work on hover.
+                      'h-px w-10 origin-left transition-transform duration-200',
                       isActive
-                        ? 'w-10 bg-primary'
-                        : 'w-5 bg-muted-foreground group-hover:w-10',
+                        ? 'scale-x-100 bg-primary'
+                        : 'scale-x-50 bg-muted-foreground group-hover:scale-x-100',
                     )}
                   />
                   <span className={cn(isActive && 'text-primary')}>
@@ -66,13 +63,24 @@ export function Sidebar() {
         </nav>
       </div>
 
-      <div className='flex items-center gap-4 text-muted-foreground'>
+      <div className='flex flex-col gap-5'>
+      <div className='flex items-center gap-5 text-sm font-medium'>
+        <a
+          href={site.resume}
+          target='_blank'
+          rel='noreferrer'
+          className='inline-flex items-center gap-1.5 text-primary transition-colors hover:text-foreground'>
+          <FileText className='size-4' />
+          Résumé
+        </a>
         <a
           href={`mailto:${site.email}`}
-          aria-label='Email'
-          className='transition-colors hover:text-foreground'>
+          className='inline-flex items-center gap-1.5 text-primary transition-colors hover:text-foreground'>
           <Mail className='size-4' />
+          Email me
         </a>
+      </div>
+      <div className='flex items-center gap-4 text-muted-foreground'>
         {site.linkedin && (
           <a
             href={site.linkedin}
@@ -94,6 +102,7 @@ export function Sidebar() {
           </a>
         )}
         <ThemeToggle className='ml-auto' />
+      </div>
       </div>
     </aside>
   );

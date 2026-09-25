@@ -11,6 +11,7 @@ export const aiInferenceLabCanvas: CanvasData = {
   title: "AI Inference Infrastructure Lab",
   summary:
     "A working lab, not a demo: open-weight models deployed across multiple serving engines, GPUs shared two different ways on the same cluster, and every token's latency and cost measured rather than assumed. Extending DevOps/Kubernetes work into GPU orchestration and LLM serving.",
+  lanes: ["Serving path", "Observability"],
   nodes: [
     {
       id: "load-gen",

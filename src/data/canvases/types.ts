@@ -30,6 +30,8 @@ export interface CanvasData {
   slug: string
   title: string
   summary: string
+  /** Optional name for each grid row (index 0 = row 1), shown as a lane label above that row. */
+  lanes?: string[]
   nodes: CanvasNode[]
   sideNodes: SideNode[]
   /** Optional "currently studying" / "writing" lists, shown below the canvas when present. */

@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react"
+import { FileText, Mail } from "lucide-react"
 import { GitHubIcon, LinkedInIcon } from "@/components/BrandIcons"
 import { site } from "@/data/site"
 
@@ -12,10 +12,19 @@ export function MobileFooter() {
         <p>
           &copy; {year} {site.name}
         </p>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <a
+            href={site.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 items-center gap-1.5 font-medium text-primary transition-colors hover:text-foreground"
+          >
+            <FileText className="size-4" />
+            Résumé
+          </a>
           <a
             href={`mailto:${site.email}`}
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
           >
             <Mail className="size-4" />
             Email
@@ -25,7 +34,7 @@ export function MobileFooter() {
               href={site.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
               <LinkedInIcon className="size-4" />
               LinkedIn
@@ -36,7 +45,7 @@ export function MobileFooter() {
               href={site.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
               <GitHubIcon className="size-4" />
               GitHub

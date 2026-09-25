@@ -12,6 +12,8 @@ export const site = {
   // decide whether you want this public before filling it in.
   phone: "",
   location: "Austin, TX",
+  // Public copy of the résumé (includes phone number): served from public/.
+  resume: "/resume.pdf",
 }
 
 export const flagshipsStatus = "coming-soon" as const

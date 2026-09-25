@@ -15,7 +15,7 @@ function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlu
         {item.flagshipSlug && (
           <Link
             to={`/flagships/${item.flagshipSlug}`}
-            className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
           >
             Explore the architecture
             <ArrowRight className="size-3.5" />
@@ -29,7 +29,7 @@ function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlu
 export default function NowNext() {
   return (
     <div>
-      <PageHeader eyebrow="Now / Next" title="What I'm doing, and what's coming" />
+      <PageHeader title="What I'm doing, and what's coming" />
 
       <section className="px-4 pb-20 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2">

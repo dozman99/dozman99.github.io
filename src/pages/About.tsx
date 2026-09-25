@@ -1,21 +1,17 @@
 import { PageHeader } from "@/components/PageHeader"
+import { Headshot } from "@/components/Headshot"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { aboutIntro, dream, education, interests } from "@/data/about"
 
 export default function About() {
   return (
     <div>
-      <PageHeader eyebrow="About" title="Who I am, outside the bullet points" />
+      <PageHeader title="Who I am, outside the bullet points" />
 
       <section className="px-4 pb-14 sm:px-6">
         <div className="flex max-w-3xl flex-col gap-6 sm:flex-row">
-          <img
-            src="/chiedozie.webp"
-            alt="Chiedozie Onyekwum"
-            width={160}
-            height={240}
-            className="h-60 w-40 shrink-0 rounded-lg object-cover"
-          />
+          {/* Desktop already shows the photo in the sidebar; only phones need it here. */}
+          <Headshot width={160} height={240} className="h-60 w-40 shrink-0 rounded-lg lg:hidden" />
           <div className="space-y-4 text-base text-muted-foreground">
             {aboutIntro.map((p, i) => (
               <p key={i}>{p}</p>

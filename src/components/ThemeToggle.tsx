@@ -13,13 +13,17 @@ const options: { value: Theme; label: string; Icon: typeof Sun }[] = [
   { value: "dark", label: "Dark theme", Icon: Moon },
 ]
 
+// Dark (olive-black) is the site's default look; "system" is an explicit
+// opt-in to follow the OS, so it's stored like the other two.
+const DEFAULT_THEME: Theme = "dark"
+
 function readStored(): Theme {
-  if (typeof window === "undefined") return "system"
+  if (typeof window === "undefined") return DEFAULT_THEME
   try {
     const v = localStorage.getItem(STORAGE_KEY)
-    return v === "light" || v === "dark" ? v : "system"
+    return v === "light" || v === "dark" || v === "system" ? v : DEFAULT_THEME
   } catch {
-    return "system"
+    return DEFAULT_THEME
   }
 }
 
@@ -28,12 +32,15 @@ function apply(theme: Theme) {
     theme === "dark" ||
     (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
   document.documentElement.classList.toggle("dark", dark)
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", dark ? "#1d2016" : "#f6f1e3")
 }
 
 // Mirrors the pre-paint script in index.html, which applies the stored choice
 // before React mounts so there's no flash of the wrong theme.
 export function ThemeToggle({ className }: { className?: string }) {
-  // The prerender has no window, so it always renders "system"; main.tsx uses
+  // The prerender has no window, so it always renders the default; main.tsx uses
   // createRoot (not hydrateRoot), so the client reading storage here is safe.
   const [theme, setTheme] = useState<Theme>(readStored)
 
@@ -55,8 +62,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     apply(next)
     window.dispatchEvent(new CustomEvent(CHANGE_EVENT, { detail: next }))
     try {
-      if (next === "system") localStorage.removeItem(STORAGE_KEY)
-      else localStorage.setItem(STORAGE_KEY, next)
+      localStorage.setItem(STORAGE_KEY, next)
     } catch {
       // Storage blocked (private mode etc.): the choice still applies for this visit.
     }
@@ -81,7 +87,8 @@ export function ThemeToggle({ className }: { className?: string }) {
           title={label}
           onClick={() => choose(value)}
           className={cn(
-            "rounded-full p-1.5 transition-colors",
+            // 44px touch targets on mobile, compact in the desktop sidebar.
+            "flex size-11 items-center justify-center rounded-full transition-colors lg:size-7",
             theme === value
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground",

@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
+import { flagshipStatus } from "@/lib/flagshipStatus"
 
 const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 export default function Flagships() {
   const builtCount = flagships.filter((f) => f.slug in canvases).length
@@ -14,9 +16,8 @@ export default function Flagships() {
   return (
     <div>
       <PageHeader
-        eyebrow="Flagship Stories"
-        title={`${NUMBER_WORDS[flagships.length] ?? flagships.length} deep dives, told node by node`}
-        description={`Each canvas unfolds as you click: pick a node, get the why, the how, and what was hard, plus a link to real code. ${NUMBER_WORDS[builtCount] ?? builtCount} ${builtCount === 1 ? "is" : "are"} built so far; the rest are still teasers.`}
+        title="Engineering stories, told node by node"
+        description={`${capitalize(String(NUMBER_WORDS[flagships.length] ?? flagships.length))} stories. ${capitalize(String(NUMBER_WORDS[builtCount] ?? builtCount))} ${builtCount === 1 ? "has" : "have"} an interactive architecture canvas so far: pick a node for why it exists and how it works. The rest are teasers.`}
       />
 
       <section className="px-4 pb-20 sm:px-6">
@@ -33,13 +34,13 @@ export default function Flagships() {
                         {f.where} · {f.depth}
                       </p>
                     </div>
-                    <Badge variant={hasCanvas ? "default" : "outline"}>
-                      {hasCanvas ? "Explore the canvas" : f.slug === "air-gapped-portal" ? "Under NDA" : "Coming soon"}
+                    <Badge variant={hasCanvas ? "secondary" : "outline"} className={hasCanvas ? "text-primary" : undefined}>
+                      {flagshipStatus(f.slug)}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">{f.teaser}</p>
+                  <p className="max-w-prose text-sm text-muted-foreground">{f.teaser}</p>
                   {hasCanvas && (
                     <Link
                       to={`/flagships/${f.slug}`}

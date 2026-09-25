@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f6f1e3" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1d2016" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#1d2016" />
     <title>Chiedozie Onyekwum · DevOps &amp; MLOps Engineer</title>
     <meta
       name="description"
       content="DevOps/MLOps engineer portfolio: platform engineering, cloud infrastructure, and AI systems, told story by story."
     />
     <script>
-      // Applied before paint to avoid a flash of the wrong theme. An explicit
-      // choice from the theme toggle wins; otherwise follow the OS setting.
+      // Applied before paint to avoid a flash of the wrong theme. Dark is the
+      // default; the theme toggle can store "light" or "system" instead.
       ;(function () {
         var t
         try {
           t = localStorage.getItem('theme')
         } catch (e) {}
-        if (
-          t === 'dark' ||
-          (t !== 'light' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-          document.documentElement.classList.add('dark')
-        }
+        var dark =
+          t === 'light'
+            ? false
+            : t === 'system'
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              : true
+        if (dark) document.documentElement.classList.add('dark')
+        else
+          document
+            .querySelector('meta[name="theme-color"]')
+            .setAttribute('content', '#f6f1e3')
       })()
     </script>
     <script>
