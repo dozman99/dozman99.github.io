@@ -1,5 +1,5 @@
 import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties } from "react"
-import { ArrowDown, Flame, MousePointerClick } from "lucide-react"
+import { ArrowDown, Flame, Lock, MousePointerClick } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import type { CanvasData, CanvasNode } from "@/data/canvases/types"
@@ -182,6 +182,12 @@ export function FlagshipCanvas({
           )}
         </span>
       </p>
+      {canvas.codeNote && (
+        <p className="-mt-2 mb-4 flex items-start gap-2 text-sm text-muted-foreground">
+          <Lock className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          <span>{canvas.codeNote}</span>
+        </p>
+      )}
 
       <div ref={containerRef} className="relative">
         {/* Connectors only make sense on the 2-D grid; mobile uses inline arrows. */}

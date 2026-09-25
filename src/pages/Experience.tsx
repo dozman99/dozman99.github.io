@@ -16,8 +16,8 @@ function RoleCard({ role }: { role: Role }) {
       <p className="text-sm text-muted-foreground">
         {role.role} · {role.location}
       </p>
-      {role.blurb && <p className="mt-3 text-sm text-foreground/90">{role.blurb}</p>}
-      <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+      {role.blurb && <p className="mt-3 max-w-prose text-sm text-foreground/90">{role.blurb}</p>}
+      <ul className="mt-4 max-w-prose list-disc space-y-2 pl-5 text-sm text-muted-foreground">
         {role.bullets.map((b, i) => (
           <li key={i}>{b}</li>
         ))}

@@ -13,6 +13,7 @@ export const fbtCanvas: CanvasData = {
   summary:
     "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, built and torn down automatically off Bitbucket webhooks. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state.",
   // Row 2 continues the build path, so it has no label of its own.
+  codeNote: "Client work for a healthcare client, so the code is private.",
   lanes: ["Build path", "", "Teardown path"],
   nodes: [
     {

@@ -4,25 +4,22 @@ import { Button } from "@/components/ui/button"
 import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
 import { cn } from "@/lib/utils"
-import { flagshipStatus } from "@/lib/flagshipStatus"
+import { flagshipStatus, orderedFlagships } from "@/lib/flagshipStatus"
 import { countWord } from "@/lib/numberWords"
 
-// Stories with a built canvas lead; teasers follow. Stable within each group.
-const ordered = [...flagships].sort(
-  (a, b) => Number(b.slug in canvases) - Number(a.slug in canvases),
-)
 
 export default function Home() {
   return (
     <div>
       <section className="px-4 pt-16 pb-14 sm:px-6 lg:pt-16">
-        {/* Photo: Pexels (marstion, #10875411), free to use. Full bleed: the
+        {/* Decorative photo (Pexels, marstion #10875411, free to use). Full bleed: the
             negative margins cancel the section padding and, on desktop, reach
             past the centered layout's padding to the right edge of the window. */}
         <div className="relative isolate -mx-4 -mt-16 mb-8 flex h-80 items-end px-4 pb-8 sm:-mx-6 sm:h-[26rem] sm:px-6 lg:-mr-[max(3rem,calc((100vw-72rem)/2+3rem))]">
           <img
             src="/robot-banner.webp"
-            alt="A white modular robot on a dark table, with more robots blurred behind it"
+            alt=""
+            aria-hidden="true"
             width={1200}
             height={1800}
             fetchPriority="high"
@@ -30,7 +27,7 @@ export default function Home() {
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/40 to-background/10"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_oklch,var(--background)_85%,transparent)_18%,color-mix(in_oklch,var(--background)_45%,transparent)_45%,color-mix(in_oklch,var(--background)_15%,transparent)_75%,transparent_100%)]"
           />
           <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Infrastructure is the proof. Click into how it was built.
@@ -64,7 +61,7 @@ export default function Home() {
           </Link>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
-          {ordered.map((f) => {
+          {orderedFlagships.map((f) => {
             const hasCanvas = f.slug in canvases
             return (
               <li key={f.slug}>

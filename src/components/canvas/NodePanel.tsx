@@ -47,15 +47,11 @@ function DetailBody({ node, headingAs: H }: { node: Node; headingAs: "h3" | "h4"
       <Separator />
 
       <div className="flex flex-wrap gap-2">
-        {node.detail.codeLink ? (
+        {node.detail.codeLink && (
           <Button variant="outline" size="sm" className="h-11 lg:h-8" render={<a href={node.detail.codeLink} target="_blank" rel="noreferrer" />}>
             <ExternalLink className="size-3.5" />
             View code
           </Button>
-        ) : (
-          <span className="inline-flex h-11 items-center rounded-md border border-dashed px-2.5 text-xs text-muted-foreground lg:h-8">
-            Sample repo coming soon
-          </span>
         )}
         <Button variant="outline" size="sm" className="h-11 lg:h-8" onClick={copyLink}>
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
@@ -74,14 +70,22 @@ export function NodeSheet({
   node: Node | null
   onClose: () => void
 }) {
+  // Land focus on the node's title, not the first button ("Copy link").
+  const titleRef = useRef<HTMLHeadingElement>(null)
   return (
     <Sheet open={node !== null} onOpenChange={(open) => !open && onClose()}>
       {/* The shadcn side variant sets w-3/4; override it so phones get the full width. */}
-      <SheetContent side="right" className="overflow-y-auto data-[side=right]:w-full data-[side=right]:sm:max-w-md">
+      <SheetContent
+        side="right"
+        initialFocus={titleRef}
+        className="overflow-y-auto data-[side=right]:w-full data-[side=right]:sm:max-w-md"
+      >
         {node && (
           <>
             <SheetHeader>
-              <SheetTitle>{node.label}</SheetTitle>
+              <SheetTitle ref={titleRef} tabIndex={-1} className="outline-none">
+                {node.label}
+              </SheetTitle>
               {node.sublabel && (
                 <SheetDescription className="font-mono text-xs">{node.sublabel}</SheetDescription>
               )}

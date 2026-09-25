@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
-import { flagshipStatus } from "@/lib/flagshipStatus"
+import { flagshipStatus, orderedFlagships } from "@/lib/flagshipStatus"
 import { countWord } from "@/lib/numberWords"
 
 
@@ -21,7 +21,7 @@ export default function Flagships() {
 
       <section className="px-4 pb-20 sm:px-6">
         <div className="space-y-4">
-          {flagships.map((f) => {
+          {orderedFlagships.map((f) => {
             const hasCanvas = f.slug in canvases
             return (
               <Card key={f.slug} id={f.slug} className="scroll-mt-24">
@@ -33,7 +33,14 @@ export default function Flagships() {
                         {f.where} · {f.depth}
                       </p>
                     </div>
-                    <Badge variant={hasCanvas ? "secondary" : "outline"} className={hasCanvas ? "text-primary" : undefined}>
+                    <Badge
+                      variant="outline"
+                      className={
+                        hasCanvas
+                          ? "border-primary/40 bg-primary/15 text-primary"
+                          : "border-dashed text-muted-foreground"
+                      }
+                    >
                       {flagshipStatus(f.slug)}
                     </Badge>
                   </div>

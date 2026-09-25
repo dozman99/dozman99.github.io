@@ -84,7 +84,7 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
         )}
       </div>
 
-      {node.detail.codeLink ? (
+      {node.detail.codeLink && (
         <a
           href={node.detail.codeLink}
           target="_blank"
@@ -94,8 +94,6 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
           View code
           <ExternalLink className="size-3.5" />
         </a>
-      ) : (
-        <p className="mt-3 text-sm text-muted-foreground">Sample repo coming soon.</p>
       )}
     </article>
   )

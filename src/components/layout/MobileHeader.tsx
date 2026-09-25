@@ -43,7 +43,7 @@ export function MobileHeader() {
                   className={({ isActive }) =>
                     cn(
                       "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-foreground",
-                      isActive ? "bg-accent text-primary" : "text-muted-foreground",
+                      isActive ? "bg-accent text-foreground" : "text-muted-foreground",
                     )
                   }
                 >
@@ -53,10 +53,10 @@ export function MobileHeader() {
             </nav>
             <div className="mt-auto flex flex-col gap-4 border-t border-border px-4 py-6">
               <div className="flex items-center gap-5 text-sm font-medium">
-                <a href={site.resume} target="_blank" rel="noreferrer" className="text-primary">
+                <a href={site.resume} target="_blank" rel="noreferrer" className="text-foreground/85 hover:text-primary">
                   Résumé
                 </a>
-                <a href={`mailto:${site.email}`} className="text-primary">
+                <a href={`mailto:${site.email}`} className="text-foreground/85 hover:text-primary">
                   Email me
                 </a>
               </div>

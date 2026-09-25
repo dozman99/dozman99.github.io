@@ -17,7 +17,7 @@ export function MobileFooter() {
             href={site.resume}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-11 items-center gap-1.5 font-medium text-primary transition-colors hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-1.5 font-medium text-foreground/85 transition-colors hover:text-primary"
           >
             <FileText className="size-4" />
             Résumé

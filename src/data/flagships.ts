@@ -30,7 +30,7 @@ export const flagships: Flagship[] = [
   {
     slug: "kafka-strangler",
     title: "Strangler Migration with Kafka",
-    where: "Not yet on the resume",
+    where: "Conclase",
     depth: "Distributed systems, event-driven design",
     teaser:
       "Peeling responsibility off a large monolith piece by piece: new microservices, a Kafka topology built from scratch, dual writes, and the ordering and state-drift problems that come with it.",

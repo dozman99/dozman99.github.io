@@ -53,7 +53,7 @@ export function Sidebar() {
                         : 'scale-x-50 bg-muted-foreground group-hover:scale-x-100',
                     )}
                   />
-                  <span className={cn(isActive && 'text-primary')}>
+                  <span className={cn(isActive && 'text-foreground')}>
                     {item.label}
                   </span>
                 </>
@@ -69,13 +69,13 @@ export function Sidebar() {
           href={site.resume}
           target='_blank'
           rel='noreferrer'
-          className='inline-flex items-center gap-1.5 text-primary transition-colors hover:text-foreground'>
+          className='inline-flex items-center gap-1.5 text-foreground/85 transition-colors hover:text-primary'>
           <FileText className='size-4' />
           Résumé
         </a>
         <a
           href={`mailto:${site.email}`}
-          className='inline-flex items-center gap-1.5 text-primary transition-colors hover:text-foreground'>
+          className='inline-flex items-center gap-1.5 text-foreground/85 transition-colors hover:text-primary'>
           <Mail className='size-4' />
           Email me
         </a>

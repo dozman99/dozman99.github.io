@@ -30,6 +30,8 @@ export interface CanvasData {
   slug: string
   title: string
   summary: string
+  /** One story-level line about code availability, shown instead of per-node "coming soon" chips. */
+  codeNote?: string
   /** Optional name for each grid row (index 0 = row 1), shown as a lane label above that row. */
   lanes?: string[]
   nodes: CanvasNode[]
