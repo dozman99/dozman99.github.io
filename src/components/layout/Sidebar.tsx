@@ -80,7 +80,7 @@ export function Sidebar() {
           Email me
         </a>
       </div>
-      <div className='flex items-center gap-4 text-muted-foreground'>
+      <div className='flex items-center gap-5 text-muted-foreground'>
         {site.linkedin && (
           <a
             href={site.linkedin}
@@ -88,7 +88,7 @@ export function Sidebar() {
             rel='noreferrer'
             aria-label='LinkedIn'
             className='transition-colors hover:text-foreground'>
-            <LinkedInIcon className='size-4' />
+            <LinkedInIcon className='size-6' />
           </a>
         )}
         {site.github && (
@@ -98,7 +98,7 @@ export function Sidebar() {
             rel='noreferrer'
             aria-label='GitHub'
             className='transition-colors hover:text-foreground'>
-            <GitHubIcon className='size-4' />
+            <GitHubIcon className='size-6' />
           </a>
         )}
         <ThemeToggle className='ml-auto' />

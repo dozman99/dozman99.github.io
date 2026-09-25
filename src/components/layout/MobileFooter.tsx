@@ -36,7 +36,7 @@ export function MobileFooter() {
               rel="noreferrer"
               className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <LinkedInIcon className="size-4" />
+              <LinkedInIcon className="size-5" />
               LinkedIn
             </a>
           )}
@@ -47,7 +47,7 @@ export function MobileFooter() {
               rel="noreferrer"
               className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <GitHubIcon className="size-4" />
+              <GitHubIcon className="size-5" />
               GitHub
             </a>
           )}
