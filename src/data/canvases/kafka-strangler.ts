@@ -7,10 +7,10 @@
 // max.poll.interval.ms, and Amazon MSK's per-consumer-group lag metrics in
 // CloudWatch. Don't add dual writes, ordering or state drift until
 // he describes them: they were planning prompts, not confirmed facts.
-// Fast-queue incident details (side nodes + one supporting line per main node) come from
+// Fast-queue incident details live ONLY in the two side nodes and come from
 // docs/sanitized/fast-queue-incident-mar2026.md and
 // service-dependency-framework.md. It's a side story: one of several reasons
-// for the migration, so it only ever supports the main account, never leads it. Vendor and task names
+// for the migration, so keep it out of the main nodes. Vendor and task names
 // from those docs are kept out on purpose.
 
 import type { CanvasData } from "./types"
@@ -46,7 +46,7 @@ export const kafkaStranglerCanvas: CanvasData = {
         why: "A managed broker on AWS to sit between the monolith and its workers.",
         how: "RabbitMQ pushes messages to consumers: the broker decides when each worker gets work, up to that worker's prefetch limit of unacknowledged messages. Messages stay in the broker until a worker acknowledges them.",
         whatBroke:
-          "A worker that never acknowledged kept its prefetch window full, and RabbitMQ stops delivering to a consumer until at least one outstanding message is acked. So stuck workers stopped taking new work while the queue kept growing. A growing queue means growing broker memory, and once it crossed the high-memory threshold, RabbitMQ blocked every connection that publishes, to protect itself from crashing and losing messages. Upstream services couldn't send anything at all: one stuck integration could stall the whole pipeline. In one incident (see the side story), a burst of work pushed a fast queue to about 2,000 messages and the broker's memory alarm left workers getting \"Connection refused\" until it was rebooted.",
+          "A worker that never acknowledged kept its prefetch window full, and RabbitMQ stops delivering to a consumer until at least one outstanding message is acked. So stuck workers stopped taking new work while the queue kept growing. A growing queue means growing broker memory, and once it crossed the high-memory threshold, RabbitMQ blocked every connection that publishes, to protect itself from crashing and losing messages. Upstream services couldn't send anything at all: one stuck integration could stall the whole pipeline.",
       },
     },
     {
@@ -57,9 +57,9 @@ export const kafkaStranglerCanvas: CanvasData = {
       row: 1,
       detail: {
         why: "Each worker ran an integration with a third-party service, so it could only be as fast and as reliable as the service on the other end.",
-        how: "Celery workers held long-lived connections to RabbitMQ, received pushed messages (several at a time, up to their prefetch limit), called the third-party service, and acknowledged each message when the work was done.",
+        how: "Workers held long-lived connections to RabbitMQ, received pushed messages, called the third-party service, and acknowledged each message when the work was done.",
         whatBroke:
-          "When a third-party call hung or fell into a loop, the worker kept its connection open and never acknowledged the message. Retries weren't handled well, so the message never cleared, and nothing forced the stuck worker to give it up. Even healthy workers spent most of their time waiting on the network, and under load one was OOM-killed (exit 137), likely from prefetching too many messages at once.",
+          "When a third-party call hung or fell into a loop, the worker kept its connection open and never acknowledged the message. Retries weren't handled well, so the message never cleared, and nothing forced the stuck worker to give it up.",
       },
     },
     {
@@ -123,9 +123,9 @@ export const kafkaStranglerCanvas: CanvasData = {
       sublabel: "CPU/memory vs. consumer lag",
       detail: {
         why: "A stuck worker has to be visible, and workers have to scale on the signal that actually means work is piling up.",
-        how: "Both brokers ran as AWS managed services (Amazon MQ for RabbitMQ, Amazon MSK for Kafka), so most services were monitored on AWS, alongside Datadog monitors defined in Terraform and paging through PagerDuty. On the push side, workers autoscaled on CPU and memory thresholds. After the move, scaling keys off consumer lag, the number of messages waiting in Kafka to be processed, so each worker type scales independently instead of on its CPU or memory configuration. Amazon MSK publishes lag per consumer group to CloudWatch.",
+        how: "Both brokers ran as AWS managed services (Amazon MQ for RabbitMQ, Amazon MSK for Kafka), so most services were monitored on AWS. On the push side, workers autoscaled on CPU and memory thresholds. After the move, scaling keys off consumer lag, the number of messages waiting in Kafka to be processed, so each worker type scales independently instead of on its CPU or memory configuration. Amazon MSK publishes lag per consumer group to CloudWatch.",
         whatBroke:
-          "A worker stuck on a hung third-party call barely uses CPU or memory: it's just waiting. So CPU- and memory-based scaling and alerts never fired, and the failure ran silently in the background. Consumer lag doesn't have that blind spot: a stuck worker stops consuming, lag climbs, and the backlog shows up where you're already looking. In the side-story incident, a queue-depth alert did page, but the worker service scaled on CPU alone (65% target) and sat at 30-40% CPU while the queue grew eightfold, so it stayed at 2 tasks.",
+          "A worker stuck on a hung third-party call barely uses CPU or memory: it's just waiting. So CPU- and memory-based scaling and alerts never fired, and the failure ran silently in the background. Consumer lag doesn't have that blind spot: a stuck worker stops consuming, lag climbs, and the backlog shows up where you're already looking.",
       },
     },
       {
@@ -134,7 +134,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       sublabel: "one example, not the whole reason",
       detail: {
         why: "One of several incidents on the push side, included as an example of the failure mode rather than the reason for the migration.",
-        how: "A scheduled job fanned out a burst of events and a fast queue's incoming rate jumped about sevenfold. Two workers, mostly waiting on third-party APIs, fell behind, CPU-based autoscaling never triggered, and the backlog grew to about 2,000 messages in broker memory until RabbitMQ raised its high-memory alarm and workers got \"Connection refused.\" Rebooting the broker and scaling workers from 2 to 6 drained it, and AWS Support confirmed the root cause.",
+        how: "A daily scheduled job fanned out a burst of events, and a fast queue's incoming rate jumped from about 5 to about 35 messages a second. Two Celery workers, mostly waiting on third-party APIs, could clear maybe 5-10. A queue-depth alert paged, but the service autoscaled on CPU alone (65% target), and I/O-bound workers sat at 30-40% CPU, so it stayed at 2 tasks while the queue grew from its 250-message threshold to about 2,000. RabbitMQ (classic queues on a three-node mq.m5.large cluster) held that backlog in memory until it raised its high-memory alarm, and workers got \"Connection refused.\" One worker was also OOM-killed (exit 137), likely from prefetching too many messages. Rebooting the broker cleared the alarm, scaling workers from 2 to 6 drained the backlog in 30-60 minutes, and AWS Support confirmed the root cause.",
       },
     },
     {
