@@ -1,7 +1,8 @@
 // FBT (Feature Branch Testing) flagship canvas.
 // Sanitized per docs/PLAN.md's checklist: no account ID, client name, internal
-// hostnames/domains/buckets, or ticket prefixes. The client is "a healthcare
-// client." The open/unauthenticated webhook detail is deliberately omitted
+// hostnames/domains/buckets, or ticket prefixes. Never name the client's
+// industry either (no "healthcare"): it's just "a client."
+// The open/unauthenticated webhook detail is deliberately omitted
 // per CLAUDE.md — not to be published even generically until confirmed fixed.
 // "What broke" content comes from docs/sanitized/fbt-pipeline-investigation.md.
 // Its fixes beyond the manual recovery (early-return removal, Step Functions,
@@ -17,7 +18,7 @@ export const fbtCanvas: CanvasData = {
   summary:
     "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, built and torn down automatically off Bitbucket webhooks: its own database copy, ECS cluster, pipeline and subdomain. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state. The interesting part is what broke once the data grew.",
   // Row 2 continues the build path, so it has no label of its own.
-  codeNote: "Client work for a healthcare client, so the code is private.",
+  codeNote: "Client work, so the code is private.",
   lanes: ["Build path", "", "Teardown path"],
   nodes: [
     {

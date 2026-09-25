@@ -47,13 +47,13 @@ export const workExperience: Role[] = [
     location: "Colorado, USA",
     dates: "Aug 2022 - Jan 2025",
     blurb:
-      "Outsourced infrastructure engineer for healthcare and fintech clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
+      "Outsourced infrastructure engineer for clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
       // NOTE: every number below is a plausible estimate the user asked me to fill in
       // (not a remembered fact), reasoned together for internal consistency and anchored
       // to "40+ clients" — the one number the user supplied himself. Sanity-check every
       // one against what actually happened before this goes public.
-      "Owned end-to-end AWS infrastructure for 40+ healthcare and fintech clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting 85+ production services across 4 environments.",
+      "Owned end-to-end AWS infrastructure for 40+ clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting 85+ production services across 4 environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
       "Architected a Terraform-based Feature Branch Testing platform that spins up isolated, disposable per-branch AWS environments in about 12 minutes, increasing pre-merge testing from 6 to 24 runs/week and cutting integration defects reaching staging by 35%.",
       "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from 3 days to 2 hours and eliminating config drift between stages.",

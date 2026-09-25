@@ -28,7 +28,7 @@ Ship Phase 1 live before starting Phase 2.
 
 ## Rules
 
-- **Never publish client identifiers.** No AWS account IDs, client names, internal domains, hostnames, bucket names, or ticket prefixes. The FBT client is "a healthcare client." Follow the sanitization checklist in `docs/PLAN.md`.
+- **Never publish client identifiers.** No AWS account IDs, client names, internal domains, hostnames, bucket names, or ticket prefixes. Don't reveal the FBT client's industry (never say "healthcare"); call it "a client." Follow the sanitization checklist in `docs/PLAN.md`.
 - **Never describe the open FBT webhook** except as a generic hardening lesson, and only once Chiedozie confirms it's fixed.
 - Sample repos use fake names, fake CIDRs and toy apps, never client code.
 - Don't invent experience, metrics or dates. If a fact isn't in `docs/PLAN.md` or `docs/resume.pdf`, ask.
