@@ -2,7 +2,7 @@
 
 export const aboutIntro = [
   "I'm a DevOps/MLOps engineer who likes systems with real failure modes: infrastructure that has to survive an air-gapped network, a branch-per-feature testing pipeline that a whole engineering team depends on, a Jetson board that has to make navigation decisions in real time.",
-  "I'm finishing an M.Sc. in Computer Science at Texas A&M (expected Dec 2026), researching machine unlearning, privacy, and autonomous systems, on top of several years building and running production infrastructure for clients and in semiconductor environments.",
+  "I'm finishing an M.Sc. in Computer Science at Texas A&M (expected Dec 2026), researching machine unlearning, privacy, and autonomous systems, on top of several years building and running production infrastructure across healthcare, fintech, and semiconductor environments.",
 ]
 
 export const dream =
