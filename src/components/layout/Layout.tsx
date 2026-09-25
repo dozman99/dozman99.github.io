@@ -4,7 +4,6 @@ import { Sidebar } from "@/components/layout/Sidebar"
 import { MobileHeader } from "@/components/layout/MobileHeader"
 import { MobileFooter } from "@/components/layout/MobileFooter"
 import { ScrollManager } from "@/components/ScrollManager"
-import { DuotoneFilter } from "@/components/Headshot"
 import { getRouteMeta } from "@/lib/routeMeta"
 
 export function Layout() {
@@ -24,7 +23,6 @@ export function Layout() {
       >
         Skip to content
       </a>
-      <DuotoneFilter />
       <ScrollManager />
       <MobileHeader />
       <Sidebar />
