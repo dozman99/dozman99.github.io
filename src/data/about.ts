@@ -43,3 +43,26 @@ export const education = [
     detail: "",
   },
 ]
+
+// Mirrors the "next role" answer on the user's job-board profile; keep them in sync.
+export const lookingFor = {
+  intro: "I'm looking for a team, a people, a company to believe in.",
+  points: [
+    {
+      label: "Role",
+      text: "DevOps, platform, or MLOps/AI infrastructure engineering, where I own infrastructure end to end: IaC, CI/CD, Kubernetes, observability and on-call.",
+    },
+    {
+      label: "Tech",
+      text: "AWS, Azure, Terraform, Kubernetes, Go and Python, and increasingly GPU orchestration and LLM serving.",
+    },
+    {
+      label: "Team",
+      text: "Engineers who build systems to hold up under real use, real load and real failure, who write things down, and who treat incidents as something to learn from.",
+    },
+    {
+      label: "Timing",
+      text: "I finish my master's in Computer Science at Texas A&M in December 2026.",
+    },
+  ],
+}

@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/PageHeader"
 import { Headshot } from "@/components/Headshot"
-import { aboutIntro, dream, education, interests } from "@/data/about"
+import { aboutIntro, dream, education, interests, lookingFor } from "@/data/about"
 
 export default function About() {
   return (
@@ -24,6 +24,19 @@ export default function About() {
           <h2 className="mb-3 text-xl font-semibold tracking-tight">The dream</h2>
           <p className="text-base text-muted-foreground">{dream}</p>
         </div>
+      </section>
+
+      <section className="px-4 pb-14 sm:px-6">
+        <h2 className="mb-3 text-xl font-semibold tracking-tight">What I'm looking for</h2>
+        <p className="mb-4 max-w-3xl text-base text-muted-foreground">{lookingFor.intro}</p>
+        <dl className="max-w-3xl divide-y divide-border border-y border-border">
+          {lookingFor.points.map((point) => (
+            <div key={point.label} className="grid gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
+              <dt className="text-base font-semibold tracking-tight">{point.label}</dt>
+              <dd className="text-base text-muted-foreground">{point.text}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="px-4 pb-14 sm:px-6">
