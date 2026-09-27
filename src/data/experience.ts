@@ -17,7 +17,7 @@ export const workExperience: Role[] = [
     company: "Samsung Austin Semiconductor",
     role: "AI/ML Engineer Co-op",
     location: "Austin, TX, USA",
-    dates: "Jan 2026 - Aug 2026",
+    dates: "May 2026 - Aug 2026",
     blurb:
       "Built and shipped a full-stack ban/alerting portal into a secured, air-gapped environment, plus the AI feature that makes it self-service.",
     bullets: [
