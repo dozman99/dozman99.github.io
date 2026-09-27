@@ -15,7 +15,7 @@ export interface Role {
 export const workExperience: Role[] = [
   {
     company: "Samsung Austin Semiconductor",
-    role: "AI/ML Engineer Co-op",
+    role: "AI/ML Engineer Intern",
     location: "Austin, TX, USA",
     dates: "May 2026 - Aug 2026",
     blurb:
@@ -29,7 +29,7 @@ export const workExperience: Role[] = [
   },
   {
     company: "Texas A&M University",
-    role: "Graduate Research Assistant",
+    role: "Research Assistant",
     location: "Texas, USA",
     dates: "Mar 2025 - Dec 2025",
     blurb:
@@ -79,7 +79,7 @@ export const workExperience: Role[] = [
   },
   {
     company: "Parkway Projects Africa",
-    role: "Implementation / Software Engineer (Intern)",
+    role: "Implementation Engineer",
     location: "Lagos, Nigeria",
     dates: "Sep 2019 - Mar 2020",
     blurb: "First engineering role: serverless integrations, an internal asset-management app, and network security.",
