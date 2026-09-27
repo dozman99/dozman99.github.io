@@ -12,7 +12,7 @@ export const projects: Project[] = [
   {
     name: "DozLab",
     description:
-      "Inspired by my work as a DevOps tutor. A Kubernetes-native lab platform for DevOps/cybersecurity education: a custom LabSession CRD and controller orchestrate per-student pods running an isolated Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar, built with Go, Nuxt.js/Vue, and PostgreSQL.",
+      "Born from tutoring DevOps: too much lab time went to fixing everyone's machine (Mac, Linux, Windows, different OS versions) just so they could follow along, so DozLab gives every student the same environment in the browser. A Kubernetes-native lab platform for DevOps/cybersecurity education: a custom LabSession CRD and controller orchestrate per-student pods running an isolated Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar, built with Go, Nuxt.js/Vue, and PostgreSQL.",
     tags: ["Kubernetes", "Firecracker", "Go", "Nuxt/Vue", "WebSockets"],
     githubUrl: "https://github.com/DozLab",
     flagshipSlug: "dozlab",

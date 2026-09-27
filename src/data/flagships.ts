@@ -41,7 +41,7 @@ export const flagships: Flagship[] = [
     where: "Side project",
     depth: "Building a platform on Kubernetes",
     teaser:
-      "Inspired by my work as a DevOps tutor. Not just running Kubernetes, but building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
+      "Born from tutoring DevOps and fixing every student's Mac, Linux or Windows setup just to start a lab. Not just running Kubernetes, but building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
   },
   {
     slug: "ai-inference-lab",

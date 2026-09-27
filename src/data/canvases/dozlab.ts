@@ -8,7 +8,7 @@ export const dozlabCanvas: CanvasData = {
   slug: "dozlab",
   title: "DozLab",
   summary:
-    "Inspired by my work as a DevOps tutor. A Kubernetes-native lab platform, not just something running on Kubernetes: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, built and torn down like any other Kubernetes resource.",
+    "Born from tutoring DevOps: too much lab time went to fixing everyone's machine (Mac, Linux, Windows, different OS versions) just so they could follow along, so DozLab gives every student the same environment in the browser. A Kubernetes-native lab platform, not just something running on Kubernetes: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, built and torn down like any other Kubernetes resource.",
   lanes: ["Control plane", "Lab session pod"],
   nodes: [
     {
