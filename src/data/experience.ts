@@ -31,7 +31,7 @@ export const workExperience: Role[] = [
     company: "Texas A&M University",
     role: "Graduate Research Assistant",
     location: "Texas, USA",
-    dates: "Apr 2025 - Dec 2025",
+    dates: "Mar 2025 - Dec 2025",
     blurb:
       "Research spanning machine unlearning, PKI/blockchain for CA decentralization, and a Jetson-based autonomous vehicle proof of concept.",
     bullets: [
@@ -69,7 +69,7 @@ export const workExperience: Role[] = [
     company: "Gwrite",
     role: "DevOps Engineer",
     location: "Port Harcourt, Nigeria",
-    dates: "Jan 2021 - Jun 2022",
+    dates: "Nov 2020 - Aug 2022",
     blurb: "Secrets management, a major cloud migration, and standing up Kubernetes CI/CD from scratch.",
     bullets: [
       "Implemented HashiCorp Vault for Kubernetes secrets management and led SAP migration to Azure, achieving 70% RTO reduction.",
@@ -81,7 +81,7 @@ export const workExperience: Role[] = [
     company: "Parkway Projects Africa",
     role: "Implementation / Software Engineer (Intern)",
     location: "Lagos, Nigeria",
-    dates: "Sep 2019 - Oct 2021",
+    dates: "Sep 2019 - Mar 2020",
     blurb: "First engineering role: serverless integrations, an internal asset-management app, and network security.",
     bullets: [
       "Developed serverless solutions on Azure/AWS with API and webhook integrations; managed cloud software incidents via ServiceNow.",
