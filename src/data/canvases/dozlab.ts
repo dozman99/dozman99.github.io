@@ -161,10 +161,10 @@ export const dozlabCanvas: CanvasData = {
     {
       id: "data-layer",
       label: "PostgreSQL",
-      sublabel: "sessions, labs, users",
+      sublabel: "StatefulSet, data on a volume claim",
       detail: {
         why: "Session state, lab definitions, and user data need to persist beyond a single pod's lifetime and survive a controller or API restart.",
-        how: "PostgreSQL holds users, lab definitions, lab sessions, and lab results. Schema and migrations live in their own repo, separate from the services that use them.",
+        how: "PostgreSQL holds users, lab definitions, lab sessions, and lab results. It runs in the cluster as a StatefulSet with its data on a volume claim, so the data stays through pod restarts and redeploys, and no deploy or test script creates or removes it. The audit log is a database of its own, with one login that can only add entries and one that can only read them. Schema and migrations live in their own repo, separate from the services that use them.",
         codeLink: "https://github.com/DozLab/dozlab-schemas",
       },
     },
