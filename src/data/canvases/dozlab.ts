@@ -40,6 +40,35 @@ export const dozlabCanvas: CanvasData = {
       },
     ],
   },
+  diagrams: {
+    note: "The deployment as it runs on one k3s node: how a browser tab reaches a lab, what happens between Start lab and a shell, and what isolates one session from the next.",
+    figures: [
+      {
+        src: "/dozlab/architecture-overview.webp",
+        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api, PostgreSQL and Redis beside a k3s cluster with Traefik, the dozlab-controller, RabbitMQ and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
+        caption:
+          "System overview: how one browser tab reaches a lab running inside a Firecracker microVM.",
+        width: 3840,
+        height: 2160,
+      },
+      {
+        src: "/dozlab/architecture-lifecycle.webp",
+        alt: "Sequence diagram of a lab session across the browser, GitHub Pages, dozlab-api, PostgreSQL, the k3s API server, dozlab-controller, RabbitMQ, Traefik, the lab pod and the Firecracker microVM, in seven stages from loading the UI to teardown",
+        caption:
+          "Session lifecycle: from Start lab to a shell in a microVM, and back to nothing.",
+        width: 3840,
+        height: 2160,
+      },
+      {
+        src: "/dozlab/architecture-session.webp",
+        alt: "Diagram of one lab session: the host kernel, the k3s node, the LabSession and the objects it owns, and the pod with its two init containers, code-server, terminal sidecar, volumes and the firecracker-vm container holding the microVM behind the KVM boundary",
+        caption:
+          "Inside one lab session: the layers that isolate a user's lab, and how bytes get in and out.",
+        width: 3840,
+        height: 2160,
+      },
+    ],
+  },
   lanes: ["Control plane", "Lab session pod"],
   nodes: [
     {
