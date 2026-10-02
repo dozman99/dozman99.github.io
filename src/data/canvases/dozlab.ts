@@ -45,7 +45,7 @@ export const dozlabCanvas: CanvasData = {
     figures: [
       {
         src: "/dozlab/architecture-overview.webp",
-        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api, PostgreSQL and Redis beside a k3s cluster with Traefik, the dozlab-controller, RabbitMQ and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
+        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api and PostgreSQL beside a k3s cluster with Traefik, the dozlab-controller, RabbitMQ and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
         caption:
           "System overview: how one browser tab reaches a lab running inside a Firecracker microVM.",
         width: 3840,
@@ -160,11 +160,11 @@ export const dozlabCanvas: CanvasData = {
     },
     {
       id: "data-layer",
-      label: "PostgreSQL + Redis",
+      label: "PostgreSQL",
       sublabel: "sessions, labs, users",
       detail: {
         why: "Session state, lab definitions, and user data need to persist beyond a single pod's lifetime and survive a controller or API restart.",
-        how: "PostgreSQL holds users, lab definitions, lab sessions, and lab results; Redis backs faster-moving session state. Schema and migrations live in their own repo, separate from the services that use them.",
+        how: "PostgreSQL holds users, lab definitions, lab sessions, and lab results. Schema and migrations live in their own repo, separate from the services that use them.",
         codeLink: "https://github.com/DozLab/dozlab-schemas",
       },
     },
