@@ -7,7 +7,7 @@ import { NodeInlinePanel, NodeSheet } from "@/components/canvas/NodePanel"
 import { Separator } from "@/components/ui/separator"
 import { canvases } from "@/data/canvases"
 import { flagships } from "@/data/flagships"
-import type { CanvasNode, SideNode } from "@/data/canvases/types"
+import type { CanvasNode, Figure, SideNode } from "@/data/canvases/types"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import { site } from "@/data/site"
 
@@ -99,6 +99,31 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
   )
 }
 
+// A screenshot or diagram with its caption. The image links to itself so it
+// can be opened at full size, which the dense diagrams need on a phone.
+function FigureCard({ figure, className }: { figure: Figure; className?: string }) {
+  return (
+    <figure className={className}>
+      <a
+        href={figure.src}
+        target="_blank"
+        rel="noreferrer"
+        className="block overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50"
+      >
+        <img
+          src={figure.src}
+          alt={figure.alt}
+          width={figure.width}
+          height={figure.height}
+          loading="lazy"
+          className="h-auto w-full"
+        />
+      </a>
+      <figcaption className="mt-2 text-sm text-muted-foreground">{figure.caption}</figcaption>
+    </figure>
+  )
+}
+
 export default function FlagshipDetail() {
   const { slug } = useParams<{ slug: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -169,6 +194,50 @@ export default function FlagshipDetail() {
         <h2 className="sr-only">Architecture</h2>
         <FlagshipCanvas canvas={canvas} openNodeId={openNodeId} onNodeClick={handleNodeClick} />
         {isDesktop && <NodeInlinePanel node={openNode} onClose={closePanel} />}
+
+        {canvas.proof && (
+          <section id="running" className="mt-12 scroll-mt-24 border-t border-border pt-8">
+            <h2 className="mb-2 text-xl font-semibold tracking-tight">See it running</h2>
+            <p className="max-w-2xl text-sm text-muted-foreground">
+              Screenshots taken on {canvas.proof.capturedOn}. {canvas.proof.note}
+            </p>
+            {canvas.proof.liveUrl && (
+              <a
+                href={canvas.proof.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground lg:min-h-0"
+              >
+                Open the live UI
+                <ExternalLink className="size-3.5" />
+              </a>
+            )}
+            <div className="mt-6 grid items-start gap-6 sm:grid-cols-2">
+              {canvas.proof.shots.map((shot) => (
+                <FigureCard
+                  key={shot.src}
+                  figure={shot}
+                  // A portrait shot takes the right column beside the landscape ones.
+                  className={
+                    shot.height > shot.width ? "sm:col-start-2 sm:row-span-2 sm:row-start-1" : undefined
+                  }
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {canvas.diagrams && (
+          <section id="diagrams" className="mt-12 scroll-mt-24 border-t border-border pt-8">
+            <h2 className="mb-2 text-xl font-semibold tracking-tight">Architecture diagrams</h2>
+            <p className="max-w-2xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
+            <div className="mt-6 space-y-8">
+              {canvas.diagrams.figures.map((figure) => (
+                <FigureCard key={figure.src} figure={figure} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="mt-12 max-w-2xl border-t border-border pt-8">
           <h2 className="mb-2 text-xl font-semibold tracking-tight">Full breakdown</h2>
