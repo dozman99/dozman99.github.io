@@ -16,6 +16,13 @@ export const dozlabCanvas: CanvasData = {
     liveUrl: "https://dozlab.github.io/dozlab-frontend/",
     shots: [
       {
+        src: "/dozlab/sign-in.webp",
+        alt: "DozLab sign-in page open in a browser at dozlab.github.io",
+        caption: "Sign-in, served from GitHub Pages.",
+        width: 1600,
+        height: 912,
+      },
+      {
         src: "/dozlab/my-vms.webp",
         alt: "DozLab My VMs page with a lab picker listing Linux VM and Kubernetes, and one Linux VM in the Running state",
         caption:
@@ -38,6 +45,14 @@ export const dozlabCanvas: CanvasData = {
           "The browser terminal, connected: a root shell on Ubuntu 22.04 inside the VM, running the lab's own 6.1.155-dozlab kernel.",
         width: 1600,
         height: 996,
+      },
+      {
+        src: "/dozlab/vscode.webp",
+        alt: "VS Code running in the browser through code-server, with the workspace folder open and a bash terminal at a prompt inside the lab session",
+        caption:
+          "The browser editor: VS Code (code-server) opened from the lab page, with a shell in the session's workspace.",
+        width: 1600,
+        height: 815,
       },
     ],
   },
