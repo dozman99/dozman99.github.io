@@ -45,7 +45,7 @@ export const dozlabCanvas: CanvasData = {
     figures: [
       {
         src: "/dozlab/architecture-overview.webp",
-        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api and PostgreSQL beside a k3s cluster with Traefik, the dozlab-controller, RabbitMQ and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
+        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api beside a k3s cluster with Traefik, the dozlab-controller, PostgreSQL and RabbitMQ as StatefulSets, and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
         caption:
           "System overview: how one browser tab reaches a lab running inside a Firecracker microVM.",
         width: 3840,
