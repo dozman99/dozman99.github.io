@@ -16,13 +16,6 @@ export const dozlabCanvas: CanvasData = {
     liveUrl: "https://dozlab.github.io/dozlab-frontend/",
     shots: [
       {
-        src: "/dozlab/sign-in.webp",
-        alt: "DozLab sign-in page open in a browser at dozlab.github.io",
-        caption: "Sign-in, served from GitHub Pages.",
-        width: 1600,
-        height: 912,
-      },
-      {
         src: "/dozlab/my-vms.webp",
         alt: "DozLab My VMs page with a lab picker listing Linux VM and Kubernetes, and one Linux VM in the Running state",
         caption:
@@ -37,6 +30,14 @@ export const dozlabCanvas: CanvasData = {
           "Before a VM is created, the form shows what it will take: the VM, the browser terminal and the browser editor, reserved and at most.",
         width: 1200,
         height: 1572,
+      },
+      {
+        src: "/dozlab/terminal.webp",
+        alt: "DozLab Linux VM page with the browser terminal connected, showing the Ubuntu 22.04.5 welcome message on kernel 6.1.155-dozlab and a root prompt on dozlab-vm",
+        caption:
+          "The browser terminal, connected: a root shell on Ubuntu 22.04 inside the VM, running the lab's own 6.1.155-dozlab kernel.",
+        width: 1600,
+        height: 996,
       },
     ],
   },
