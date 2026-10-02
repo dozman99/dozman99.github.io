@@ -26,10 +26,34 @@ export interface SideNode {
   detail: NodeDetail
 }
 
+/** A static image (screenshot or diagram) served from public/. */
+export interface Figure {
+  /** Path under public/. */
+  src: string
+  alt: string
+  caption: string
+  width: number
+  height: number
+}
+
+/** Screenshots of the thing actually running, kept on this site so they outlast the live deployment. */
+export interface LiveProof {
+  /** Date the screenshots were taken, as shown on the page. */
+  capturedOn: string
+  note: string
+  /** Public URL of the running UI. Omitted = nothing public to link to. */
+  liveUrl?: string
+  shots: Figure[]
+}
+
 export interface CanvasData {
   slug: string
   title: string
   summary: string
+  /** Screenshots of it running, shown between the canvas and the full breakdown when present. */
+  proof?: LiveProof
+  /** Static architecture diagrams, shown after the screenshots when present. */
+  diagrams?: { note: string; figures: Figure[] }
   /** One story-level line about code availability, shown instead of per-node "coming soon" chips. */
   codeNote?: string
   /** Optional name for each grid row (index 0 = row 1), shown as a lane label above that row. */

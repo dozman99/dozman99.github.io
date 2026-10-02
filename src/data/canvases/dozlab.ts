@@ -1,5 +1,6 @@
 // DozLab flagship canvas. Sourced directly from DozLab's own public repos
-// (github.com/DozLab/*) via `gh api` — READMEs and CRD specs, not invented.
+// (github.com/DozLab/*) and checked against the running k3s cluster on
+// 2026-10-02 (pod spec, Service, Ingress, CRD), not invented.
 // codeLink points at the real repo for each piece.
 
 import type { CanvasData } from "./types"
@@ -9,6 +10,36 @@ export const dozlabCanvas: CanvasData = {
   title: "DozLab",
   summary:
     "Born from tutoring DevOps: too much lab time went to fixing everyone's machine (Mac, Linux, Windows, different OS versions) just so they could follow along, so DozLab gives every student the same environment in the browser. A Kubernetes-native lab platform, not just something running on Kubernetes: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, built and torn down like any other Kubernetes resource.",
+  proof: {
+    capturedOn: "October 1, 2026",
+    note: "The frontend is served from GitHub Pages and the backend runs on a single-node k3s cluster in my home lab. A home lab is not always on, so these screenshots are the lasting record.",
+    liveUrl: "https://dozlab.github.io/dozlab-frontend/",
+    shots: [
+      {
+        src: "/dozlab/sign-in.webp",
+        alt: "DozLab sign-in page open in a browser at dozlab.github.io",
+        caption: "Sign-in, served from GitHub Pages.",
+        width: 1600,
+        height: 912,
+      },
+      {
+        src: "/dozlab/my-vms.webp",
+        alt: "DozLab My VMs page with a lab picker listing Linux VM and Kubernetes, and one Linux VM in the Running state",
+        caption:
+          "My VMs: choose a Linux VM or Kubernetes lab. One Linux VM is running, reserving 0.85 CPU and 1.9 GiB.",
+        width: 1600,
+        height: 856,
+      },
+      {
+        src: "/dozlab/create-vm.webp",
+        alt: "DozLab Create a VM form with a table of the CPU and memory reserved by the VM, the browser terminal and the browser editor",
+        caption:
+          "Before a VM is created, the form shows what it will take: the VM, the browser terminal and the browser editor, reserved and at most.",
+        width: 1200,
+        height: 1572,
+      },
+    ],
+  },
   lanes: ["Control plane", "Lab session pod"],
   nodes: [
     {
@@ -20,20 +51,20 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["api"],
       detail: {
         why: "Students need a real, in-browser lab experience with a live terminal and editor, not a description of one, so the UI needed real-time WebSocket access, not just static pages.",
-        how: "Built with Nuxt.js 4, Vue 3, and TypeScript, styled with Nuxt UI and Tailwind, state managed with Pinia. Talks to the API over REST and opens a direct WebSocket connection for the terminal.",
+        how: "Built with Nuxt.js 4, Vue 3, and TypeScript, styled with Nuxt UI and Tailwind, state managed with Pinia, and served as a static site from GitHub Pages. Talks to the API over REST; once a session is ready it opens the terminal and the editor in new tabs at that session's own URLs.",
         codeLink: "https://github.com/DozLab/dozlab-frontend",
       },
     },
     {
       id: "api",
       label: "DozLab API",
-      sublabel: "Go, K8s orchestrator",
+      sublabel: "Go, REST + WebSocket",
       col: 2,
       row: 1,
       connectsTo: ["controller"],
       detail: {
-        why: "One service needs to own lab orchestration end to end (auth, talking to Kubernetes, and routing WebSocket traffic to the right sidecar) rather than spreading that logic across the frontend.",
-        how: "A Go service that authenticates with JWTs, creates multi-container lab pods directly through the Kubernetes API, and proxies terminal WebSocket connections to the correct sidecar container for a session.",
+        why: "One service needs to own the product side end to end (auth, lab and session records, and asking Kubernetes for a session) rather than spreading that logic across the frontend.",
+        how: "A Go service with JWT auth and role-based access. To start a lab it records the session and creates a LabSession resource through the Kubernetes API; it does not build pods itself, the controller does. Phase changes come back from the controller over RabbitMQ and are pushed to the user's open WebSocket connections.",
         codeLink: "https://github.com/DozLab/dozlab-api",
       },
     },
@@ -46,20 +77,20 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["init-container"],
       detail: {
         why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, not just API-side bookkeeping, so it reconciles itself even if the API restarts.",
-        how: "A Kubebuilder-based controller (Go, controller-runtime) that watches a custom LabSession CRD and reconciles it: creating the pods, services, and volumes for a session, and tearing them down when it ends. Each LabSession spec pins its own resource requests/limits and networking ports.",
+        how: "A Kubebuilder-based controller (Go, controller-runtime) that watches a custom LabSession CRD and reconciles it. For each session it creates an SSH key Secret, two volume claims, the pod, a Service and an Ingress, all owned by the LabSession, so deleting the LabSession cleans everything up. It runs as three replicas with leader election, and publishes each phase change (Pending, Creating, Running, Failed, Terminating) to RabbitMQ.",
         codeLink: "https://github.com/DozLab/dozlab-controller",
       },
     },
     {
       id: "init-container",
-      label: "Init container",
-      sublabel: "IP calculation",
+      label: "Init containers",
+      sublabel: "root disk + network config",
       col: 1,
       row: 2,
       connectsTo: ["vm"],
       detail: {
-        why: "The VM inside the pod needs a real, routable IP before anything else can talk to it, and that has to be settled before the other sidecars start.",
-        how: "A lightweight init container calculates the VM's IP from the pod's IP and writes it to a shared volume the other containers read from, instead of relying on DNS for a VM that has no service record of its own.",
+        why: "The VM needs a root disk sized for this session, with this session's SSH key in it, and every container in the pod needs to agree on the VM's address. Both have to be settled before the other containers start.",
+        how: "Two init containers run in order. The first writes the lab's ext4 root filesystem into a pod volume, grows it to the session's disk size, and writes a cloud-init seed with the session's SSH public key into it. The second writes the gateway, VM and pod addresses to a shared file, instead of relying on DNS for a VM that has no service record of its own.",
       },
     },
     {
@@ -71,7 +102,7 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["sidecars"],
       detail: {
         why: "The actual lab workload needs real VM isolation, not just another container, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
-        how: "Runs the lab as a Firecracker microVM inside a privileged container, booted from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
+        how: "Runs the lab as a Firecracker microVM inside a container that is not privileged: it adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
         codeLink: "https://github.com/DozLab/dozlab-rootfs-manager",
       },
     },
@@ -83,7 +114,7 @@ export const dozlabCanvas: CanvasData = {
       row: 2,
       detail: {
         why: "Students need both a real terminal and a real code editor against the same VM, in the browser, without installing anything.",
-        how: "The terminal sidecar (Go, Gin, gorilla/websocket) bridges a browser WebSocket to an SSH connection into the VM, with full PTY support. A separate VS Code sidecar (code-server) gets direct access to the VM's filesystem with an auto-generated session password. Both discover the VM's IP from the same shared network-config file the init container wrote.",
+        how: "The terminal sidecar (Go, Gin, gorilla/websocket) bridges a browser WebSocket to an SSH connection into the VM, with full PTY support, using the session's own SSH key. A separate VS Code sidecar (code-server) serves an editor with an auto-generated session password and a workspace volume. A per-session Ingress on Traefik routes /sessions/<id>/terminal and /sessions/<id>/vscode straight to them.",
         codeLink: "https://github.com/DozLab/dozlab-terminal-sidecar",
       },
     },
@@ -91,11 +122,11 @@ export const dozlabCanvas: CanvasData = {
   sideNodes: [
     {
       id: "shared-volumes",
-      label: "Shared volumes",
+      label: "Session volumes",
       sublabel: "pod-local coordination",
       detail: {
         why: "Containers in the same pod need to agree on the VM's network identity and share filesystem access, without a database round trip for every lookup.",
-        how: "Three shared volumes per session: network-config (IP coordination between the init container and both sidecars), vm-data (VM filesystem access for VS Code), and workspace (persistent user files).",
+        how: "Four volumes per session. Two are temporary: shared-config (the network file the init container wrote) and vm-kernels (the VM's root disk). Two are volume claims: vm-data (the editor's workspace) and vscode-data (the editor's own settings). Sessions are non-persistent today: the claims are owned by the session and go when it does.",
       },
     },
     {
@@ -106,6 +137,16 @@ export const dozlabCanvas: CanvasData = {
         why: "Session state, lab definitions, and user data need to persist beyond a single pod's lifetime and survive a controller or API restart.",
         how: "PostgreSQL holds users, lab definitions, lab sessions, and lab results; Redis backs faster-moving session state. Schema and migrations live in their own repo, separate from the services that use them.",
         codeLink: "https://github.com/DozLab/dozlab-schemas",
+      },
+    },
+    {
+      id: "event-bus",
+      label: "RabbitMQ",
+      sublabel: "session phase events",
+      detail: {
+        why: "The browser should hear that a lab is ready without the API polling Kubernetes or reaching into pods.",
+        how: "The controller publishes each LabSession phase change to a durable topic exchange. The API consumes it, with retry and dead-letter queues, and pushes a session status message to that user's open WebSocket connections.",
+        codeLink: "https://github.com/DozLab/dozlab-api",
       },
     },
     {
