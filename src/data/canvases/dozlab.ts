@@ -46,7 +46,7 @@ export const dozlabCanvas: CanvasData = {
     figures: [
       {
         src: "/dozlab/architecture-overview.webp",
-        alt: "System overview diagram: the browser and GitHub Pages outside the lab host; on the host, dozlab-api beside a k3s cluster with Traefik, the dozlab-controller, PostgreSQL and RabbitMQ as StatefulSets, and a lab session made of a LabSession resource and the Secret, volume claims, Service, Ingress and pod it owns",
+        alt: "Hand-drawn system overview: the browser and GitHub Pages outside the lab host; on the host, dozlab-api beside a k3s cluster with PostgreSQL, RabbitMQ, Traefik, the k3s API server and dozlab-controller, and a stack of lab sessions, each a LabSession owning a pod with code-server, a terminal sidecar and a Firecracker microVM; nine numbered steps trace a lab from the request to a shell",
         caption:
           "System overview: how one browser tab reaches a lab running inside a Firecracker microVM.",
         width: 3840,
@@ -54,7 +54,7 @@ export const dozlabCanvas: CanvasData = {
       },
       {
         src: "/dozlab/architecture-lifecycle.webp",
-        alt: "Sequence diagram of a lab session across the browser, GitHub Pages, dozlab-api, PostgreSQL, the k3s API server, dozlab-controller, RabbitMQ, Traefik, the lab pod and the Firecracker microVM, in seven stages from loading the UI to teardown",
+        alt: "Hand-drawn sequence diagram of a lab session across the browser, GitHub Pages, dozlab-api, PostgreSQL, the k3s API server, dozlab-controller, RabbitMQ, Traefik, the lab pod and the Firecracker microVM, in seven stages from loading the UI to teardown, each labelled with the LabSession phase it moves through",
         caption:
           "Session lifecycle: from Start lab to a shell in a microVM, and back to nothing.",
         width: 3840,
@@ -62,7 +62,7 @@ export const dozlabCanvas: CanvasData = {
       },
       {
         src: "/dozlab/architecture-session.webp",
-        alt: "Diagram of one lab session: the host kernel, the k3s node, the LabSession and the objects it owns, and the pod with its two init containers, code-server, terminal sidecar, volumes and the firecracker-vm container holding the microVM behind the KVM boundary",
+        alt: "Hand-drawn diagram of one lab session, numbered from the outside in: the lab host, the LabSession and the objects it owns, the pod with its two init containers, code-server, terminal sidecar and volumes, and the unprivileged firecracker-vm container holding the microVM behind the KVM boundary; arrows show SSH coming in and guest traffic going out through two layers of NAT",
         caption:
           "Inside one lab session: the layers that isolate a user's lab, and how bytes get in and out.",
         width: 3840,
