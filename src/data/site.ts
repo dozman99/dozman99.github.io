@@ -4,7 +4,7 @@ export const site = {
   name: "Chiedozie Onyekwum",
   role: "DevOps / MLOps Engineer",
   tagline:
-    "I design, deploy, and operate cloud platforms and AI infrastructure.",
+    "I build cloud platforms and the pipelines that deploy to them.",
   email: "chiedozieonyekwum@outlook.com",
   linkedin: "https://www.linkedin.com/in/chiedozie-onyekwum/",
   github: "https://github.com/Dozman99",

@@ -20,13 +20,6 @@ export function getRouteMeta(url: string): { title: string; description: string 
       description: "Who I am outside the bullet points, and the long-term dream behind the work.",
     }
   }
-  if (path === "/flagships") {
-    return {
-      title: `Flagship Stories${SITE_SUFFIX}`,
-      description:
-        "Interactive architecture deep dives: click a node, get the why, the how, and what was hard.",
-    }
-  }
   if (path === "/experience") {
     return {
       title: `Experience${SITE_SUFFIX}`,
@@ -36,7 +29,7 @@ export function getRouteMeta(url: string): { title: string; description: string 
   if (path === "/projects") {
     return {
       title: `Projects${SITE_SUFFIX}`,
-      description: "Things built outside client work: DozLab, ECO-T, Sherloc, and ML infrastructure.",
+      description: "Flagship architecture stories, then side projects. Pick a node for why each piece exists and how it works.",
     }
   }
   if (path === "/now-next") {

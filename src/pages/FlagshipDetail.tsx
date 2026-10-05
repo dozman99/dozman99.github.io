@@ -159,7 +159,7 @@ export default function FlagshipDetail() {
     return (
       <div>
         <PageHeader
-          back={{ to: "/flagships", label: "Flagship stories" }}
+          back={{ to: "/projects", label: "Projects" }}
           title={flagship?.title ?? "Not found"}
           description={flagship ? `${flagship.where} · ${flagship.depth}` : undefined}
         />
@@ -168,7 +168,7 @@ export default function FlagshipDetail() {
             <p className="mb-8 max-w-2xl text-base text-muted-foreground">{flagship.teaser}</p>
           )}
           <Link
-            to="/flagships"
+            to="/projects"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3.5" />
@@ -182,7 +182,7 @@ export default function FlagshipDetail() {
   return (
     <div>
       <PageHeader
-        back={{ to: "/flagships", label: "Flagship stories" }}
+        back={{ to: "/projects", label: "Projects" }}
         title={canvas.title}
         description={canvas.summary}
       />

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { canvases } from "@/data/canvases"
+import { hero } from "@/data/home"
+import { site } from "@/data/site"
 import { cn } from "@/lib/utils"
 import { flagshipStatus, orderedFlagships } from "@/lib/flagshipStatus"
 
@@ -9,39 +11,36 @@ import { flagshipStatus, orderedFlagships } from "@/lib/flagshipStatus"
 export default function Home() {
   return (
     <div>
-      <section className="px-4 pt-16 pb-14 sm:px-6 lg:pt-16">
-        {/* Decorative photo (Pexels, marstion #10875411, free to use). Full bleed: the
-            negative margins cancel the section padding and, on desktop, reach
-            past the centered layout's padding to the right edge of the window. */}
-        <div className="relative isolate -mx-4 -mt-16 mb-8 flex h-80 items-end px-4 pb-8 sm:-mx-6 sm:h-[26rem] sm:px-6 lg:-mr-[max(3rem,calc((100vw-72rem)/2+3rem))]">
-          <img
-            src="/robot-banner.webp"
-            alt=""
-            aria-hidden="true"
-            width={1200}
-            height={1800}
-            fetchPriority="high"
-            className="absolute inset-0 -z-10 size-full object-cover object-[50%_60%]"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_oklch,var(--background)_85%,transparent)_18%,color-mix(in_oklch,var(--background)_45%,transparent)_45%,color-mix(in_oklch,var(--background)_15%,transparent)_75%,transparent_100%)]"
-          />
-          <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Infrastructure is the proof. Click into how it was built.
-          </h1>
-        </div>
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Button size="lg" className="h-10 px-4" render={<Link to="/flagships" />}>
-            Explore the flagship stories
+      <section className="px-4 pt-16 pb-14 sm:px-6">
+        <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{site.name}</h1>
+        <p className="mt-2 text-base font-medium text-foreground/80">
+          {site.role} · {hero.summary}
+        </p>
+        <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">{hero.intro.join(" ")}</p>
+
+        <dl className="mt-8 grid gap-3 sm:grid-cols-3">
+          {hero.stats.map((stat) => (
+            <div key={stat.value} className="rounded-xl border border-border bg-card p-4">
+              <dt className="text-xl font-semibold tracking-tight text-foreground">{stat.value}</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{stat.label}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Button size="lg" className="h-10 px-4" render={<Link to="/experience" />}>
+            View experience
             <ArrowRight className="size-4" />
           </Button>
-          <Link
-            to="/about"
-            className="text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-10 px-4"
+            render={<a href={site.resume} download="Chiedozie-Onyekwum-Resume.pdf" />}
           >
-            About me
-          </Link>
+            <Download className="size-4" />
+            Download résumé
+          </Button>
         </div>
       </section>
 
@@ -49,7 +48,7 @@ export default function Home() {
         <div className="mb-6 flex items-baseline justify-between">
           <h2 className="text-xl font-semibold tracking-tight">Flagship stories</h2>
           <Link
-            to="/flagships"
+            to="/projects"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             View all
@@ -61,7 +60,7 @@ export default function Home() {
             return (
               <li key={f.slug}>
                 <Link
-                  to={hasCanvas ? `/flagships/${f.slug}` : `/flagships#${f.slug}`}
+                  to={hasCanvas ? `/flagships/${f.slug}` : `/projects#${f.slug}`}
                   className={cn(
                     "group flex h-full flex-col rounded-xl border p-5 transition-[border-color,transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md hover:shadow-primary/5 active:translate-y-0",
                     // Built stories are solid cards; teasers are open outlines.
