@@ -16,16 +16,14 @@ export default function Home() {
         <p className="mt-2 text-base font-medium text-foreground/80">{site.role}</p>
         <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">{hero.intro.join(" ")}</p>
 
-        <ul aria-label="What I work on" className="mt-5 flex flex-wrap gap-2">
+        <dl className="mt-6 grid max-w-2xl gap-x-8 gap-y-4 sm:grid-cols-2">
           {hero.areas.map((area) => (
-            <li
-              key={area}
-              className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
-            >
-              {area}
-            </li>
+            <div key={area.label} className="border-l-2 border-primary/50 pl-3">
+              <dt className="text-sm font-semibold text-foreground">{area.label}</dt>
+              <dd className="mt-0.5 text-sm text-muted-foreground text-pretty">{area.text}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
 
         <dl className="mt-8 grid gap-3 sm:grid-cols-3">
           {hero.stats.map((stat) => (
