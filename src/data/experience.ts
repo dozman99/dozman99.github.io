@@ -22,7 +22,7 @@ export const workExperience: Role[] = [
       "Built and shipped a full-stack ban/alerting portal into a secured, air-gapped environment, plus an AI feature that reads employees' free-form replies to incident alerts and updates their ban records.",
     bullets: [
       "Built an AI-driven opt-out detection feature that interprets free-form employee replies to incident alerts and automatically updates ban records.",
-      "Built alert-suppression and rate-limiting logic for non-actionable incident alerts.",
+      "Built alert-suppression and rate-limiting logic that reduced non-actionable incident alerts.",
       "Designed and built a full-stack ban/alerting portal (React, TypeScript, FastAPI, PostgreSQL) with SAML/SSO for the onsite workforce.",
       "Built a custom PowerShell CI/CD pipeline to deploy the portal into a secured, air-gapped environment, replacing a fully manual process with self-service access and full audit logging.",
     ],
@@ -80,8 +80,8 @@ export const workExperience: Role[] = [
       "Led the SAP migration to Azure, reducing RTO by 70%.",
       "Designed secure Docker containerization with vulnerability scanning.",
       "Moved CI/CD to Tekton pipelines on Kubernetes.",
-      "Set up AKS clusters.",
-      "Designed AWS infrastructure using EC2, S3, RDS, and networking services.",
+      "Set up the company's first AKS clusters.",
+      "Designed cost-optimized AWS infrastructure using EC2, S3, RDS, and networking services.",
     ],
   },
   {
