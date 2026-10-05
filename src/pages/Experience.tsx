@@ -44,7 +44,7 @@ export default function Experience() {
     <div>
       <PageHeader
         title="Full timeline"
-        description="The condensed version is on the resume. This is the fuller story: what each role involved."
+        description="This page gives more detail than my résumé."
       />
 
       <div className="px-4 pb-20 sm:px-6">

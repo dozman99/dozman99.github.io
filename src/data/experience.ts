@@ -19,9 +19,10 @@ export const workExperience: Role[] = [
     location: "Austin, TX, USA",
     dates: "May 2026 - Aug 2026",
     blurb:
-      "Built and shipped a full-stack ban/alerting portal into a secured, air-gapped environment, plus the AI feature that makes it self-service.",
+      "Built and shipped a full-stack ban/alerting portal into a secured, air-gapped environment, plus an AI feature that reads employees' free-form replies to incident alerts and updates their ban records.",
     bullets: [
-      "Built an AI-driven opt-out detection feature that interprets free-form employee replies to incident alerts and automatically updates ban records, paired with alert-suppression and rate-limiting logic that reduced non-actionable incident alerts.",
+      "Built an AI-driven opt-out detection feature that interprets free-form employee replies to incident alerts and automatically updates ban records.",
+      "Built alert-suppression and rate-limiting logic that reduced non-actionable incident alerts.",
       "Designed and built a full-stack ban/alerting portal (React, TypeScript, FastAPI, PostgreSQL) with SAML/SSO for the onsite workforce.",
       "Built a custom PowerShell CI/CD pipeline to deploy the portal into a secured, air-gapped environment, replacing a fully manual process with self-service access and full audit logging.",
     ],
@@ -35,7 +36,7 @@ export const workExperience: Role[] = [
     blurb:
       "Research spanning machine unlearning, PKI/blockchain for CA decentralization, and a Jetson-based autonomous vehicle proof of concept.",
     bullets: [
-      "Conducted research and implemented solutions in machine unlearning, focusing on security, privacy, and broader AI applications.",
+      "Researched machine unlearning methods for privacy and security.",
       "Researched PKI and blockchain solutions to decentralize Certificate Authorities, improving security and high availability.",
       "Developed a proof-of-concept autonomous vehicle integrating RGB-LiDAR, Intel RealSense depth camera, GPS, and IMU on NVIDIA Jetson (Orin/Xavier); deployed YOLOv8 and LaneNet for real-time navigation.",
     ],
@@ -47,7 +48,7 @@ export const workExperience: Role[] = [
     location: "Colorado, USA",
     dates: "Aug 2022 - Jan 2025",
     blurb:
-      "Outsourced infrastructure engineer for clients: owned AWS infrastructure end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
+      "Outsourced infrastructure engineer for clients: managed all AWS infrastructure, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
       // NOTE: every number below is a plausible estimate the user asked me to fill in
       // (not a remembered fact), reasoned together for internal consistency and anchored
@@ -58,8 +59,11 @@ export const workExperience: Role[] = [
       "Designed a Terraform-based Feature Branch Testing platform that creates isolated, disposable per-branch AWS environments in about 12 minutes, increasing pre-merge testing from 6 to 24 runs/week and cutting integration defects reaching staging by 35%.",
       "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from 3 days to 2 hours and eliminating config drift between stages.",
       "Led a strangler-style migration off a large monolith that used RabbitMQ for background work, setting up a Kafka topology and new microservices to move responsibilities out of it in incremental releases.",
-      "Hardened regulated client infrastructure to CIS Benchmark standards across 19 AWS accounts: automated certificate rotation with zero expiry-related outages, consolidated firewall policy under AWS Firewall Manager, migrated CI to rootless Docker runners, and deployed encrypted SFTP for B2B data exchange with 7 partners.",
-      "Split monoliths into ECS services in monolith-to-microservices migrations for 9 clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
+      "Hardened regulated client infrastructure to CIS Benchmark standards across 19 AWS accounts, with automated certificate rotation and zero expiry-related outages.",
+      "Consolidated firewall policy for those accounts under AWS Firewall Manager.",
+      "Migrated CI to rootless Docker runners.",
+      "Deployed encrypted SFTP for B2B data exchange with 7 partners.",
+      "Split monoliths into ECS services for 9 clients. This reduced disaster recovery time by 40%.",
       "Resolved P1/P2 incidents in a 24/7 on-call rotation (PagerDuty, ServiceNow), meeting 95% of SLA response windows and reducing MTTR by 25% through runbooks and alert tuning.",
       "Automated an Azure VM image pipeline that ingests on-prem build artifacts, runs first-logon provisioning, and publishes versioned images to Azure Compute Gallery, cutting environment delivery for 8 teams from 4 hours to 15 minutes.",
     ],
