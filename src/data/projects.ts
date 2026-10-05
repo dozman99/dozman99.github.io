@@ -27,14 +27,14 @@ export const projects: Project[] = [
   {
     name: "Sherloc",
     description:
-      "AI-powered root cause analysis platform enhancing team collaboration and incident communication.",
+      "An AI tool for incident root cause analysis.",
     tags: ["AI/ML", "Incident Response"],
     githubUrl: "",
   },
   {
     name: "ML Infrastructure",
     description:
-      "Optimized Kubernetes-based ML workflows using Kubeflow for pipeline orchestration and reproducibility.",
+      "Kubernetes-based ML workflows using Kubeflow for pipeline orchestration and reproducibility.",
     tags: ["Kubeflow", "MLOps", "Kubernetes"],
     githubUrl: "",
   },

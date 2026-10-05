@@ -5,7 +5,7 @@ import { flagships } from "@/data/flagships"
 export function flagshipStatus(slug: string): string {
   if (slug in canvases) return "Interactive canvas"
   if (slug === "air-gapped-portal") return "Under NDA"
-  return "Coming soon"
+  return "Summary only"
 }
 
 /** Flagships with a built canvas first, teasers after; stable within each group. */
