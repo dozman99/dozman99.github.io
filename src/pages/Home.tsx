@@ -13,10 +13,17 @@ export default function Home() {
     <div>
       <section className="px-4 pt-16 pb-14 sm:px-6">
         <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{site.name}</h1>
-        <p className="mt-2 text-base font-medium text-foreground/80">
-          {site.role} · {hero.summary}
-        </p>
+        <p className="mt-2 text-base font-medium text-foreground/80">{site.role}</p>
         <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">{hero.intro.join(" ")}</p>
+
+        <dl className="mt-6 grid max-w-2xl gap-x-8 gap-y-3 sm:grid-cols-2">
+          {hero.areas.map((area) => (
+            <div key={area.label} className="border-l-2 border-primary/50 pl-3">
+              <dt className="font-mono text-xs font-medium tracking-wide text-primary uppercase">{area.label}</dt>
+              <dd className="mt-0.5 text-sm text-foreground/85">{area.items.join(" · ")}</dd>
+            </div>
+          ))}
+        </dl>
 
         <dl className="mt-8 grid gap-3 sm:grid-cols-3">
           {hero.stats.map((stat) => (
