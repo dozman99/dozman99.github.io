@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { PageHeader } from "@/components/PageHeader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { now, next } from "@/data/nowNext"
 
-function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlug?: string } }) {
+function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlug?: string; links?: { label: string; href: string }[] } }) {
   return (
     <Card>
       <CardHeader>
@@ -12,6 +12,22 @@ function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlu
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">{item.detail}</p>
+        {item.links && (
+          <div className="mt-3 flex flex-wrap gap-4">
+            {item.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
+              >
+                {l.label}
+                <ArrowUpRight className="size-3.5" />
+              </a>
+            ))}
+          </div>
+        )}
         {item.flagshipSlug && (
           <Link
             to={`/flagships/${item.flagshipSlug}`}

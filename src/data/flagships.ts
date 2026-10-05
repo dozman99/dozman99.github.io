@@ -17,7 +17,7 @@ export const flagships: Flagship[] = [
     where: "Conclase",
     depth: "Platform engineering, Terraform at scale",
     teaser:
-      "A hybrid system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up and tears down fully isolated, disposable per-branch environments, triggered straight off Bitbucket webhooks.",
+      "Terraform owns the persistent shared infrastructure. For each feature branch, a Bitbucket webhook triggers Lambda-rendered CloudFormation that creates and later deletes a fully isolated, disposable environment.",
   },
   {
     slug: "air-gapped-portal",
@@ -41,21 +41,21 @@ export const flagships: Flagship[] = [
     where: "Side project",
     depth: "Building a platform on Kubernetes",
     teaser:
-      "Born from tutoring DevOps and fixing every student's Mac, Linux or Windows setup just to start a lab. Not just running Kubernetes, but building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
+      "I built DozLab after I tutored DevOps students and had to fix each student's Mac, Linux or Windows setup before a lab could start. DozLab is a multi-tenant SaaS platform that I built on Kubernetes, with sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
   },
   {
     slug: "ai-inference-lab",
     title: "AI Inference Infrastructure Lab",
     where: "Side project",
-    depth: "GPU orchestration and LLM serving, measured not assumed",
+    depth: "GPU orchestration and LLM serving",
     teaser:
-      "An end-to-end LLM serving lab on Kubernetes: open-weight models deployed across multiple serving engines, GPUs shared with MIG and time slicing, and every token's latency and cost tracked against real metrics, not claims.",
+      "An end-to-end LLM serving lab on Kubernetes: open-weight models deployed across multiple serving engines, GPUs shared with MIG and time slicing. I measure latency and cost per request for each model.",
   },
   {
     slug: "research",
     title: "Machine Unlearning + Autonomous Vehicle Research",
     where: "Texas A&M",
-    depth: "A rare differentiator for a DevOps profile",
+    depth: "Privacy, security, and autonomous systems",
     teaser:
       "Graduate research spanning machine unlearning for privacy and security, PKI/blockchain approaches to decentralizing Certificate Authorities, and a Jetson-based autonomous vehicle proof of concept running YOLOv8 and LaneNet.",
   },

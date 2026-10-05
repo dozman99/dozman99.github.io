@@ -11,12 +11,13 @@ import { countWord } from "@/lib/numberWords"
 
 export default function Flagships() {
   const builtCount = flagships.filter((f) => f.slug in canvases).length
+  const summaryCount = flagships.length - builtCount
 
   return (
     <div>
       <PageHeader
-        title="Engineering stories, told node by node"
-        description={`${countWord(flagships.length)} stories. ${countWord(builtCount)} ${builtCount === 1 ? "has" : "have"} an interactive architecture canvas so far: pick a node for why it exists and how it works. The rest are teasers.`}
+        title="Flagship projects"
+        description={`${countWord(flagships.length)} stories. ${countWord(builtCount)} ${builtCount === 1 ? "has" : "have"} an interactive architecture canvas so far: pick a node for why it exists and how it works.${summaryCount > 0 ? ` ${countWord(summaryCount)} ${summaryCount === 1 ? "story is a summary" : "stories are summaries"} only.` : ""}`}
       />
 
       <section className="px-4 pb-20 sm:px-6">

@@ -9,7 +9,7 @@ export const dozlabCanvas: CanvasData = {
   slug: "dozlab",
   title: "DozLab",
   summary:
-    "Born from tutoring DevOps: too much lab time went to fixing everyone's machine (Mac, Linux, Windows, different OS versions) just so they could follow along, so DozLab gives every student the same environment in the browser. A Kubernetes-native lab platform, not just something running on Kubernetes: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, built and torn down like any other Kubernetes resource.",
+    "I built DozLab after I tutored DevOps students. Too much lab time went to fixing each student's machine (Mac, Linux, Windows, different OS versions) so they could follow along. DozLab gives every student the same environment in the browser. It is a Kubernetes-native lab platform: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, created and deleted like any other Kubernetes resource.",
   proof: {
     capturedOn: "October 1, 2026",
     note: "The frontend is served from GitHub Pages and the backend runs on a single-node k3s cluster in my home lab. A home lab is not always on, so these screenshots are the lasting record.",
@@ -80,7 +80,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["api"],
       detail: {
-        why: "Students need a real, in-browser lab experience with a live terminal and editor, not a description of one, so the UI needed real-time WebSocket access, not just static pages.",
+        why: "Students need an in-browser lab with a live terminal and editor, so the UI needs real-time WebSocket access.",
         how: "Built with Nuxt.js 4, Vue 3, and TypeScript, styled with Nuxt UI and Tailwind, state managed with Pinia, and served as a static site from GitHub Pages. Talks to the API over REST; once a session is ready it opens the terminal and the editor in new tabs at that session's own URLs.",
         codeLink: "https://github.com/DozLab/dozlab-frontend",
       },
@@ -93,8 +93,8 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["controller"],
       detail: {
-        why: "One service needs to own the product side end to end (auth, lab and session records, and asking Kubernetes for a session) rather than spreading that logic across the frontend.",
-        how: "A Go service with JWT auth and role-based access. To start a lab it records the session and creates a LabSession resource through the Kubernetes API; it does not build pods itself, the controller does. Phase changes come back from the controller over RabbitMQ and are pushed to the user's open WebSocket connections.",
+        why: "One service owns the product side end to end (auth, lab and session records, and asking Kubernetes for a session), so that logic stays out of the frontend.",
+        how: "A Go service with JWT auth and role-based access. To start a lab it records the session and creates a LabSession resource through the Kubernetes API; the controller builds the pods. Phase changes come back from the controller over RabbitMQ and are pushed to the user's open WebSocket connections.",
         codeLink: "https://github.com/DozLab/dozlab-api",
       },
     },
@@ -106,7 +106,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["init-container"],
       detail: {
-        why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, not just API-side bookkeeping, so it reconciles itself even if the API restarts.",
+        why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, so it reconciles itself even if the API restarts.",
         how: "A Kubebuilder-based controller (Go, controller-runtime) that watches a custom LabSession CRD and reconciles it. For each session it creates an SSH key Secret, two volume claims, the pod, a Service and an Ingress, all owned by the LabSession, so deleting the LabSession cleans everything up. It runs as three replicas with leader election, and publishes each phase change (Pending, Creating, Running, Failed, Terminating) to RabbitMQ.",
         codeLink: "https://github.com/DozLab/dozlab-controller",
       },
@@ -120,7 +120,7 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["vm"],
       detail: {
         why: "The VM needs a root disk sized for this session, with this session's SSH key in it, and every container in the pod needs to agree on the VM's address. Both have to be settled before the other containers start.",
-        how: "Two init containers run in order. The first writes the lab's ext4 root filesystem into a pod volume, grows it to the session's disk size, and writes a cloud-init seed with the session's SSH public key into it. The second writes the gateway, VM and pod addresses to a shared file, instead of relying on DNS for a VM that has no service record of its own.",
+        how: "Two init containers run in order. The first writes the lab's ext4 root filesystem into a pod volume, grows it to the session's disk size, and writes a cloud-init seed with the session's SSH public key into it. The second writes the gateway, VM and pod addresses to a shared file, because the VM has no DNS service record of its own.",
       },
     },
     {
@@ -131,8 +131,8 @@ export const dozlabCanvas: CanvasData = {
       row: 2,
       connectsTo: ["sidecars"],
       detail: {
-        why: "The actual lab workload needs real VM isolation, not just another container, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
-        how: "Runs the lab as a Firecracker microVM inside a container that is not privileged: it adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
+        why: "The lab workload needs VM isolation, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
+        how: "Runs the lab as a Firecracker microVM inside an unprivileged container that adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
         codeLink: "https://github.com/DozLab/dozlab-rootfs-manager",
       },
     },
@@ -143,7 +143,7 @@ export const dozlabCanvas: CanvasData = {
       col: 3,
       row: 2,
       detail: {
-        why: "Students need both a real terminal and a real code editor against the same VM, in the browser, without installing anything.",
+        why: "Students need both a terminal and a code editor against the same VM, in the browser, without installing anything.",
         how: "The terminal sidecar (Go, Gin, gorilla/websocket) bridges a browser WebSocket to an SSH connection into the VM, with full PTY support, using the session's own SSH key. A separate VS Code sidecar (code-server) serves an editor with an auto-generated session password and a workspace volume. A per-session Ingress on Traefik routes /sessions/<id>/terminal and /sessions/<id>/vscode straight to them.",
         codeLink: "https://github.com/DozLab/dozlab-terminal-sidecar",
       },

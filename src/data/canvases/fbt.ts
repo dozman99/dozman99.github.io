@@ -16,7 +16,7 @@ export const fbtCanvas: CanvasData = {
   slug: "fbt",
   title: "Feature Branch Testing + Environment Replication",
   summary:
-    "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, built and torn down automatically off Bitbucket webhooks: its own database copy, ECS cluster, pipeline and subdomain. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state. The interesting part is what broke once the data grew.",
+    "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, created and deleted automatically by Bitbucket webhooks: its own database copy, ECS cluster, pipeline and subdomain. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state. The interesting part is what broke once the data grew.",
   // Row 2 continues the build path, so it has no label of its own.
   codeNote: "Client work, so the code is private.",
   lanes: ["Build path", "", "Teardown path"],
@@ -41,7 +41,7 @@ export const fbtCanvas: CanvasData = {
       row: 1,
       connectsTo: ["sqs-fifo"],
       detail: {
-        why: "Only branches named fbt/<ticket> should spin up a full disposable environment. Most pushes shouldn't trigger anything at all.",
+        why: "Only branches named fbt/<ticket> should create a full disposable environment. Most pushes shouldn't trigger anything at all.",
         how: "Bitbucket's push webhook hits the build Lambda's API handler, which confirms the push is a new fbt/ branch and extracts the Jira ticket ID with a regex before anything else happens.",
         whatBroke:
           "Developers reported that the webhook \"doesn't work right,\" and the logs showed why nobody could tell what was wrong: roughly 30-40% of invocations failed to read the branch name from the payload, and a bare except swallowed every failure into the same one-word log line, with no event dump. The integration also had no request mapping template (it was commented out), so the handler couldn't count on a consistent payload shape. The fix plan: restore the template, parse both wrapped and raw payloads, and log the actual missing field and event.",
@@ -83,7 +83,7 @@ export const fbtCanvas: CanvasData = {
       row: 2,
       detail: {
         why: "Full isolation per feature branch: its own ECS cluster, service and pipeline, running against its own copy of the database.",
-        how: "The stacks stand up a dedicated Fargate cluster whose task runs the Django app, a Celery worker and RabbitMQ side by side, with logs shipped to Datadog through FireLens. Its CodePipeline pulls the branch, builds and pushes images to ECR, and deploys to ECS. ALB rules and a Route 53 record give each branch its own subdomain, and a per-branch secret in Secrets Manager holds its config.",
+        how: "The stacks set up a dedicated Fargate cluster whose task runs the Django app, a Celery worker and RabbitMQ side by side, with logs shipped to Datadog through FireLens. Its CodePipeline pulls the branch, builds and pushes images to ECR, and deploys to ECS. ALB rules and a Route 53 record give each branch its own subdomain, and a per-branch secret in Secrets Manager holds its config.",
         whatBroke:
           "An environment whose infrastructure was all green still wouldn't start: Django exited with code 1 over and over. With the logs in Datadog, the fastest lead was diffing the failing branch's secret against a working one: 13 keys against 15. The missing two were the Twilio phone numbers, which a separate async Lambda adds after CloudFormation finishes (see the side node). Adding them and forcing a new deployment brought every container up healthy.",
       },
@@ -96,7 +96,7 @@ export const fbtCanvas: CanvasData = {
       row: 3,
       connectsTo: ["teardown"],
       detail: {
-        why: "Teardown has its own entry point instead of sharing the build API.",
+        why: "Teardown has its own entry point, separate from the build API.",
         how: "The second of the two REGIONAL REST APIs: a single POST /webhook resource registered as the Bitbucket webhook target for PR-merged events on fbt/ branches.",
       },
     },
@@ -108,7 +108,7 @@ export const fbtCanvas: CanvasData = {
       row: 3,
       detail: {
         why: "Nobody should have to remember to delete branch infrastructure by hand.",
-        how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which tears down that branch's CloudFormation stacks.",
+        how: "A separate Bitbucket webhook fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which deletes that branch's CloudFormation stacks.",
       },
     },
   ],
@@ -116,12 +116,12 @@ export const fbtCanvas: CanvasData = {
     {
       id: "shared-layer",
       label: "Shared layer",
-      sublabel: "persistent infra",
+      sublabel: "persistent infrastructure",
       detail: {
         why: "FBT needs infrastructure that exists all the time, regardless of which feature branches are currently active, kept separate from the ephemeral per-branch stacks.",
-        how: "FBT lives in its own AWS region and VPC inside the same account as staging, rather than a fully separate account. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster (which holds the template database and every branch's copy), networking, KMS keys, and secrets, all namespaced per environment.",
+        how: "FBT lives in its own AWS region and VPC inside the same account as staging. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster (which holds the template database and every branch's copy), networking, KMS keys, and secrets, all namespaced per environment.",
         whatBroke:
-          "Isolating FBT into its own region, not just a separate VPC in the same region as staging, was the deliberate call: it keeps branch churn from ever touching staging's blast radius, at the cost of running an extra region.",
+          "Putting FBT in its own region was the deliberate call: it keeps branch churn from ever touching staging's blast radius, at the cost of running an extra region.",
       },
     },
     {
@@ -130,7 +130,7 @@ export const fbtCanvas: CanvasData = {
       sublabel: "Twilio, off the critical path",
       detail: {
         why: "Each environment needs its own phone number so calls and SMS reach the right branch, but a slow or failing third-party API shouldn't block environment creation, and numbers cost money.",
-        how: "The build Lambda sends a non-blocking message to a separate queue. A Twilio Lambda reuses an unassigned number from the account's pool before buying a new one, points its webhooks at the branch's subdomain (which only exists once CloudFormation is done), and writes the numbers into the branch's secret. The app loads its secrets from Secrets Manager at startup rather than through the task definition, so any secret change only lands after a new deployment.",
+        how: "The build Lambda sends a non-blocking message to a separate queue. A Twilio Lambda reuses an unassigned number from the account's pool before buying a new one, points its webhooks at the branch's subdomain (which only exists once CloudFormation is done), and writes the numbers into the branch's secret. The app loads its secrets from Secrets Manager once, at startup, so any secret change only lands after a new deployment.",
         whatBroke:
           "The design treated Twilio as optional; the app treated it as required at startup. When the Twilio Lambda never processed a branch, containers crash-looped, and because secrets load once at startup, adding the numbers later still did nothing until a forced redeploy. The fix plan: ship default placeholder numbers in the stack so containers always boot, make the app degrade gracefully without Twilio, and alarm on the Twilio Lambda's failures.",
       },
@@ -141,7 +141,7 @@ export const fbtCanvas: CanvasData = {
       sublabel: "one-time CFN stack",
       detail: {
         why: "Terraform can't manage the S3 bucket and DynamoDB lock table that hold its own state: that's a circular dependency.",
-        how: "A one-time CloudFormation stack creates the versioned, KMS-encrypted, deletion-protected state bucket, the KMS key, and the lock table. The outputs get pasted into each backend.tf. This runs once per AWS account, not as part of the normal release flow.",
+        how: "A one-time CloudFormation stack creates the versioned, KMS-encrypted, deletion-protected state bucket, the KMS key, and the lock table. The outputs get pasted into each backend.tf. This runs once per AWS account, outside the normal release flow.",
       },
     },
     {
@@ -149,7 +149,7 @@ export const fbtCanvas: CanvasData = {
       label: "DB reset from staging",
       sublabel: "realistic data, safely",
       detail: {
-        why: "Feature branches need realistic, current data to test against, without ever touching real production data.",
+        why: "Feature branches need realistic, current data to test against, without ever touching production data.",
         how: "A one-shot script pulls the latest encrypted staging backup, drops and recreates the template database on the shared FBT cluster, restores from the dump, truncates sensitive or noisy tables (API request logs, user identity data), and reindexes. Every new branch copies from that template.",
         whatBroke:
           "Because every branch copies the whole template, the template's size is the build time. As staging data grew, so did every FBT build, until the copy no longer fit inside a Lambda. Keeping the template lean is part of the fix plan.",
