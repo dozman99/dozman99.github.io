@@ -11,7 +11,6 @@ export const aiInferenceLabCanvas: CanvasData = {
   title: "AI Inference Infrastructure Lab",
   summary:
     "Open-weight models deployed across multiple serving engines, with GPUs shared two different ways on the same cluster. I measure latency and cost per request for each model. Extending DevOps/Kubernetes work into GPU orchestration and LLM serving.",
-  codeNote: "The five sub-project repos aren't public yet. Links will appear on each node once they are.",
   lanes: ["Serving path", "Observability"],
   nodes: [
     {
@@ -97,9 +96,5 @@ export const aiInferenceLabCanvas: CanvasData = {
     "Inference engineering: prefill vs. decode, KV cache, model runtimes, GPU hardware",
     "GPU memory hierarchy (HBM/VRAM, L1/L2) and how it limits serving throughput",
     "Quantization trade-offs: GGUF, AWQ/GPTQ, FP8, BF16",
-  ],
-  writing: [
-    "Benchmarking vLLM vs. SGLang vs. Ollama on one GPU (coming soon)",
-    "MIG vs. time slicing: sharing GPUs on Kubernetes (coming soon)",
   ],
 }

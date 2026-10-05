@@ -167,15 +167,12 @@ export default function FlagshipDetail() {
           {flagship && (
             <p className="mb-8 max-w-2xl text-base text-muted-foreground">{flagship.teaser}</p>
           )}
-          <p className="mb-8 text-sm text-muted-foreground">
-            The interactive architecture canvas for this one isn't built yet.
-          </p>
           <Link
             to="/flagships"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3.5" />
-            See the stories that are built
+            All flagship stories
           </Link>
         </div>
       </div>
