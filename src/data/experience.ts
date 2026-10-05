@@ -76,9 +76,12 @@ export const workExperience: Role[] = [
     dates: "Nov 2020 - Aug 2022",
     blurb: "Secrets management, a major cloud migration, and setting up Kubernetes CI/CD from scratch.",
     bullets: [
-      "Implemented HashiCorp Vault for Kubernetes secrets management and led SAP migration to Azure, achieving 70% RTO reduction.",
-      "Designed secure containerization using Docker and CVSS tooling; changed CI/CD processes to Tekton pipelines on Kubernetes.",
-      "Set up an AKS cluster following best practices and designed cost-optimized AWS infrastructure using EC2, S3, RDS, and networking services.",
+      "Set up HashiCorp Vault for Kubernetes secrets management.",
+      "Led the SAP migration to Azure, reducing RTO by 70%.",
+      "Designed secure Docker containerization with vulnerability scanning.",
+      "Moved CI/CD to Tekton pipelines on Kubernetes.",
+      "Set up the company's first AKS clusters.",
+      "Designed cost-optimized AWS infrastructure using EC2, S3, RDS, and networking services.",
     ],
   },
   {
@@ -89,7 +92,8 @@ export const workExperience: Role[] = [
     blurb: "First engineering role: serverless integrations, an internal asset-management app, and network security.",
     bullets: [
       "Developed serverless solutions on Azure/AWS with API and webhook integrations; managed cloud software incidents via ServiceNow.",
-      "Built a Django-based IT asset management application with real-time tracking; led network security implementation including VPN and ExpressRoute configurations.",
+      "Built a Django-based IT asset management application with real-time tracking.",
+      "Set up VPN and ExpressRoute connections.",
     ],
   },
 ]
