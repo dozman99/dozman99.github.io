@@ -8,7 +8,7 @@ import { projects } from "@/data/projects"
 export default function Projects() {
   return (
     <div>
-      <PageHeader title="Things I've built outside client work" />
+      <PageHeader title="Side projects" />
 
       <section className="px-4 pb-20 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2">

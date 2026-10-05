@@ -7,7 +7,11 @@ export const now = [
   {
     title: "Building this site",
     detail:
-      "The portfolio itself is a live DevOps artifact: content-driven, linted, built and deployed to GitHub Pages by a GitHub Actions pipeline, and monitored like production.",
+      "The site is built from data files. A GitHub Actions pipeline lints it, builds it, and deploys it to GitHub Pages.",
+    links: [
+      { label: "Source", href: "https://github.com/dozman99/dozman99.github.io" },
+      { label: "Pipeline", href: "https://github.com/dozman99/dozman99.github.io/actions/workflows/deploy.yml" },
+    ],
   },
   {
     title: "Leading engineering at EDAT",
@@ -17,7 +21,7 @@ export const now = [
   {
     // Kept brief until there's a specific project to point to.
     title: "Building retrieval-augmented generation (RAG) systems",
-    detail: "Grounding LLM output in retrieved data.",
+    detail: "I build RAG systems that answer from retrieved documents.",
   },
 ]
 
@@ -25,7 +29,7 @@ export const next = [
   {
     title: "Extending into AI infrastructure and inference engineering",
     detail:
-      "Treating GPU orchestration and model serving as a natural extension of the DevOps/Kubernetes work above: MIG and time-slicing for GPU sharing, serving engines like vLLM and SGLang, quantization trade-offs, and the metrics that matter for inference (time to first token, KV cache usage, GPU utilization).",
+      "This work builds on my Kubernetes experience. I share GPUs with MIG and time slicing, and serve models with engines such as vLLM and SGLang. I compare quantization trade-offs. I track the metrics that matter for inference: time to first token, KV cache usage, and GPU utilization.",
     flagshipSlug: "ai-inference-lab",
   },
 ]
