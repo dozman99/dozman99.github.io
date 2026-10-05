@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { flagships } from "@/data/flagships"
 import { canvases } from "@/data/canvases"
 import { cn } from "@/lib/utils"
 import { flagshipStatus, orderedFlagships } from "@/lib/flagshipStatus"
-import { countWord } from "@/lib/numberWords"
 
 
 export default function Home() {
@@ -33,9 +31,6 @@ export default function Home() {
             Infrastructure is the proof. Click into how it was built.
           </h1>
         </div>
-        <p className="mt-4 max-w-xl text-base text-muted-foreground text-pretty">
-          {countWord(flagships.length)} engineering stories told node by node: why each piece exists, how it works, and where it got hard.
-        </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
           <Button size="lg" className="h-10 px-4" render={<Link to="/flagships" />}>
             Explore the flagship stories

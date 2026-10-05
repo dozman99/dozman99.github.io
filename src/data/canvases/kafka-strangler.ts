@@ -31,7 +31,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       row: 1,
       connectsTo: ["rabbitmq"],
       detail: {
-        why: "The starting point: large monolithic applications that handed background work off to a message broker instead of doing it inline.",
+        why: "The starting point: large monolithic applications that handed background work to a message broker.",
         how: "They published messages to RabbitMQ, where several workers picked them up and processed them.",
       },
     },
@@ -71,7 +71,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       connectsTo: ["kafka"],
       detail: {
         why: "Rewriting the monolith in one go was too risky. The strangler pattern moves responsibility out a piece at a time while the old system keeps running.",
-        how: "Functionality moved out of the monolith into distributed microservices incrementally, released from one environment to the next instead of in a single cutover. The new microservices and Kafka were set up from scratch as part of the migration.",
+        how: "Functionality moved out of the monolith into distributed microservices incrementally, released from one environment to the next. The new microservices and Kafka were set up from scratch as part of the migration.",
       },
     },
     {
@@ -105,7 +105,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       sublabel: "push vs. pull",
       detail: {
         why: "In a push system the broker decides when a worker gets work. That works while every consumer keeps up, but these workers depended on third-party services outside our control, so their speed was unpredictable. When a consumer is slower than the rate of incoming messages, push overwhelms it, and here the backlog piled up inside the broker until it had to block publishers.",
-        how: "Pull flips control: each worker asks for work when it's ready. The backlog waits in Kafka as consumer lag rather than filling broker memory, a slow worker falls behind and catches up, and a stuck worker is detected by its missed poll deadline and replaced. A problem in one integration stays in that integration instead of stalling every service that publishes. It also changes what you watch: the backlog itself (consumer lag), not CPU and memory, which a waiting worker barely touches.",
+        how: "Pull flips control: each worker asks for work when it's ready. The backlog waits on disk in Kafka as consumer lag, a slow worker falls behind and catches up, and a stuck worker is detected by its missed poll deadline and replaced. A problem in one integration stays in that integration, and services that publish keep running. It also changes what you watch: the backlog itself (consumer lag). A waiting worker barely touches CPU and memory.",
       },
     },
     {
@@ -123,7 +123,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       sublabel: "CPU/memory vs. consumer lag",
       detail: {
         why: "A stuck worker has to be visible, and workers have to scale on the signal that shows work is piling up.",
-        how: "Both brokers ran as AWS managed services (Amazon MQ for RabbitMQ, Amazon MSK for Kafka), so most services were monitored on AWS. On the push side, workers autoscaled on CPU and memory thresholds. After the move, scaling keys off consumer lag, the number of messages waiting in Kafka to be processed, so each worker type scales independently instead of on its CPU or memory configuration. Amazon MSK publishes lag per consumer group to CloudWatch.",
+        how: "Both brokers ran as AWS managed services (Amazon MQ for RabbitMQ, Amazon MSK for Kafka), so most services were monitored on AWS. On the push side, workers autoscaled on CPU and memory thresholds. After the move, scaling keys off consumer lag, the number of messages waiting in Kafka to be processed, so each worker type scales independently on its own backlog. Amazon MSK publishes lag per consumer group to CloudWatch.",
         whatBroke:
           "A worker stuck on a hung third-party call barely uses CPU or memory: it's just waiting. So CPU- and memory-based scaling and alerts never fired, and the failure ran silently in the background. Consumer lag doesn't have that blind spot: a stuck worker stops consuming, lag climbs, and the backlog shows up where you're already looking.",
       },
@@ -131,9 +131,9 @@ export const kafkaStranglerCanvas: CanvasData = {
       {
       id: "side-story-incident",
       label: "Side story: a queue incident",
-      sublabel: "one example, not the whole reason",
+      sublabel: "one example of several",
       detail: {
-        why: "One of several incidents on the push side, included as an example of the failure mode rather than the reason for the migration.",
+        why: "One of several incidents on the push side, included as an example of the failure mode.",
         how: "A daily scheduled job fanned out a burst of events, and a fast queue's incoming rate jumped from about 5 to about 35 messages a second. Two Celery workers, mostly waiting on third-party APIs, could clear maybe 5-10. A queue-depth alert paged, but the service autoscaled on CPU alone (65% target), and I/O-bound workers sat at 30-40% CPU, so it stayed at 2 tasks while the queue grew from its 250-message threshold to about 2,000. RabbitMQ (classic queues on a three-node mq.m5.large cluster) held that backlog in memory until it raised its high-memory alarm, and workers got \"Connection refused.\" One worker was also OOM-killed (exit 137), likely from prefetching too many messages. Rebooting the broker cleared the alarm, scaling workers from 2 to 6 drained the backlog in 30-60 minutes, and AWS Support confirmed the root cause.",
       },
     },
@@ -145,7 +145,7 @@ export const kafkaStranglerCanvas: CanvasData = {
         why: "Recovery took longer than it should have because nobody had written down what depends on the broker, what users lose when it's down, how to check it's healthy, or how to recover it.",
         how: "A service dependency and impact framework, starting with the broker as the worked example: the services and user-facing features that break when it fails, verification steps from the console down to queuing a test task, per-symptom recovery runbooks with expected recovery times, an escalation path, and an RCA template for every future incident.",
         whatBroke:
-          "The follow-ups for the broker itself: a larger instance, quorum queues, memory alarms at 80% and 95%, alerts on worker connection errors, scaling on queue depth instead of CPU, and a prefetch of one for slow I/O-bound tasks. They addressed this incident; the Kafka migration was driven by this and other problems with push delivery.",
+          "The follow-ups for the broker itself: a larger instance, quorum queues, memory alarms at 80% and 95%, alerts on worker connection errors, scaling on queue depth, and a prefetch of one for slow I/O-bound tasks. They addressed this incident; the Kafka migration was driven by this and other problems with push delivery.",
       },
     },
   ],

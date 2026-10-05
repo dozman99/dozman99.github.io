@@ -16,7 +16,7 @@ export const fbtCanvas: CanvasData = {
   slug: "fbt",
   title: "Feature Branch Testing + Environment Replication",
   summary:
-    "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, built and torn down automatically off Bitbucket webhooks: its own database copy, ECS cluster, pipeline and subdomain. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state. The interesting part is what broke once the data grew.",
+    "Every branch named fbt/<ticket> gets its own throwaway, fully isolated environment, created and deleted automatically by Bitbucket webhooks: its own database copy, ECS cluster, pipeline and subdomain. Terraform owns the persistent shared layer; Lambda-rendered CloudFormation owns the disposable per-branch stacks, deliberately split so short-lived resources never touch shared Terraform state. The interesting part is what broke once the data grew.",
   // Row 2 continues the build path, so it has no label of its own.
   codeNote: "Client work, so the code is private.",
   lanes: ["Build path", "", "Teardown path"],
@@ -96,7 +96,7 @@ export const fbtCanvas: CanvasData = {
       row: 3,
       connectsTo: ["teardown"],
       detail: {
-        why: "Teardown has its own entry point instead of sharing the build API.",
+        why: "Teardown has its own entry point, separate from the build API.",
         how: "The second of the two REGIONAL REST APIs: a single POST /webhook resource registered as the Bitbucket webhook target for PR-merged events on fbt/ branches.",
       },
     },
@@ -108,7 +108,7 @@ export const fbtCanvas: CanvasData = {
       row: 3,
       detail: {
         why: "Nobody should have to remember to delete branch infrastructure by hand.",
-        how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which deletes that branch's CloudFormation stacks.",
+        how: "A separate Bitbucket webhook fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which deletes that branch's CloudFormation stacks.",
       },
     },
   ],
@@ -119,9 +119,9 @@ export const fbtCanvas: CanvasData = {
       sublabel: "persistent infrastructure",
       detail: {
         why: "FBT needs infrastructure that exists all the time, regardless of which feature branches are currently active, kept separate from the ephemeral per-branch stacks.",
-        how: "FBT lives in its own AWS region and VPC inside the same account as staging, rather than a fully separate account. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster (which holds the template database and every branch's copy), networking, KMS keys, and secrets, all namespaced per environment.",
+        how: "FBT lives in its own AWS region and VPC inside the same account as staging. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster (which holds the template database and every branch's copy), networking, KMS keys, and secrets, all namespaced per environment.",
         whatBroke:
-          "Isolating FBT into its own region, not just a separate VPC in the same region as staging, was the deliberate call: it keeps branch churn from ever touching staging's blast radius, at the cost of running an extra region.",
+          "Putting FBT in its own region was the deliberate call: it keeps branch churn from ever touching staging's blast radius, at the cost of running an extra region.",
       },
     },
     {
@@ -130,7 +130,7 @@ export const fbtCanvas: CanvasData = {
       sublabel: "Twilio, off the critical path",
       detail: {
         why: "Each environment needs its own phone number so calls and SMS reach the right branch, but a slow or failing third-party API shouldn't block environment creation, and numbers cost money.",
-        how: "The build Lambda sends a non-blocking message to a separate queue. A Twilio Lambda reuses an unassigned number from the account's pool before buying a new one, points its webhooks at the branch's subdomain (which only exists once CloudFormation is done), and writes the numbers into the branch's secret. The app loads its secrets from Secrets Manager at startup rather than through the task definition, so any secret change only lands after a new deployment.",
+        how: "The build Lambda sends a non-blocking message to a separate queue. A Twilio Lambda reuses an unassigned number from the account's pool before buying a new one, points its webhooks at the branch's subdomain (which only exists once CloudFormation is done), and writes the numbers into the branch's secret. The app loads its secrets from Secrets Manager once, at startup, so any secret change only lands after a new deployment.",
         whatBroke:
           "The design treated Twilio as optional; the app treated it as required at startup. When the Twilio Lambda never processed a branch, containers crash-looped, and because secrets load once at startup, adding the numbers later still did nothing until a forced redeploy. The fix plan: ship default placeholder numbers in the stack so containers always boot, make the app degrade gracefully without Twilio, and alarm on the Twilio Lambda's failures.",
       },
@@ -141,7 +141,7 @@ export const fbtCanvas: CanvasData = {
       sublabel: "one-time CFN stack",
       detail: {
         why: "Terraform can't manage the S3 bucket and DynamoDB lock table that hold its own state: that's a circular dependency.",
-        how: "A one-time CloudFormation stack creates the versioned, KMS-encrypted, deletion-protected state bucket, the KMS key, and the lock table. The outputs get pasted into each backend.tf. This runs once per AWS account, not as part of the normal release flow.",
+        how: "A one-time CloudFormation stack creates the versioned, KMS-encrypted, deletion-protected state bucket, the KMS key, and the lock table. The outputs get pasted into each backend.tf. This runs once per AWS account, outside the normal release flow.",
       },
     },
     {

@@ -93,8 +93,8 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["controller"],
       detail: {
-        why: "One service needs to own the product side end to end (auth, lab and session records, and asking Kubernetes for a session) rather than spreading that logic across the frontend.",
-        how: "A Go service with JWT auth and role-based access. To start a lab it records the session and creates a LabSession resource through the Kubernetes API; it does not build pods itself, the controller does. Phase changes come back from the controller over RabbitMQ and are pushed to the user's open WebSocket connections.",
+        why: "One service owns the product side end to end (auth, lab and session records, and asking Kubernetes for a session), so that logic stays out of the frontend.",
+        how: "A Go service with JWT auth and role-based access. To start a lab it records the session and creates a LabSession resource through the Kubernetes API; the controller builds the pods. Phase changes come back from the controller over RabbitMQ and are pushed to the user's open WebSocket connections.",
         codeLink: "https://github.com/DozLab/dozlab-api",
       },
     },
@@ -106,7 +106,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["init-container"],
       detail: {
-        why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, not just API-side bookkeeping, so it reconciles itself even if the API restarts.",
+        why: "Lab lifecycle (deploy, track, clean up) needed to be a first-class Kubernetes concept, so it reconciles itself even if the API restarts.",
         how: "A Kubebuilder-based controller (Go, controller-runtime) that watches a custom LabSession CRD and reconciles it. For each session it creates an SSH key Secret, two volume claims, the pod, a Service and an Ingress, all owned by the LabSession, so deleting the LabSession cleans everything up. It runs as three replicas with leader election, and publishes each phase change (Pending, Creating, Running, Failed, Terminating) to RabbitMQ.",
         codeLink: "https://github.com/DozLab/dozlab-controller",
       },
@@ -120,7 +120,7 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["vm"],
       detail: {
         why: "The VM needs a root disk sized for this session, with this session's SSH key in it, and every container in the pod needs to agree on the VM's address. Both have to be settled before the other containers start.",
-        how: "Two init containers run in order. The first writes the lab's ext4 root filesystem into a pod volume, grows it to the session's disk size, and writes a cloud-init seed with the session's SSH public key into it. The second writes the gateway, VM and pod addresses to a shared file, instead of relying on DNS for a VM that has no service record of its own.",
+        how: "Two init containers run in order. The first writes the lab's ext4 root filesystem into a pod volume, grows it to the session's disk size, and writes a cloud-init seed with the session's SSH public key into it. The second writes the gateway, VM and pod addresses to a shared file, because the VM has no DNS service record of its own.",
       },
     },
     {
@@ -132,7 +132,7 @@ export const dozlabCanvas: CanvasData = {
       connectsTo: ["sidecars"],
       detail: {
         why: "The lab workload needs VM isolation, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
-        how: "Runs the lab as a Firecracker microVM inside a container that is not privileged: it adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
+        how: "Runs the lab as a Firecracker microVM inside an unprivileged container that adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
         codeLink: "https://github.com/DozLab/dozlab-rootfs-manager",
       },
     },

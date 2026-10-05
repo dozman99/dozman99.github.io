@@ -34,7 +34,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["gpu-node"],
       detail: {
-        why: "Which engine is fastest depends on model, hardware, and quantization: not something you can answer without measuring, and the honest answer is usually 'it depends.'",
+        why: "Which engine is fastest depends on model, hardware, and quantization: so the only way to know is to measure.",
         how: "The same open-weight model is deployed across vLLM, SGLang, and Ollama (GGUF), so requests can be benchmarked apples-to-apples across BF16, FP8, and INT4/GGUF quantization.",
       },
     },
@@ -47,7 +47,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       connectsTo: ["gpu-operator"],
       detail: {
         why: "A GPU can't be sliced with Kubernetes requests/limits the way CPU and memory can. Sharing it between workloads has to come from the GPU hardware itself.",
-        how: "The cluster is configured for both MIG (hardware-partitioned, isolated slices, on H100-class GPUs) and time slicing (interleaved, no isolation), so the tradeoffs are measured directly instead of taken on faith.",
+        how: "The cluster is configured for both MIG (hardware-partitioned, isolated slices, on H100-class GPUs) and time slicing (interleaved, no isolation), so the tradeoffs can be measured directly.",
       },
     },
     {
@@ -57,7 +57,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       row: 2,
       connectsTo: ["metrics"],
       detail: {
-        why: "GPU utilization and health need to be visible at the node level, not just inferred from application-side latency numbers.",
+        why: "GPU utilization and health need to be visible at the node level, alongside application-side latency numbers.",
         how: "The NVIDIA GPU Operator manages drivers and device plugins across the cluster; the DCGM exporter surfaces per-GPU utilization, memory, and idle time as Prometheus metrics.",
       },
     },
@@ -68,7 +68,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       col: 2,
       row: 2,
       detail: {
-        why: "The metrics that matter for inference aren't the usual CPU/memory dashboards: time to first token, tokens/sec, KV cache usage, idle GPU time, and cost per million tokens.",
+        why: "The metrics that matter for inference are time to first token, tokens/sec, KV cache usage, idle GPU time, and cost per million tokens.",
         how: "Prometheus scrapes the load generator, the serving engines, and the DCGM exporter; Grafana turns that into dashboards for TTFT, throughput, KV cache usage, idle-GPU time, and $/1M tokens.",
       },
     },
@@ -89,7 +89,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       sublabel: "soci-lazy-images",
       detail: {
         why: "CUDA/PyTorch images are huge (multiple GB, heavy C++ dependencies), and pulling the whole thing before a pod can start wastes time on every deploy and every scale-up.",
-        how: "Converts a large CUDA/PyTorch image to SOCI (lazy-loaded OCI) format and measures pod startup time before and after, applying lazy image loading to GPU workloads specifically rather than general-purpose containers.",
+        how: "Converts a large CUDA/PyTorch image to SOCI (lazy-loaded OCI) format and measures pod startup time before and after, applying lazy image loading to GPU workloads specifically.",
       },
     },
   ],
