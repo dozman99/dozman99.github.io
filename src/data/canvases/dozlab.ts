@@ -9,7 +9,7 @@ export const dozlabCanvas: CanvasData = {
   slug: "dozlab",
   title: "DozLab",
   summary:
-    "Born from tutoring DevOps: too much lab time went to fixing everyone's machine (Mac, Linux, Windows, different OS versions) just so they could follow along, so DozLab gives every student the same environment in the browser. A Kubernetes-native lab platform, not just something running on Kubernetes: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, built and torn down like any other Kubernetes resource.",
+    "I built DozLab after I tutored DevOps students. Too much lab time went to fixing each student's machine (Mac, Linux, Windows, different OS versions) so they could follow along. DozLab gives every student the same environment in the browser. It is a Kubernetes-native lab platform: a custom LabSession CRD and controller orchestrate multi-container pods (an isolation-grade Firecracker microVM, a WebSocket terminal sidecar, and a VS Code sidecar) per student session, created and deleted like any other Kubernetes resource.",
   proof: {
     capturedOn: "October 1, 2026",
     note: "The frontend is served from GitHub Pages and the backend runs on a single-node k3s cluster in my home lab. A home lab is not always on, so these screenshots are the lasting record.",
@@ -80,7 +80,7 @@ export const dozlabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["api"],
       detail: {
-        why: "Students need a real, in-browser lab experience with a live terminal and editor, not a description of one, so the UI needed real-time WebSocket access, not just static pages.",
+        why: "Students need an in-browser lab with a live terminal and editor, so the UI needs real-time WebSocket access.",
         how: "Built with Nuxt.js 4, Vue 3, and TypeScript, styled with Nuxt UI and Tailwind, state managed with Pinia, and served as a static site from GitHub Pages. Talks to the API over REST; once a session is ready it opens the terminal and the editor in new tabs at that session's own URLs.",
         codeLink: "https://github.com/DozLab/dozlab-frontend",
       },
@@ -131,7 +131,7 @@ export const dozlabCanvas: CanvasData = {
       row: 2,
       connectsTo: ["sidecars"],
       detail: {
-        why: "The actual lab workload needs real VM isolation, not just another container, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
+        why: "The lab workload needs VM isolation, so labs can safely do things (like running their own Kubernetes cluster) that would be unsafe or impossible while sharing a kernel with other tenants.",
         how: "Runs the lab as a Firecracker microVM inside a container that is not privileged: it adds three Linux capabilities (NET_ADMIN, SYS_ADMIN, SYS_RESOURCE) and gets /dev/kvm and /dev/net/tun from a device plugin as schedulable resources. A start script creates a tap device, NATs the VM's traffic out through the pod, and forwards the pod's IP to the VM. The VM boots from purpose-built images: a systemd-based Ubuntu 22.04 base, specialized into a full kubeadm/kubelet/containerd image for Kubernetes labs, or a minimal general-purpose image for others.",
         codeLink: "https://github.com/DozLab/dozlab-rootfs-manager",
       },
@@ -143,7 +143,7 @@ export const dozlabCanvas: CanvasData = {
       col: 3,
       row: 2,
       detail: {
-        why: "Students need both a real terminal and a real code editor against the same VM, in the browser, without installing anything.",
+        why: "Students need both a terminal and a code editor against the same VM, in the browser, without installing anything.",
         how: "The terminal sidecar (Go, Gin, gorilla/websocket) bridges a browser WebSocket to an SSH connection into the VM, with full PTY support, using the session's own SSH key. A separate VS Code sidecar (code-server) serves an editor with an auto-generated session password and a workspace volume. A per-session Ingress on Traefik routes /sessions/<id>/terminal and /sessions/<id>/vscode straight to them.",
         codeLink: "https://github.com/DozLab/dozlab-terminal-sidecar",
       },

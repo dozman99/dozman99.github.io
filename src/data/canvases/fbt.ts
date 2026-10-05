@@ -41,7 +41,7 @@ export const fbtCanvas: CanvasData = {
       row: 1,
       connectsTo: ["sqs-fifo"],
       detail: {
-        why: "Only branches named fbt/<ticket> should spin up a full disposable environment. Most pushes shouldn't trigger anything at all.",
+        why: "Only branches named fbt/<ticket> should create a full disposable environment. Most pushes shouldn't trigger anything at all.",
         how: "Bitbucket's push webhook hits the build Lambda's API handler, which confirms the push is a new fbt/ branch and extracts the Jira ticket ID with a regex before anything else happens.",
         whatBroke:
           "Developers reported that the webhook \"doesn't work right,\" and the logs showed why nobody could tell what was wrong: roughly 30-40% of invocations failed to read the branch name from the payload, and a bare except swallowed every failure into the same one-word log line, with no event dump. The integration also had no request mapping template (it was commented out), so the handler couldn't count on a consistent payload shape. The fix plan: restore the template, parse both wrapped and raw payloads, and log the actual missing field and event.",
@@ -83,7 +83,7 @@ export const fbtCanvas: CanvasData = {
       row: 2,
       detail: {
         why: "Full isolation per feature branch: its own ECS cluster, service and pipeline, running against its own copy of the database.",
-        how: "The stacks stand up a dedicated Fargate cluster whose task runs the Django app, a Celery worker and RabbitMQ side by side, with logs shipped to Datadog through FireLens. Its CodePipeline pulls the branch, builds and pushes images to ECR, and deploys to ECS. ALB rules and a Route 53 record give each branch its own subdomain, and a per-branch secret in Secrets Manager holds its config.",
+        how: "The stacks set up a dedicated Fargate cluster whose task runs the Django app, a Celery worker and RabbitMQ side by side, with logs shipped to Datadog through FireLens. Its CodePipeline pulls the branch, builds and pushes images to ECR, and deploys to ECS. ALB rules and a Route 53 record give each branch its own subdomain, and a per-branch secret in Secrets Manager holds its config.",
         whatBroke:
           "An environment whose infrastructure was all green still wouldn't start: Django exited with code 1 over and over. With the logs in Datadog, the fastest lead was diffing the failing branch's secret against a working one: 13 keys against 15. The missing two were the Twilio phone numbers, which a separate async Lambda adds after CloudFormation finishes (see the side node). Adding them and forcing a new deployment brought every container up healthy.",
       },
@@ -108,7 +108,7 @@ export const fbtCanvas: CanvasData = {
       row: 3,
       detail: {
         why: "Nobody should have to remember to delete branch infrastructure by hand.",
-        how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which tears down that branch's CloudFormation stacks.",
+        how: "This isn't a continuation of the build pipeline above: it's a separate Bitbucket webhook that fires on PR-merged events for fbt/ branches, extracts the same ticket ID, and drops a message on its own SQS queue for the destroy Lambda, which deletes that branch's CloudFormation stacks.",
       },
     },
   ],
@@ -116,7 +116,7 @@ export const fbtCanvas: CanvasData = {
     {
       id: "shared-layer",
       label: "Shared layer",
-      sublabel: "persistent infra",
+      sublabel: "persistent infrastructure",
       detail: {
         why: "FBT needs infrastructure that exists all the time, regardless of which feature branches are currently active, kept separate from the ephemeral per-branch stacks.",
         how: "FBT lives in its own AWS region and VPC inside the same account as staging, rather than a fully separate account. That reuses staging's IAM and billing boundary while keeping feature-branch churn off staging's own region and VPC. Terraform owns the shared Aurora Postgres cluster (which holds the template database and every branch's copy), networking, KMS keys, and secrets, all namespaced per environment.",
@@ -149,7 +149,7 @@ export const fbtCanvas: CanvasData = {
       label: "DB reset from staging",
       sublabel: "realistic data, safely",
       detail: {
-        why: "Feature branches need realistic, current data to test against, without ever touching real production data.",
+        why: "Feature branches need realistic, current data to test against, without ever touching production data.",
         how: "A one-shot script pulls the latest encrypted staging backup, drops and recreates the template database on the shared FBT cluster, restores from the dump, truncates sensitive or noisy tables (API request logs, user identity data), and reindexes. Every new branch copies from that template.",
         whatBroke:
           "Because every branch copies the whole template, the template's size is the build time. As staging data grew, so did every FBT build, until the copy no longer fit inside a Lambda. Keeping the template lean is part of the fix plan.",

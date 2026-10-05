@@ -22,8 +22,8 @@ export const aiInferenceLabCanvas: CanvasData = {
       row: 1,
       connectsTo: ["engines"],
       detail: {
-        why: "Needed a single entry point in front of multiple serving engines, and a way to generate realistic, repeatable load to actually measure them under, not just eyeball latency on a few manual requests.",
-        how: "A Go service fronts the serving engines and doubles as the load generator for benchmarking: the same client sends real inference requests and records latency, throughput, and errors.",
+        why: "Needed a single entry point in front of multiple serving engines, and a way to generate realistic, repeatable load to measure them with.",
+        how: "A Go service fronts the serving engines and doubles as the load generator for benchmarking: the same client sends inference requests and records latency, throughput, and errors.",
       },
     },
     {
@@ -79,7 +79,7 @@ export const aiInferenceLabCanvas: CanvasData = {
       label: "Idle-GPU controller",
       sublabel: "Go, gpu-idle-controller",
       detail: {
-        why: "GPUs cost the same whether they're busy or not, so idle time is a real cost problem, not just an efficiency nitpick.",
+        why: "GPUs cost the same whether they're busy or not, so idle GPU time is a direct cost.",
         how: "A Kubernetes controller written in Go that watches GPU pods, detects when they're sitting idle, and reports the wasted GPU-hours and their dollar cost.",
       },
     },

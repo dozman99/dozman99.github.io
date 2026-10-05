@@ -114,7 +114,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       sublabel: "one environment at a time",
       detail: {
         why: "Keep the monolith serving while its responsibilities move out, so every step can be released and checked on its own.",
-        how: "Instead of tearing down one application and standing up another, the migration shipped as incremental releases, moving from one environment to the next.",
+        how: "The migration shipped as incremental releases, moving from one environment to the next.",
       },
     },
     {
@@ -122,7 +122,7 @@ export const kafkaStranglerCanvas: CanvasData = {
       label: "Monitoring and autoscaling",
       sublabel: "CPU/memory vs. consumer lag",
       detail: {
-        why: "A stuck worker has to be visible, and workers have to scale on the signal that actually means work is piling up.",
+        why: "A stuck worker has to be visible, and workers have to scale on the signal that shows work is piling up.",
         how: "Both brokers ran as AWS managed services (Amazon MQ for RabbitMQ, Amazon MSK for Kafka), so most services were monitored on AWS. On the push side, workers autoscaled on CPU and memory thresholds. After the move, scaling keys off consumer lag, the number of messages waiting in Kafka to be processed, so each worker type scales independently instead of on its CPU or memory configuration. Amazon MSK publishes lag per consumer group to CloudWatch.",
         whatBroke:
           "A worker stuck on a hung third-party call barely uses CPU or memory: it's just waiting. So CPU- and memory-based scaling and alerts never fired, and the failure ran silently in the background. Consumer lag doesn't have that blind spot: a stuck worker stops consuming, lag climbs, and the backlog shows up where you're already looking.",

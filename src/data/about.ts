@@ -1,12 +1,12 @@
 // Personal content for the About page. Facts here are limited to what's confirmed.
 
 export const aboutIntro = [
-  "I'm a DevOps/MLOps engineer who likes systems with real failure modes: infrastructure that has to survive an air-gapped network, a branch-per-feature testing pipeline that a whole engineering team depends on, a Jetson board that has to make navigation decisions in real time.",
-  "I'm finishing an M.Sc. in Computer Science at Texas A&M (expected Dec 2026), researching machine unlearning, privacy, and autonomous systems, on top of several years building and running production infrastructure across healthcare, fintech, and semiconductor environments.",
+  "I'm a DevOps/MLOps engineer. I like systems that must keep working under hard constraints. I have built infrastructure that has to survive an air-gapped network, a branch-per-feature testing pipeline that a whole engineering team depends on, and a Jetson board that has to make navigation decisions in real time.",
+  "I'm finishing an M.Sc. in Computer Science at Texas A&M (expected Dec 2026), where I research machine unlearning, privacy, and autonomous systems. I have also spent about six years building and running production infrastructure across healthcare, fintech, and semiconductor environments.",
 ]
 
 export const dream =
-  "The long-term goal is to build a genuinely robust organization: one that takes on hard, real problems and has the engineering discipline to actually solve them, not just ship around them. Everything from feature-branch testing pipelines to ESG accounting platforms has been practice for that: build it so it holds up under real use, real load, real failure."
+  "My goal is to lead an engineering organization that solves hard problems correctly. Each project taught me to design for load and failure."
 
 export interface Interest {
   title: string
@@ -27,7 +27,7 @@ export const interests: Interest[] = [
   {
     title: "What fascinates me",
     description:
-      "Distributed systems and AI infrastructure: the intersection is where I've been spending my attention lately.",
+      "I study distributed systems and AI infrastructure.",
   },
 ]
 
@@ -58,7 +58,7 @@ export const lookingFor = {
     },
     {
       label: "Team",
-      text: "Engineers who build systems to hold up under real use, real load and real failure, who write things down, and who treat incidents as something to learn from.",
+      text: "Engineers who build systems to hold up under production use, load and failure, who write things down, and who treat incidents as something to learn from.",
     },
     {
       label: "Timing",

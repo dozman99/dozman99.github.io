@@ -17,7 +17,7 @@ export const flagships: Flagship[] = [
     where: "Conclase",
     depth: "Platform engineering, Terraform at scale",
     teaser:
-      "A hybrid system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation spins up and tears down fully isolated, disposable per-branch environments, triggered straight off Bitbucket webhooks.",
+      "A hybrid system where Terraform owns persistent shared infrastructure and Lambda-rendered CloudFormation creates and deletes fully isolated, disposable per-branch environments, triggered by Bitbucket webhooks.",
   },
   {
     slug: "air-gapped-portal",
@@ -41,7 +41,7 @@ export const flagships: Flagship[] = [
     where: "Side project",
     depth: "Building a platform on Kubernetes",
     teaser:
-      "Born from tutoring DevOps and fixing every student's Mac, Linux or Windows setup just to start a lab. Not just running Kubernetes, but building a multi-tenant SaaS platform on it: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
+      "I built DozLab after I tutored DevOps students and had to fix each student's Mac, Linux or Windows setup before a lab could start. It is a multi-tenant SaaS platform built on Kubernetes: sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
   },
   {
     slug: "ai-inference-lab",
@@ -49,7 +49,7 @@ export const flagships: Flagship[] = [
     where: "Side project",
     depth: "GPU orchestration and LLM serving, measured not assumed",
     teaser:
-      "An end-to-end LLM serving lab on Kubernetes: open-weight models deployed across multiple serving engines, GPUs shared with MIG and time slicing, and every token's latency and cost tracked against real metrics, not claims.",
+      "An end-to-end LLM serving lab on Kubernetes: open-weight models deployed across multiple serving engines, GPUs shared with MIG and time slicing, and the latency and cost of every token measured.",
   },
   {
     slug: "research",

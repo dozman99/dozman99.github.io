@@ -47,7 +47,7 @@ export const workExperience: Role[] = [
     location: "Colorado, USA",
     dates: "Aug 2022 - Jan 2025",
     blurb:
-      "Outsourced infrastructure engineer for clients: owned AWS infra end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
+      "Outsourced infrastructure engineer for clients: owned AWS infrastructure end-to-end, built a feature-branch testing platform, and led a strangler migration off a monolith.",
     bullets: [
       // NOTE: every number below is a plausible estimate the user asked me to fill in
       // (not a remembered fact), reasoned together for internal consistency and anchored
@@ -55,11 +55,11 @@ export const workExperience: Role[] = [
       // one against what actually happened before this goes public.
       "Owned end-to-end AWS infrastructure for 40+ clients as an outsourced platform engineer (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild), supporting 85+ production services across 4 environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
-      "Architected a Terraform-based Feature Branch Testing platform that spins up isolated, disposable per-branch AWS environments in about 12 minutes, increasing pre-merge testing from 6 to 24 runs/week and cutting integration defects reaching staging by 35%.",
+      "Designed a Terraform-based Feature Branch Testing platform that creates isolated, disposable per-branch AWS environments in about 12 minutes, increasing pre-merge testing from 6 to 24 runs/week and cutting integration defects reaching staging by 35%.",
       "Built a 5-stage promotion pipeline (local → FBT → dev → staging → prod) on reusable Terraform modules with full infrastructure parity and per-environment secrets, reducing new-environment setup from 3 days to 2 hours and eliminating config drift between stages.",
-      "Led a strangler-style migration off a large monolith backed by Redis, standing up a Kafka topology and new microservices to peel responsibilities off it incrementally rather than in one cutover.",
+      "Led a strangler-style migration off a large monolith backed by Redis, setting up a Kafka topology and new microservices to move responsibilities out of it in incremental releases.",
       "Hardened regulated client infrastructure to CIS Benchmark standards across 19 AWS accounts: automated certificate rotation with zero expiry-related outages, consolidated firewall policy under AWS Firewall Manager, migrated CI to rootless Docker runners, and deployed encrypted SFTP for B2B data exchange with 7 partners.",
-      "Drove ECS service decomposition in monolith-to-microservices migrations for 9 clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
+      "Split monoliths into ECS services in monolith-to-microservices migrations for 9 clients, implementing ALB path-based routing, blue/green and rolling deployments, and SLO-based observability, which reduced disaster recovery time by 40% while maintaining client SLOs.",
       "Resolved P1/P2 incidents in a 24/7 on-call rotation (PagerDuty, ServiceNow), meeting 95% of SLA response windows and reducing MTTR by 25% through runbooks and alert tuning.",
       "Automated an Azure VM image pipeline that ingests on-prem build artifacts, runs first-logon provisioning, and publishes versioned images to Azure Compute Gallery, cutting environment delivery for 8 teams from 4 hours to 15 minutes.",
     ],
@@ -70,11 +70,11 @@ export const workExperience: Role[] = [
     role: "DevOps Engineer",
     location: "Port Harcourt, Nigeria",
     dates: "Nov 2020 - Aug 2022",
-    blurb: "Secrets management, a major cloud migration, and standing up Kubernetes CI/CD from scratch.",
+    blurb: "Secrets management, a major cloud migration, and setting up Kubernetes CI/CD from scratch.",
     bullets: [
       "Implemented HashiCorp Vault for Kubernetes secrets management and led SAP migration to Azure, achieving 70% RTO reduction.",
-      "Architected secure containerization using Docker and CVSS tooling; transformed CI/CD processes with Tekton pipelines on Kubernetes.",
-      "Pioneered AKS cluster setup following best practices and designed cost-optimized AWS infrastructure leveraging EC2, S3, RDS, and networking services.",
+      "Designed secure containerization using Docker and CVSS tooling; changed CI/CD processes to Tekton pipelines on Kubernetes.",
+      "Set up an AKS cluster following best practices and designed cost-optimized AWS infrastructure using EC2, S3, RDS, and networking services.",
     ],
   },
   {
@@ -100,7 +100,7 @@ export const leadership: Role[] = [
       "Leading engineering for a sustainability-assurance platform, and architecting its GHG accounting product end to end.",
     bullets: [
       "Lead engineering team structure, recruitment, and technical direction for a sustainability assurance platform specializing in ESG verification, GHG validation, and voluntary carbon market auditing.",
-      "Architected and built ECO-T, a full-stack GHG accounting platform covering Scope 1/2/3 emissions, API integrations with EPA, ERP systems, and energy grids, carbon pricing & offsets, and Sankey diagram production.",
+      "Designed and built ECO-T, a full-stack GHG accounting platform covering Scope 1/2/3 emissions, API integrations with EPA, ERP systems, and energy grids, carbon pricing & offsets, and Sankey diagram production.",
       "Designed AI/ML pipelines for automated ESG verification and carbon disclosure across GRI, TCFD, CSRD, ISO 14064, VCS, and Gold Standard frameworks.",
       "Built backend APIs and DevOps/cloud infrastructure supporting GHG reporting automation, voluntary carbon market assurance, and third-party audit workflows.",
     ],
@@ -112,7 +112,7 @@ export const leadership: Role[] = [
     dates: "Jan 2025 - Present",
     blurb: "",
     bullets: [
-      "Facilitate career development and cross-disciplinary collaboration through targeted projects that expand members' competitive edge and professional opportunities.",
+      "Help members with career development and cross-disciplinary collaboration through targeted projects that expand members' competitive edge and professional opportunities.",
     ],
   },
   {
