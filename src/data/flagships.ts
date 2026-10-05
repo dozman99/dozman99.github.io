@@ -54,7 +54,7 @@ export const flagships: Flagship[] = [
   {
     slug: "research",
     title: "Machine Unlearning + Autonomous Vehicle Research",
-    where: "Texas A&M",
+    where: "Texas A&M University",
     depth: "Privacy, security, and autonomous systems",
     teaser:
       "Graduate research spanning machine unlearning for privacy and security, PKI/blockchain approaches to decentralizing Certificate Authorities, and a Jetson-based autonomous vehicle proof of concept running YOLOv8 and LaneNet.",

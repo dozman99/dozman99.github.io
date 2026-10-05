@@ -1,6 +1,6 @@
 export const now = [
   {
-    title: "Finishing my M.Sc. in Computer Science at Texas A&M",
+    title: "Finishing my M.Sc. in Computer Science at Texas A&M University",
     detail:
       "Expected December 2026. Coursework and research centered on machine unlearning, privacy, and autonomous systems.",
   },

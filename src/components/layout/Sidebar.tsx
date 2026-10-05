@@ -80,15 +80,15 @@ export function Sidebar() {
           Email me
         </a>
       </div>
-      <div className='flex items-center gap-5 text-muted-foreground'>
+      <div className='flex items-center gap-5 text-sm font-medium text-muted-foreground'>
         {site.linkedin && (
           <a
             href={site.linkedin}
             target='_blank'
             rel='noreferrer'
-            aria-label='LinkedIn'
-            className='transition-colors hover:text-foreground'>
-            <LinkedInIcon className='size-6' />
+            className='inline-flex items-center gap-1.5 transition-colors hover:text-foreground'>
+            <LinkedInIcon className='size-5' />
+            LinkedIn
           </a>
         )}
         {site.github && (
@@ -96,9 +96,9 @@ export function Sidebar() {
             href={site.github}
             target='_blank'
             rel='noreferrer'
-            aria-label='GitHub'
-            className='transition-colors hover:text-foreground'>
-            <GitHubIcon className='size-6' />
+            className='inline-flex items-center gap-1.5 transition-colors hover:text-foreground'>
+            <GitHubIcon className='size-5' />
+            GitHub
           </a>
         )}
         <ThemeToggle className='ml-auto' />

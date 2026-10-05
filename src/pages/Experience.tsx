@@ -27,7 +27,7 @@ function RoleCard({ role }: { role: Role }) {
           to={
             role.flagshipSlug in canvases
               ? `/flagships/${role.flagshipSlug}`
-              : `/flagships#${role.flagshipSlug}`
+              : `/projects#${role.flagshipSlug}`
           }
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-foreground"
         >

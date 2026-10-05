@@ -17,7 +17,6 @@ const { render, flagshipSlugs, getRouteMeta } = await import(
 const routes = [
   "/",
   "/about",
-  "/flagships",
   "/experience",
   "/projects",
   "/now-next",
@@ -77,6 +76,22 @@ for (const route of routes) {
 
   sitemapUrls.push(pageUrl)
 }
+
+// /flagships moved onto /projects. GitHub Pages has no server redirects, so
+// write a stub that forwards (keeping any #slug) and points search engines at
+// the new URL.
+const moved = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8" />
+<title>Projects</title>
+<link rel="canonical" href="${siteOrigin}/projects/" />
+<meta name="robots" content="noindex" />
+<meta http-equiv="refresh" content="0; url=/projects/" />
+<script>location.replace("/projects/" + location.hash)</script>
+</head><body><a href="/projects/">Projects</a></body></html>
+`
+await mkdir(join(distDir, "flagships"), { recursive: true })
+await writeFile(join(distDir, "flagships", "index.html"), moved)
+console.log("wrote /flagships -> /projects redirect")
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
