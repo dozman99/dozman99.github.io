@@ -6,15 +6,15 @@ export const hero = {
     "M.Sc. Computer Science, Texas A&M University, December 2026.",
     "Open to full-time roles from January 2027.",
   ],
-  // Where I work. Every item appears in Experience, Projects or the flagship stories.
+  // What I work on, kept vendor-neutral.
   areas: [
-    { label: "Cloud", items: ["AWS", "Azure", "Terraform", "Kubernetes"] },
-    { label: "On-prem", items: ["Air-gapped deploys", "k3s", "Firecracker microVMs", "PowerShell CI/CD"] },
-    { label: "AI / ML", items: ["Kubeflow", "MLflow", "vLLM and SGLang", "GPU sharing with MIG"] },
-    { label: "Software", items: ["Go", "Python", "TypeScript", "React and FastAPI"] },
+    { label: "Cloud", items: ["Infrastructure as code", "Container orchestration", "Networking and security", "Observability"] },
+    { label: "On-prem", items: ["Air-gapped environments", "Self-hosted clusters", "Virtual machines", "Offline CI/CD"] },
+    { label: "AI / ML", items: ["ML pipelines", "Model serving", "GPU scheduling", "Retrieval (RAG)"] },
+    { label: "Software", items: ["Backend APIs", "Web apps", "Automation", "Developer tooling"] },
   ],
   stats: [
-    { value: "40+ clients", label: "and 85+ production services on AWS" },
+    { value: "40+ clients", label: "and 85+ production services" },
     { value: "3 days → 2 hours", label: "to create a new environment" },
     { value: "35% fewer", label: "integration defects in staging" },
   ],
