@@ -160,7 +160,7 @@ function useDarkClass() {
 // once half the figure is on screen. After that it loops: each finished run holds the complete
 // diagram for LOOP_HOLD_MS, then presses the page's own Replay button, but only while the figure
 // is on screen and only until the reader clicks or presses a key in it.
-const LOOP_HOLD_MS = 1500
+const LOOP_HOLD_MS = 4000
 
 function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   const dark = useDarkClass()
