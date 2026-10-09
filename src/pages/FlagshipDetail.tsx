@@ -130,6 +130,9 @@ function FigureCard({ figure, className }: { figure: Figure; className?: string 
             height={figure.height}
             loading="lazy"
             className="h-auto w-full"
+            // w-full/h-auto override the width and height attributes, so state the ratio in CSS
+            // too: the box has its final size before the image loads, and Chrome stops flagging it.
+            style={{ aspectRatio: `${figure.width} / ${figure.height}` }}
           />
         </a>
       ))}
