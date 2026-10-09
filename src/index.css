@@ -256,6 +256,16 @@
   background: oklch(0.15 0.01 262);
   color: var(--lc);
 }
+/* Line bullets follow the strips' letter rule; yellow always takes dark letters. */
+.transit .t-bullet {
+  background: color-mix(in oklch, var(--lc) 84%, black);
+  color: oklch(1 0 0);
+}
+.dark .transit .t-bullet,
+.transit .t-bullet[data-line="yellow"] {
+  background: var(--lc);
+  color: oklch(0.15 0.01 262);
+}
 .transit .t-mono {
   font-family: 'Overpass Mono Variable', ui-monospace, monospace;
   font-feature-settings: "tnum" 1;

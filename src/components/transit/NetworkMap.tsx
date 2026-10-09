@@ -45,9 +45,9 @@ export function LineBullet({ color, letter, size = "md" }: { color: LineColor; l
     <span
       aria-hidden="true"
       style={lineStyle(color)}
+      data-line={color}
       className={cn(
-        "t-mono inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--lc)] font-bold",
-        color === "yellow" ? "text-[oklch(0.19_0.012_262)]" : "text-white",
+        "t-mono t-bullet inline-flex shrink-0 items-center justify-center rounded-full font-bold",
         size === "md" ? "size-11 text-lg" : "size-7 text-sm",
       )}
     >
