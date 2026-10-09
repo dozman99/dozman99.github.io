@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { ArrowLeft, ArrowRight, ExternalLink, FileText, Mail } from "lucide-react"
 import { PageHeader } from "@/components/PageHeader"
@@ -7,9 +7,10 @@ import { NodeInlinePanel, NodeSheet } from "@/components/canvas/NodePanel"
 import { Separator } from "@/components/ui/separator"
 import { canvases } from "@/data/canvases"
 import { flagships } from "@/data/flagships"
-import type { CanvasNode, Figure, SideNode } from "@/data/canvases/types"
+import type { CanvasNode, Figure, InteractiveFigure, SideNode } from "@/data/canvases/types"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import { site } from "@/data/site"
+import { cn } from "@/lib/utils"
 
 // Every story ends by pointing somewhere: the next built canvas, and a way
 // to get in touch.
@@ -102,24 +103,100 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
 // A screenshot or diagram with its caption. The image links to itself so it
 // can be opened at full size, which the dense diagrams need on a phone.
 function FigureCard({ figure, className }: { figure: Figure; className?: string }) {
+  // With a dark version, both images are in the page and the theme class picks one.
+  const versions = figure.srcDark
+    ? [
+        { src: figure.src, className: "dark:hidden" },
+        { src: figure.srcDark, className: "hidden dark:block" },
+      ]
+    : [{ src: figure.src, className: "block" }]
   return (
     <figure className={className}>
-      <a
-        href={figure.src}
-        target="_blank"
-        rel="noreferrer"
-        className="block overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50"
-      >
-        <img
-          src={figure.src}
-          alt={figure.alt}
-          width={figure.width}
-          height={figure.height}
-          loading="lazy"
-          className="h-auto w-full"
-        />
-      </a>
+      {versions.map((version) => (
+        <a
+          key={version.src}
+          href={version.src}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            "overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50",
+            version.className,
+          )}
+        >
+          <img
+            src={version.src}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            loading="lazy"
+            className="h-auto w-full"
+          />
+        </a>
+      ))}
       <figcaption className="mt-2 text-sm text-muted-foreground">{figure.caption}</figcaption>
+    </figure>
+  )
+}
+
+// Follows the `dark` class the theme toggle puts on <html>.
+function useDarkClass() {
+  const [dark, setDark] = useState(
+    () => typeof document !== "undefined" && document.documentElement.classList.contains("dark"),
+  )
+  useEffect(() => {
+    const root = document.documentElement
+    const observer = new MutationObserver(() => setDark(root.classList.contains("dark")))
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
+  return dark
+}
+
+// An animated diagram page from public/, in a frame as tall as its content. The pages are
+// same-origin, so the frame watches their body and follows its height (fonts loading and the
+// controls wrapping both change it).
+function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
+  const dark = useDarkClass()
+  const frame = useRef<HTMLIFrameElement>(null)
+  const observer = useRef<ResizeObserver>(null)
+  const [height, setHeight] = useState<number>()
+  const src = dark ? figure.srcDark : figure.src
+
+  const onLoad = useCallback(() => {
+    // The frame's own ResizeObserver, since the observed body lives in the frame's document.
+    const win = frame.current?.contentWindow as (Window & typeof globalThis) | null | undefined
+    const doc = frame.current?.contentDocument
+    if (!win || !doc?.body) return
+    const fit = () => setHeight(Math.ceil(doc.documentElement.scrollHeight))
+    observer.current?.disconnect()
+    const next = new win.ResizeObserver(fit)
+    next.observe(doc.body)
+    observer.current = next
+    fit()
+  }, [])
+
+  useEffect(() => () => observer.current?.disconnect(), [])
+
+  return (
+    <figure>
+      <div className="overflow-hidden rounded-xl border border-border">
+        <iframe
+          key={src}
+          ref={frame}
+          src={src}
+          title={figure.title}
+          loading="lazy"
+          onLoad={onLoad}
+          className="block w-full"
+          style={height ? { height } : { aspectRatio: `${figure.width} / ${figure.height + 96}` }}
+        />
+      </div>
+      <figcaption className="mt-2 text-sm text-muted-foreground">
+        {figure.caption}{" "}
+        <a href={src} target="_blank" rel="noreferrer" className="text-primary hover:text-foreground">
+          Open full size
+        </a>
+      </figcaption>
     </figure>
   )
 }
@@ -229,9 +306,13 @@ export default function FlagshipDetail() {
             <h2 className="mb-2 text-xl font-semibold tracking-tight">Architecture diagrams</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
             <div className="mt-6 space-y-8">
-              {canvas.diagrams.figures.map((figure) => (
-                <FigureCard key={figure.src} figure={figure} />
-              ))}
+              {canvas.diagrams.figures.map((figure) =>
+                "kind" in figure ? (
+                  <InteractiveFigureCard key={figure.src} figure={figure} />
+                ) : (
+                  <FigureCard key={figure.src} figure={figure} />
+                ),
+              )}
             </div>
           </section>
         )}

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-embed>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inside a DozLab lab session</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Serif:ital@0;1&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --color-paper: #f5f5f5;
+      --color-ink: #2d3142;
+      --color-muted: #4f5d75;
+      --color-soft: #7a8399;
+      --color-accent: #eb6c36;
+      --color-rule: rgba(45,49,66,0.12);
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', 'Noto Serif', 'Noto Serif KR', serif;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+      --motion-fast: 160ms;
+      --motion-step: 600ms;
+      --motion-hold: 900ms;
+      --motion-total: 3600ms;
+      --motion-ease: cubic-bezier(.2,.8,.2,1);
+    }
+    body {
+      margin: 0;
+      display: block;
+      padding: 0 16px 16px;
+      color: var(--color-ink);
+      background: var(--color-paper);
+      font-family: var(--font-sans);
+    }
+    [data-motion-root] { width: 100%; }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0 0 24px; font: 400 32px/1.15 var(--font-serif); }
+    svg { display: block; width: 100%; min-width: 0; height: auto; }
+    /* The SVG holds its readable width (min-width == the viewBox width, so the
+       type ramp is never silently scaled down). This wrapper lets a narrow
+       screen scroll the diagram instead of the whole page. body is a centred
+       grid, so the root needs max-width/min-width to stop the grid item from
+       sizing itself to the SVG's max-content width. */
+    [data-motion-root] { max-width: 100%; min-width: 0; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+
+    /* Static source is complete. Only an initialized enhancement hides items. */
+    .motion-ready [data-motion-item] {
+      opacity: .12;
+      transform: translateY(8px);
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: opacity var(--motion-step) var(--motion-ease),
+                  transform var(--motion-step) var(--motion-ease);
+    }
+    .motion-ready [data-motion-item].is-visible,
+    .motion-ready[data-frame="end"] [data-motion-item],
+    .motion-ready[data-frame="static"] [data-motion-item] {
+      opacity: 1;
+      transform: none;
+    }
+    .draw-path {
+      fill: none;
+      stroke: var(--color-accent);
+      stroke-width: 3;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      pointer-events: none;
+    }
+    .motion-ready .draw-path.is-visible {
+      animation: draw-path var(--motion-step) linear forwards;
+    }
+    .flow-token { opacity: 0; pointer-events: none; }
+    .motion-ready.is-playing .flow-token.is-visible {
+      opacity: 1;
+      animation: token-flow 3.2s linear 1 forwards;
+    }
+    .motion-ready[data-motion-mode="loop"].is-playing .flow-token.is-visible {
+      animation-iteration-count: infinite;
+    }
+    @keyframes draw-path { to { stroke-dashoffset: 0; } }
+    @keyframes token-flow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(240px); }
+    }
+
+    [data-motion-controls] {
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-rule);
+    }
+    .motion-ready [data-motion-controls] { display: flex; }
+    [data-motion-controls][hidden] { display: none !important; }
+    [data-motion-controls] button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--color-muted);
+      border-radius: 4px;
+      color: var(--color-ink);
+      background: var(--color-paper);
+      font: 600 12px/1 var(--font-sans);
+      cursor: pointer;
+    }
+    [data-motion-controls] button:hover { border-color: var(--color-accent); }
+    [data-motion-controls] button:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    [data-motion-controls] button:disabled { cursor: not-allowed; opacity: .45; }
+    [data-motion-status-visible] {
+      margin-left: auto;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    noscript p {
+      margin: 12px 0 0;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+    }
+
+    html[data-motion="static"] [data-motion-controls],
+    html[data-motion="static"] [data-motion-decorative] { display: none !important; }
+    html[data-motion="static"] [data-motion-item] {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      transition: none !important;
+    }
+    html[data-motion="step"] [data-motion-controls],
+    html[data-motion="step"] [data-motion-decorative] { display: none !important; }
+    html[data-motion="step"] [data-motion-item] {
+      animation: none !important;
+      transition: none !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+      [data-motion-item] { opacity: 1 !important; transform: none !important; }
+      [data-motion-decorative] { display: none !important; }
+      [data-motion-controls] { display: none !important; }
+    }
+    @media print {
+      /* Paper has no scrollbar, so the local scroller would clip instead of
+         scroll. Let the diagram scale down to the sheet: smaller but whole
+         beats sharp but cut off. */
+      .diagram-container { overflow-x: visible; }
+      svg { min-width: 0; }
+      [data-motion-controls], [data-motion-decorative] { display: none !important; }
+      [data-motion-item] {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Static source is the exploded frame. Only an initialized enhancement assembles it.
+       Parts travel straight up, so a vertical translate is the whole explode. */
+    .motion-ready [data-motion-item][data-part] { opacity: 1; transform: translateY(var(--lift)); }
+    .motion-ready:not([data-frame="start"]) [data-motion-item][data-part] { transition: transform var(--motion-step) var(--motion-ease); }
+    .motion-ready [data-motion-item][data-part].is-visible,
+    .motion-ready[data-frame="end"] [data-motion-item][data-part],
+    .motion-ready[data-frame="static"] [data-motion-item][data-part] { transform: none; }
+    .motion-ready [data-part] .part-label { opacity: 0; transition: none; }
+    .motion-ready [data-part].is-visible .part-label { opacity: 1; transition: opacity var(--motion-fast) linear var(--motion-step); }
+    .motion-ready[data-frame="end"] .part-label,
+    .motion-ready[data-frame="static"] .part-label { opacity: 1; }
+    .motion-ready [data-motion-item][data-reveal] { opacity: 0; transform: none; transition: none; }
+    .motion-ready [data-motion-item][data-reveal].is-visible { opacity: 1; transition: opacity var(--motion-step) var(--motion-ease); }
+    .motion-ready[data-frame="end"] [data-motion-item][data-reveal],
+    .motion-ready[data-frame="static"] [data-motion-item][data-reveal] { opacity: 1; }
+    html[data-motion="static"] .part-label { opacity: 1 !important; }
+    html[data-motion="step"] .part-label { transition: none !important; }
+    @media (prefers-reduced-motion: reduce) { .part-label { opacity: 1 !important; } }
+    @media print { .part-label { opacity: 1 !important; } }
+    html[data-embed] { overflow: hidden; }
+  </style>
+</head>
+<body>
+  <main data-motion-root data-motion-mode="reveal" data-step-count="4" data-step-current="4" data-frame="static" data-static-frame="complete">
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 664" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lab-pod-explode-title lab-pod-explode-desc">
+        <title id="lab-pod-explode-title">Inside a DozLab lab session</title>
+        <desc id="lab-pod-explode-desc">Exploded view of a DozLab lab session pod: the pod at the base, its four volumes, and on top three containers side by side, a Firecracker microVM, a terminal sidecar and code-server, with the microVM as the focal part.</desc>
+        <rect width="100%" height="100%" fill="#f5f5f5"/>
+        <g data-exploded data-origin="408 412" data-gap="172">
+        <g data-part="pod" data-name="Session pod" data-rect="0 0 160 284 10" data-z="0" data-t="24" data-level="0" data-kind="housing" data-closed-z="0"><path data-role="silhouette" d="M 129.86 530 A 14.14 7.07 0 0 1 134 525 L 398 393 A 14.14 7.07 0 0 1 418 393 L 558 463 A 14.14 7.07 0 0 1 562.14 468 L 562.14 492 A 14.14 7.07 0 0 1 558 497 L 294 629 A 14.14 7.07 0 0 1 274 629 L 134 559 A 14.14 7.07 0 0 1 129.86 554 Z" fill="#ffffff"/><path d="M 294 605 A 14.14 7.07 0 0 1 274 605 L 134 535 A 14.14 7.07 0 0 1 134 525 L 398 393 A 14.14 7.07 0 0 1 418 393 L 558 463 A 14.14 7.07 0 0 1 558 473 Z" fill="#ffffff"/><path d="M 289 602.5 A 7.07 3.54 0 0 1 279 602.5 L 139 532.5 A 7.07 3.54 0 0 1 139 527.5 L 403 395.5 A 7.07 3.54 0 0 1 413 395.5 L 553 465.5 A 7.07 3.54 0 0 1 553 470.5 Z" fill="#ffffff"/><path d="M 289 602.5 A 7.07 3.54 0 0 1 279 602.5 L 139 532.5 A 7.07 3.54 0 0 1 139 527.5 L 403 395.5 A 7.07 3.54 0 0 1 413 395.5 L 553 465.5 A 7.07 3.54 0 0 1 553 470.5 Z" fill="rgba(45,49,66,0.10)"/><clipPath id="lab-pod-animated-pod-cavity"><path d="M 289 602.5 A 7.07 3.54 0 0 1 279 602.5 L 139 532.5 A 7.07 3.54 0 0 1 139 527.5 L 403 395.5 A 7.07 3.54 0 0 1 413 395.5 L 553 465.5 A 7.07 3.54 0 0 1 553 470.5 Z"/></clipPath><g clip-path="url(#lab-pod-animated-pod-cavity)"><path d="M 289 623.5 A 7.07 3.54 0 0 1 279 623.5 L 139 553.5 A 7.07 3.54 0 0 1 139 548.5 L 403 416.5 A 7.07 3.54 0 0 1 413 416.5 L 553 486.5 A 7.07 3.54 0 0 1 553 491.5 Z" fill="#ffffff"/><path d="M 289 623.5 A 7.07 3.54 0 0 1 279 623.5 L 139 553.5 A 7.07 3.54 0 0 1 139 548.5 L 403 416.5 A 7.07 3.54 0 0 1 413 416.5 L 553 486.5 A 7.07 3.54 0 0 1 553 491.5 Z" fill="rgba(45,49,66,0.04)"/><path d="M 289 623.5 A 7.07 3.54 0 0 1 279 623.5 L 139 553.5 A 7.07 3.54 0 0 1 139 548.5 L 403 416.5 A 7.07 3.54 0 0 1 413 416.5 L 553 486.5 A 7.07 3.54 0 0 1 553 491.5 Z" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/></g><path d="M 289 602.5 A 7.07 3.54 0 0 1 279 602.5 L 139 532.5 A 7.07 3.54 0 0 1 139 527.5 L 403 395.5 A 7.07 3.54 0 0 1 413 395.5 L 553 465.5 A 7.07 3.54 0 0 1 553 470.5 Z" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/><path d="M 129.86 530 A 14.14 7.07 0 0 1 134 525 L 398 393 A 14.14 7.07 0 0 1 418 393 L 558 463 A 14.14 7.07 0 0 1 562.14 468" fill="none" stroke="#2d3142" stroke-width="1.2" stroke-linejoin="round"/></g>
+        <g data-motion-item data-step="4" data-reveal aria-label="Session pod stays put; trace lines show where each part sat"><line data-role="trace" x1="129.86" y1="530" x2="129.86" y2="183" stroke="rgba(45,49,66,0.30)" stroke-width="0.8" stroke-dasharray="4,3"/><line data-role="trace" x1="562.14" y1="468" x2="562.14" y2="121" stroke="rgba(45,49,66,0.30)" stroke-width="0.8" stroke-dasharray="4,3"/><g data-role="label"><line data-role="leader" x1="568.14" y1="480" x2="614.14" y2="480" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/><circle cx="562.14" cy="480" r="2" fill="#2d3142"/><text data-role="name" x="626.14" y="479" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Session pod</text><text x="626.14" y="495" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.08em">one per labsession · k3s</text></g></g>
+        <g data-part="volumes" data-name="Volumes" data-rect="6 6 154 278 6" data-z="196" data-t="3" data-level="1" data-closed-z="3" data-motion-item data-step="3" style="--lift:193px" aria-label="Volumes lifts clear"><path data-role="silhouette" d="M 139.51 355 A 8.49 4.24 0 0 1 142 352 L 402 222 A 8.49 4.24 0 0 1 414 222 L 550 290 A 8.49 4.24 0 0 1 552.49 293 L 552.49 296 A 8.49 4.24 0 0 1 550 299 L 290 429 A 8.49 4.24 0 0 1 278 429 L 142 361 A 8.49 4.24 0 0 1 139.51 358 Z" fill="#ffffff"/><path d="M 139.51 355 A 8.49 4.24 0 0 0 142 358 L 278 426 A 8.49 4.24 0 0 0 284 427.24 L 284 430.24 A 8.49 4.24 0 0 1 278 429 L 142 361 A 8.49 4.24 0 0 1 139.51 358 Z" fill="rgba(45,49,66,0.07)"/><path d="M 284 427.24 A 8.49 4.24 0 0 0 290 426 L 550 296 A 8.49 4.24 0 0 0 552.49 293 L 552.49 296 A 8.49 4.24 0 0 1 550 299 L 290 429 A 8.49 4.24 0 0 1 284 430.24 Z" fill="rgba(45,49,66,0.15)"/><path d="M 139.51 355 A 8.49 4.24 0 0 0 142 358 L 278 426 A 8.49 4.24 0 0 0 290 426 L 550 296 A 8.49 4.24 0 0 0 552.49 293" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/><path d="M 139.51 355 A 8.49 4.24 0 0 1 142 352 L 402 222 A 8.49 4.24 0 0 1 414 222 L 550 290 A 8.49 4.24 0 0 1 552.49 293 L 552.49 296 A 8.49 4.24 0 0 1 550 299 L 290 429 A 8.49 4.24 0 0 1 278 429 L 142 361 A 8.49 4.24 0 0 1 139.51 358 Z" fill="none" stroke="#2d3142" stroke-width="1.2" stroke-linejoin="round"/><path d="M 427 347.5 A 4.24 2.12 0 0 1 421 347.5 L 299 286.5 A 4.24 2.12 0 0 1 299 283.5 L 409 228.5 A 4.24 2.12 0 0 1 415 228.5 L 537 289.5 A 4.24 2.12 0 0 1 537 292.5 Z" fill="rgba(45,49,66,0.14)" stroke="rgba(45,49,66,0.55)" stroke-width="0.6"/><path d="M 355 383.5 A 4.24 2.12 0 0 1 349 383.5 L 227 322.5 A 4.24 2.12 0 0 1 227 319.5 L 281 292.5 A 4.24 2.12 0 0 1 287 292.5 L 409 353.5 A 4.24 2.12 0 0 1 409 356.5 Z" fill="rgba(45,49,66,0.14)" stroke="rgba(45,49,66,0.55)" stroke-width="0.6"/><path d="M 311 405.5 A 4.24 2.12 0 0 1 305 405.5 L 183 344.5 A 4.24 2.12 0 0 1 183 341.5 L 209 328.5 A 4.24 2.12 0 0 1 215 328.5 L 337 389.5 A 4.24 2.12 0 0 1 337 392.5 Z" fill="rgba(45,49,66,0.14)" stroke="rgba(45,49,66,0.55)" stroke-width="0.6"/><path d="M 283 419.5 A 4.24 2.12 0 0 1 277 419.5 L 155 358.5 A 4.24 2.12 0 0 1 155 355.5 L 165 350.5 A 4.24 2.12 0 0 1 171 350.5 L 293 411.5 A 4.24 2.12 0 0 1 293 414.5 Z" fill="rgba(45,49,66,0.14)" stroke="rgba(45,49,66,0.55)" stroke-width="0.6"/><g data-role="label" class="part-label"><line data-role="leader" x1="558.49" y1="294.5" x2="614.14" y2="294.5" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/><circle cx="552.49" cy="294.5" r="2" fill="#2d3142"/><text data-role="name" x="626.14" y="293.5" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Volumes</text><text x="626.14" y="309.5" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.08em">rootfs, workspace, config</text></g></g>
+        <g data-part="vm" data-name="Firecracker microVM" data-rect="12 12 148 128 4" data-z="371" data-t="16" data-level="2" data-focal data-closed-z="6" data-motion-item data-step="1" style="--lift:365px" aria-label="Firecracker microVM lifts clear"><path data-role="silhouette" d="M 294.34 95 A 5.66 2.83 0 0 1 296 93 L 404 39 A 5.66 2.83 0 0 1 412 39 L 540 103 A 5.66 2.83 0 0 1 541.66 105 L 541.66 121 A 5.66 2.83 0 0 1 540 123 L 432 177 A 5.66 2.83 0 0 1 424 177 L 296 113 A 5.66 2.83 0 0 1 294.34 111 Z" fill="#ffffff"/><path d="M 432 161 A 5.66 2.83 0 0 1 424 161 L 296 97 A 5.66 2.83 0 0 1 296 93 L 404 39 A 5.66 2.83 0 0 1 412 39 L 540 103 A 5.66 2.83 0 0 1 540 107 Z" fill="rgba(235,108,54,0.10)"/><path d="M 294.34 95 A 5.66 2.83 0 0 0 296 97 L 424 161 A 5.66 2.83 0 0 0 428 161.83 L 428 177.83 A 5.66 2.83 0 0 1 424 177 L 296 113 A 5.66 2.83 0 0 1 294.34 111 Z" fill="rgba(235,108,54,0.20)"/><path d="M 428 161.83 A 5.66 2.83 0 0 0 432 161 L 540 107 A 5.66 2.83 0 0 0 541.66 105 L 541.66 121 A 5.66 2.83 0 0 1 540 123 L 432 177 A 5.66 2.83 0 0 1 428 177.83 Z" fill="rgba(235,108,54,0.32)"/><path d="M 294.34 95 A 5.66 2.83 0 0 0 296 97 L 424 161 A 5.66 2.83 0 0 0 432 161 L 540 107 A 5.66 2.83 0 0 0 541.66 105" fill="none" stroke="rgba(235,108,54,0.70)" stroke-width="0.8"/><path d="M 294.34 95 A 5.66 2.83 0 0 1 296 93 L 404 39 A 5.66 2.83 0 0 1 412 39 L 540 103 A 5.66 2.83 0 0 1 541.66 105 L 541.66 121 A 5.66 2.83 0 0 1 540 123 L 432 177 A 5.66 2.83 0 0 1 424 177 L 296 113 A 5.66 2.83 0 0 1 294.34 111 Z" fill="none" stroke="#eb6c36" stroke-width="1.2" stroke-linejoin="round"/><path d="M 432 151 A 5.66 2.83 0 0 1 424 151 L 316 97 A 5.66 2.83 0 0 1 316 93 L 404 49 A 5.66 2.83 0 0 1 412 49 L 520 103 A 5.66 2.83 0 0 1 520 107 Z" fill="#2d3142"/><path d="M 359.76 87 A 4.24 2.12 0 0 1 361 85.5 L 399 66.5 A 4.24 2.12 0 0 1 405 66.5 L 443 85.5 A 4.24 2.12 0 0 1 444.24 87 L 444.24 92 A 4.24 2.12 0 0 1 443 93.5 L 405 112.5 A 4.24 2.12 0 0 1 399 112.5 L 361 93.5 A 4.24 2.12 0 0 1 359.76 92 Z" fill="#2d3142"/><path d="M 405 107.5 A 4.24 2.12 0 0 1 399 107.5 L 361 88.5 A 4.24 2.12 0 0 1 361 85.5 L 399 66.5 A 4.24 2.12 0 0 1 405 66.5 L 443 85.5 A 4.24 2.12 0 0 1 443 88.5 Z" fill="#eb6c36"/><path d="M 402 101 L 402 101 L 374 87 L 374 87 L 402 73 L 402 73 L 430 87 L 430 87 Z" fill="none" stroke="rgba(245,245,245,0.35)" stroke-width="0.8"/><path d="M 407.17 120 A 2.83 1.41 0 0 1 408 119 L 464 91 A 2.83 1.41 0 0 1 468 91 L 482 98 A 2.83 1.41 0 0 1 482.83 99 L 482.83 103 A 2.83 1.41 0 0 1 482 104 L 426 132 A 2.83 1.41 0 0 1 422 132 L 408 125 A 2.83 1.41 0 0 1 407.17 124 Z" fill="#2d3142"/><path d="M 426 128 A 2.83 1.41 0 0 1 422 128 L 408 121 A 2.83 1.41 0 0 1 408 119 L 464 91 A 2.83 1.41 0 0 1 468 91 L 482 98 A 2.83 1.41 0 0 1 482 100 Z" fill="#4f5d75"/><g data-role="label" class="part-label"><line data-role="leader" x1="547.66" y1="113" x2="614.14" y2="113" stroke="rgba(235,108,54,0.60)" stroke-width="0.8"/><circle cx="541.66" cy="113" r="2" fill="#eb6c36"/><text data-role="name" x="626.14" y="112" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Firecracker microVM</text><text x="626.14" y="128" fill="#eb6c36" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.08em">/dev/kvm · tap0 · ssh :22</text></g></g>
+        <g data-part="terminal" data-name="Terminal sidecar" data-rect="12 140 148 200 4" data-z="371" data-t="8" data-level="2" data-closed-z="6" data-motion-item data-step="2" style="--lift:365px" aria-label="Terminal sidecar lifts clear"><path data-role="silhouette" d="M 222.34 139 A 5.66 2.83 0 0 1 224 137 L 276 111 A 5.66 2.83 0 0 1 284 111 L 412 175 A 5.66 2.83 0 0 1 413.66 177 L 413.66 185 A 5.66 2.83 0 0 1 412 187 L 360 213 A 5.66 2.83 0 0 1 352 213 L 224 149 A 5.66 2.83 0 0 1 222.34 147 Z" fill="#ffffff"/><path d="M 222.34 139 A 5.66 2.83 0 0 0 224 141 L 352 205 A 5.66 2.83 0 0 0 356 205.83 L 356 213.83 A 5.66 2.83 0 0 1 352 213 L 224 149 A 5.66 2.83 0 0 1 222.34 147 Z" fill="rgba(45,49,66,0.07)"/><path d="M 356 205.83 A 5.66 2.83 0 0 0 360 205 L 412 179 A 5.66 2.83 0 0 0 413.66 177 L 413.66 185 A 5.66 2.83 0 0 1 412 187 L 360 213 A 5.66 2.83 0 0 1 356 213.83 Z" fill="rgba(45,49,66,0.15)"/><path d="M 222.34 139 A 5.66 2.83 0 0 0 224 141 L 352 205 A 5.66 2.83 0 0 0 360 205 L 412 179 A 5.66 2.83 0 0 0 413.66 177" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/><path d="M 222.34 139 A 5.66 2.83 0 0 1 224 137 L 276 111 A 5.66 2.83 0 0 1 284 111 L 412 175 A 5.66 2.83 0 0 1 413.66 177 L 413.66 185 A 5.66 2.83 0 0 1 412 187 L 360 213 A 5.66 2.83 0 0 1 352 213 L 224 149 A 5.66 2.83 0 0 1 222.34 147 Z" fill="none" stroke="#2d3142" stroke-width="1.2" stroke-linejoin="round"/><path d="M 359 199.5 A 4.24 2.12 0 0 1 353 199.5 L 235 140.5 A 4.24 2.12 0 0 1 235 137.5 L 277 116.5 A 4.24 2.12 0 0 1 283 116.5 L 401 175.5 A 4.24 2.12 0 0 1 401 178.5 Z" fill="#2d3142"/><path d="M 284 129 L 284 129 L 278 126 L 278 126 L 282 124 L 282 124 L 288 127 L 288 127 Z" fill="rgba(245,245,245,0.85)"/><path d="M 360 167 L 360 167 L 290 132 L 290 132 L 294 130 L 294 130 L 364 165 L 364 165 Z" fill="rgba(245,245,245,0.40)"/><path d="M 272 135 L 272 135 L 266 132 L 266 132 L 270 130 L 270 130 L 276 133 L 276 133 Z" fill="rgba(245,245,245,0.85)"/><path d="M 326 162 L 326 162 L 278 138 L 278 138 L 282 136 L 282 136 L 330 160 L 330 160 Z" fill="rgba(245,245,245,0.40)"/><path d="M 260 141 L 260 141 L 254 138 L 254 138 L 258 136 L 258 136 L 264 139 L 264 139 Z" fill="rgba(245,245,245,0.85)"/><path d="M 270 148 L 270 148 L 264 145 L 264 145 L 272 141 L 272 141 L 278 144 L 278 144 Z" fill="rgba(245,245,245,0.85)"/><g data-role="label" class="part-label"><line data-role="leader" x1="419.66" y1="181" x2="614.14" y2="181" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/><circle cx="413.66" cy="181" r="2" fill="#2d3142"/><text data-role="name" x="626.14" y="180" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Terminal sidecar</text><text x="626.14" y="196" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.08em">wss → ssh · :8081</text></g></g>
+        <g data-part-front="pod"><path d="M 129.86 530 A 14.14 7.07 0 0 0 134 535 L 274 605 A 14.14 7.07 0 0 0 294 605 L 558 473 A 14.14 7.07 0 0 0 562.14 468 L 562.14 492 A 14.14 7.07 0 0 1 558 497 L 294 629 A 14.14 7.07 0 0 1 274 629 L 134 559 A 14.14 7.07 0 0 1 129.86 554 Z" fill="#ffffff"/><path d="M 129.86 530 A 14.14 7.07 0 0 0 134 535 L 274 605 A 14.14 7.07 0 0 0 294 605 L 558 473 A 14.14 7.07 0 0 0 562.14 468 L 555.07 468 A 7.07 3.54 0 0 1 553 470.5 L 289 602.5 A 7.07 3.54 0 0 1 279 602.5 L 139 532.5 A 7.07 3.54 0 0 1 136.93 530 Z" fill="#ffffff"/><path d="M 129.86 530 A 14.14 7.07 0 0 0 134 535 L 274 605 A 14.14 7.07 0 0 0 284 607.07 L 284 631.07 A 14.14 7.07 0 0 1 274 629 L 134 559 A 14.14 7.07 0 0 1 129.86 554 Z" fill="rgba(45,49,66,0.07)"/><path d="M 284 607.07 A 14.14 7.07 0 0 0 294 605 L 558 473 A 14.14 7.07 0 0 0 562.14 468 L 562.14 492 A 14.14 7.07 0 0 1 558 497 L 294 629 A 14.14 7.07 0 0 1 284 631.07 Z" fill="rgba(45,49,66,0.15)"/><path d="M 136.93 530 A 7.07 3.54 0 0 0 139 532.5 L 279 602.5 A 7.07 3.54 0 0 0 289 602.5 L 553 470.5 A 7.07 3.54 0 0 0 555.07 468" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/><path d="M 129.86 530 A 14.14 7.07 0 0 0 134 535 L 274 605 A 14.14 7.07 0 0 0 294 605 L 558 473 A 14.14 7.07 0 0 0 562.14 468" fill="none" stroke="#2d3142" stroke-width="1.2"/><path d="M 129.86 530 L 129.86 554 A 14.14 7.07 0 0 0 134 559 L 274 629 A 14.14 7.07 0 0 0 294 629 L 558 497 A 14.14 7.07 0 0 0 562.14 492 L 562.14 468" fill="none" stroke="#2d3142" stroke-width="1.2" stroke-linejoin="round"/></g>
+        <g data-part="editor" data-name="code-server" data-rect="12 212 148 272 4" data-z="371" data-t="8" data-level="2" data-closed-z="6" data-motion-item data-step="2" style="--lift:365px" aria-label="code-server lifts clear"><path data-role="silhouette" d="M 150.34 175 A 5.66 2.83 0 0 1 152 173 L 204 147 A 5.66 2.83 0 0 1 212 147 L 340 211 A 5.66 2.83 0 0 1 341.66 213 L 341.66 221 A 5.66 2.83 0 0 1 340 223 L 288 249 A 5.66 2.83 0 0 1 280 249 L 152 185 A 5.66 2.83 0 0 1 150.34 183 Z" fill="#ffffff"/><path d="M 150.34 175 A 5.66 2.83 0 0 0 152 177 L 280 241 A 5.66 2.83 0 0 0 284 241.83 L 284 249.83 A 5.66 2.83 0 0 1 280 249 L 152 185 A 5.66 2.83 0 0 1 150.34 183 Z" fill="rgba(45,49,66,0.07)"/><path d="M 284 241.83 A 5.66 2.83 0 0 0 288 241 L 340 215 A 5.66 2.83 0 0 0 341.66 213 L 341.66 221 A 5.66 2.83 0 0 1 340 223 L 288 249 A 5.66 2.83 0 0 1 284 249.83 Z" fill="rgba(45,49,66,0.15)"/><path d="M 150.34 175 A 5.66 2.83 0 0 0 152 177 L 280 241 A 5.66 2.83 0 0 0 288 241 L 340 215 A 5.66 2.83 0 0 0 341.66 213" fill="none" stroke="rgba(45,49,66,0.55)" stroke-width="0.8"/><path d="M 150.34 175 A 5.66 2.83 0 0 1 152 173 L 204 147 A 5.66 2.83 0 0 1 212 147 L 340 211 A 5.66 2.83 0 0 1 341.66 213 L 341.66 221 A 5.66 2.83 0 0 1 340 223 L 288 249 A 5.66 2.83 0 0 1 280 249 L 152 185 A 5.66 2.83 0 0 1 150.34 183 Z" fill="none" stroke="#2d3142" stroke-width="1.2" stroke-linejoin="round"/><path d="M 287 235.5 A 4.24 2.12 0 0 1 281 235.5 L 163 176.5 A 4.24 2.12 0 0 1 163 173.5 L 205 152.5 A 4.24 2.12 0 0 1 211 152.5 L 329 211.5 A 4.24 2.12 0 0 1 329 214.5 Z" fill="#2d3142"/><path d="M 188 189 L 188 189 L 160 175 L 160 175 L 208 151 L 208 151 L 236 165 L 236 165 Z" fill="rgba(245,245,245,0.12)"/><path d="M 291 203.5 L 291 203.5 L 235 175.5 L 235 175.5 L 238 174 L 238 174 L 294 202 L 294 202 Z" fill="rgba(245,245,245,0.85)"/><path d="M 275 205.5 L 275 205.5 L 235 185.5 L 235 185.5 L 238 184 L 238 184 L 278 204 L 278 204 Z" fill="rgba(245,245,245,0.4)"/><path d="M 289 222.5 L 289 222.5 L 225 190.5 L 225 190.5 L 228 189 L 228 189 L 292 221 L 292 221 Z" fill="rgba(245,245,245,0.4)"/><g data-role="label" class="part-label"><line data-role="leader" x1="347.66" y1="217" x2="614.14" y2="217" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/><circle cx="341.66" cy="217" r="2" fill="#2d3142"/><text data-role="name" x="626.14" y="216" fill="#2d3142" font-size="16" font-weight="600" font-family="'Geist', sans-serif">code-server</text><text x="626.14" y="232" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" letter-spacing="0.08em">vs code · :8080</text></g></g>
+        </g>
+      </svg>
+    </div>
+
+    <div data-motion-controls role="group" aria-label="Diagram playback controls">
+      <button type="button" data-motion-action="prev">Previous</button>
+      <button type="button" data-motion-action="play" aria-pressed="false">Play</button>
+      <button type="button" data-motion-action="pause" aria-pressed="true">Pause</button>
+      <button type="button" data-motion-action="next">Next</button>
+      <button type="button" data-motion-action="replay">Replay</button>
+      <span class="keyboard-help">←/→ step · Space play/pause · R replay · Home/End jump</span>
+      <span data-motion-status-visible aria-hidden="true">Step <span data-motion-step-label>4</span> of 4</span>
+    </div>
+    <p class="sr-only" data-motion-status role="status" aria-live="polite" aria-atomic="true"></p>
+    <noscript><p>Animation controls require JavaScript. The complete exploded diagram is shown above.</p></noscript>
+  </main>
+
+  <script data-diagram-controls>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      const staticOverride = params.get('motion') === 'static' || document.documentElement.dataset.motion === 'static';
+      const requestedStep = params.get('step');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+      document.fonts.ready.then(() => { document.documentElement.dataset.fontsReady = 'true'; });
+
+      document.querySelectorAll('[data-motion-root]').forEach((root) => {
+        const count = Number(root.dataset.stepCount);
+        const hold = parseFloat(getComputedStyle(root).getPropertyValue('--motion-hold')) || 720;
+        const parsedStep = requestedStep !== null && /^\d+$/.test(requestedStep) ? Number(requestedStep) : null;
+        const exactStep = params.get('motion') === 'step' && Number.isSafeInteger(parsedStep) && parsedStep >= 0 && parsedStep <= count ? parsedStep : null;
+        const items = [...root.querySelectorAll('[data-motion-item]')];
+        const labels = Array.from({ length: count + 1 }, (_, index) => index === 0
+          ? 'Ready'
+          : items.filter((item) => !item.hasAttribute('data-motion-decorative') && Number(item.dataset.step) === index)
+              .map((item) => item.getAttribute('aria-label')).join('; '));
+        const controls = root.querySelector('[data-motion-controls]');
+        const status = root.querySelector('[data-motion-status]');
+        const visibleStep = root.querySelector('[data-motion-step-label]');
+        let step = count;
+        let timer = 0;
+        let playing = false;
+        let stepBeforeReduce = 0;
+        let resumeAfterReduce = root.dataset.motionMode === 'reveal';
+
+        const buttons = (action) => controls.querySelector(`[data-motion-action="${action}"]`);
+        const clearClock = () => { window.clearTimeout(timer); timer = 0; };
+        const announce = () => { status.textContent = `Step ${step} of ${count}: ${labels[step] || 'Complete'}`; };
+        const setControlsAvailable = (available) => {
+          controls.hidden = !available;
+          controls.setAttribute('aria-hidden', String(!available));
+          controls.dataset.playbackDisabled = String(!available);
+          controls.querySelectorAll('button').forEach((control) => { control.disabled = !available; });
+        };
+
+        function render(next, userInitiated = false) {
+          step = Math.max(0, Math.min(count, next));
+          root.dataset.stepCurrent = String(step);
+          root.dataset.frame = step === count ? 'end' : step === 0 ? 'start' : 'step';
+          items.forEach((item) => {
+            const itemStep = Number(item.dataset.step);
+            item.classList.toggle('is-visible', itemStep <= step);
+            item.classList.toggle('is-current', itemStep === step);
+          });
+          if (visibleStep) visibleStep.textContent = String(step);
+          const unavailable = controls.dataset.playbackDisabled === 'true';
+          buttons('prev').disabled = unavailable || step === 0;
+          buttons('next').disabled = unavailable || step === count;
+          if (userInitiated) announce();
+        }
+
+        function pause(userInitiated = false) {
+          clearClock();
+          playing = false;
+          root.classList.remove('is-playing');
+          buttons('play').setAttribute('aria-pressed', 'false');
+          buttons('pause').setAttribute('aria-pressed', 'true');
+          if (userInitiated) status.textContent = `Paused at step ${step} of ${count}`;
+        }
+
+        function finish() {
+          pause(false);
+          root.dataset.frame = 'end';
+          status.textContent = `Complete · step ${count} of ${count}`;
+        }
+
+        function tick() {
+          if (!playing) return;
+          if (step >= count) { finish(); return; }
+          render(step + 1, false);
+          if (step >= count) { finish(); return; }
+          timer = window.setTimeout(tick, hold);
+        }
+
+        function play(fromStart = false, userInitiated = false) {
+          clearClock();
+          if (fromStart || step >= count) render(0, userInitiated);
+          playing = true;
+          root.classList.add('is-playing');
+          buttons('play').setAttribute('aria-pressed', 'true');
+          buttons('pause').setAttribute('aria-pressed', 'false');
+          timer = window.setTimeout(tick, hold);
+        }
+
+        controls.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-motion-action]');
+          if (!button) return;
+          const action = button.dataset.motionAction;
+          if (action === 'play') play(false, true);
+          if (action === 'pause') pause(true);
+          if (action === 'replay') play(true, true);
+          if (action === 'prev') { pause(false); render(step - 1, true); }
+          if (action === 'next') { pause(false); render(step + 1, true); }
+        });
+
+        root.addEventListener('keydown', (event) => {
+          if (event.target.matches('input, textarea, select, a[href]')) return;
+          const keys = { ArrowLeft: step - 1, ArrowRight: step + 1, Home: 0, End: count };
+          if (event.code === 'Space' && !event.target.closest('button')) {
+            event.preventDefault();
+            playing ? pause(true) : play(false, true);
+            return;
+          }
+          if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key.toLowerCase() === 'r') {
+            event.preventDefault();
+            play(true, true);
+            return;
+          }
+          if (!(event.key in keys)) return;
+          event.preventDefault();
+          pause(false);
+          render(keys[event.key], true);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden' && playing) pause(false);
+        });
+        reduce.addEventListener('change', (event) => {
+          if (event.matches && root.dataset.motionState !== 'reduced') {
+            stepBeforeReduce = step;
+            resumeAfterReduce = playing;
+          }
+          pause(false);
+          if (event.matches) {
+            setControlsAvailable(false);
+            render(count, false);
+            root.dataset.frame = 'static';
+            root.dataset.motionState = 'reduced';
+            status.textContent = 'Reduced motion · complete static frame · playback controls unavailable';
+          } else if (staticOverride || root.dataset.motionMode === 'none') {
+            setControlsAvailable(false);
+            render(count, false);
+            root.dataset.frame = 'static';
+            root.dataset.motionState = 'static';
+            status.textContent = 'Static frame · complete diagram · playback controls unavailable';
+          } else {
+            delete root.dataset.motionState;
+            if (exactStep !== null) {
+              setControlsAvailable(false);
+              render(exactStep, false);
+              root.dataset.frame = 'step';
+              root.dataset.motionState = 'test';
+              status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
+            } else {
+              setControlsAvailable(true);
+              render(stepBeforeReduce, false);
+              status.textContent = `Ready · step ${step} of ${count}`;
+              if (resumeAfterReduce && root.dataset.motionMode === 'reveal') {
+                play(false, false);
+              }
+            }
+            resumeAfterReduce = false;
+          }
+        });
+
+        if (staticOverride) {
+          document.documentElement.dataset.motion = 'static';
+          pause(false);
+          setControlsAvailable(false);
+          render(count, false);
+          root.dataset.frame = 'static';
+          root.dataset.motionState = 'static';
+          status.textContent = 'Static frame · complete diagram · playback controls unavailable';
+        } else if (reduce.matches || root.dataset.motionMode === 'none') {
+          pause(false);
+          setControlsAvailable(false);
+          render(count, false);
+          root.dataset.frame = 'static';
+          root.dataset.motionState = reduce.matches ? 'reduced' : 'static';
+          status.textContent = reduce.matches
+            ? 'Reduced motion · complete static frame · playback controls unavailable'
+            : 'Static frame · complete diagram · playback controls unavailable';
+        } else if (exactStep !== null) {
+          document.documentElement.dataset.motion = 'step';
+          pause(false);
+          setControlsAvailable(false);
+          render(exactStep, false);
+          root.dataset.frame = 'step';
+          root.dataset.motionState = 'test';
+          status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
+        } else if (root.dataset.motionMode === 'reveal') {
+          setControlsAvailable(true);
+          render(0, false);
+          play(false, false);
+        } else {
+          pause(false);
+          setControlsAvailable(true);
+          render(0, false);
+          status.textContent = `Ready · step 0 of ${count}`;
+        }
+        root.classList.add('motion-ready');
+      });
+    })();
+  </script>
+</body>
+</html>
