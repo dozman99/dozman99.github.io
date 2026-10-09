@@ -26,19 +26,19 @@
     <meta name="twitter:description" content="I build cloud platforms and the pipelines that deploy to them." />
     <meta name="twitter:image" content="https://dozman99.github.io/og-image.jpg" />
     <script>
-      // Applied before paint to avoid a flash of the wrong theme. Dark is the
-      // default; the theme toggle can store "light" or "system" instead.
+      // Applied before paint to avoid a flash of the wrong theme. Light is the
+      // default; the theme toggle can store "dark" or "system" instead.
       ;(function () {
         var t
         try {
           t = localStorage.getItem('theme')
         } catch (e) {}
         var dark =
-          t === 'light'
-            ? false
+          t === 'dark'
+            ? true
             : t === 'system'
               ? window.matchMedia('(prefers-color-scheme: dark)').matches
-              : true
+              : false
         if (dark) document.documentElement.classList.add('dark')
         else
           document

@@ -13,9 +13,9 @@ const options: { value: Theme; label: string; Icon: typeof Sun }[] = [
   { value: "dark", label: "Dark theme", Icon: Moon },
 ]
 
-// Dark (olive-black) is the site's default look; "system" is an explicit
-// opt-in to follow the OS, so it's stored like the other two.
-const DEFAULT_THEME: Theme = "dark"
+// Light is the default: recruiters read this in daylight, at a desk or on a phone.
+// "system" is an explicit opt-in to follow the OS, so it's stored like the other two.
+const DEFAULT_THEME: Theme = "light"
 
 function readStored(): Theme {
   if (typeof window === "undefined") return DEFAULT_THEME
