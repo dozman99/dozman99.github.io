@@ -30,8 +30,25 @@ export interface SideNode {
 export interface Figure {
   /** Path under public/. */
   src: string
+  /** Same image drawn for the dark theme. Omitted = `src` in both themes. */
+  srcDark?: string
   alt: string
   caption: string
+  width: number
+  height: number
+}
+
+/** A self-contained HTML diagram (animated, with its own playback controls) shown in an iframe. */
+export interface InteractiveFigure {
+  kind: "interactive"
+  /** Path under public/ of the light page. */
+  src: string
+  /** Path under public/ of the dark page. */
+  srcDark: string
+  /** Names the iframe for screen readers. */
+  title: string
+  caption: string
+  /** The diagram's viewBox, used to size the frame before the page loads. */
   width: number
   height: number
 }
@@ -53,7 +70,7 @@ export interface CanvasData {
   /** Screenshots of it running, shown between the canvas and the full breakdown when present. */
   proof?: LiveProof
   /** Static architecture diagrams, shown after the screenshots when present. */
-  diagrams?: { note: string; figures: Figure[] }
+  diagrams?: { note: string; figures: (Figure | InteractiveFigure)[] }
   /** One story-level line about code availability, shown instead of per-node "coming soon" chips. */
   codeNote?: string
   /** Optional name for each grid row (index 0 = row 1), shown as a lane label above that row. */
