@@ -155,12 +155,33 @@ function useDarkClass() {
 // An animated diagram page from public/, in a frame as tall as its content. The pages are
 // same-origin, so the frame watches their body and follows its height (fonts loading and the
 // controls wrapping both change it).
+// The page plays its animation once, when it loads. A lazy iframe loads well before it scrolls
+// into view, so the animation would be over before anyone saw it: the frame is only created
+// once half the figure is on screen.
 function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   const dark = useDarkClass()
+  const box = useRef<HTMLDivElement>(null)
   const frame = useRef<HTMLIFrameElement>(null)
   const observer = useRef<ResizeObserver>(null)
+  const [inView, setInView] = useState(false)
   const [height, setHeight] = useState<number>()
   const src = dark ? figure.srcDark : figure.src
+
+  useEffect(() => {
+    const el = box.current
+    if (!el || inView) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setInView(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.5 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [inView])
 
   const onLoad = useCallback(() => {
     // The frame's own ResizeObserver, since the observed body lives in the frame's document.
@@ -179,17 +200,22 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
 
   return (
     <figure>
-      <div className="overflow-hidden rounded-xl border border-border">
-        <iframe
-          key={src}
-          ref={frame}
-          src={src}
-          title={figure.title}
-          loading="lazy"
-          onLoad={onLoad}
-          className="block w-full"
-          style={height ? { height } : { aspectRatio: `${figure.width} / ${figure.height + 96}` }}
-        />
+      <div
+        ref={box}
+        className="overflow-hidden rounded-xl border border-border"
+        style={height ? undefined : { aspectRatio: `${figure.width} / ${figure.height + 96}` }}
+      >
+        {inView && (
+          <iframe
+            key={src}
+            ref={frame}
+            src={src}
+            title={figure.title}
+            onLoad={onLoad}
+            className="block h-full w-full"
+            style={height ? { height } : undefined}
+          />
+        )}
       </div>
       <figcaption className="mt-2 text-sm text-muted-foreground">
         {figure.caption}{" "}
