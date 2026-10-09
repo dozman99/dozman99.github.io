@@ -155,12 +155,43 @@ function useDarkClass() {
 // An animated diagram page from public/, in a frame as tall as its content. The pages are
 // same-origin, so the frame watches their body and follows its height (fonts loading and the
 // controls wrapping both change it).
+// The page plays its animation once, when it loads. A lazy iframe loads well before it scrolls
+// into view, so the animation would be over before anyone saw it: the frame is only created
+// once half the figure is on screen. After that it loops: each finished run holds the complete
+// diagram for LOOP_HOLD_MS, then presses the page's own Replay button, but only while the figure
+// is on screen and only until the reader clicks or presses a key in it.
+const LOOP_HOLD_MS = 4000
+
 function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   const dark = useDarkClass()
+  const box = useRef<HTMLDivElement>(null)
   const frame = useRef<HTMLIFrameElement>(null)
   const observer = useRef<ResizeObserver>(null)
+  const looper = useRef<MutationObserver>(null)
+  const onScreen = useRef(false)
+  // A replay that came due while the figure was off screen; it runs when the figure is back.
+  const pendingReplay = useRef<(() => void) | null>(null)
+  const [inView, setInView] = useState(false)
   const [height, setHeight] = useState<number>()
   const src = dark ? figure.srcDark : figure.src
+
+  useEffect(() => {
+    const el = box.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        onScreen.current = entries.some((e) => e.isIntersecting)
+        if (!onScreen.current) return
+        setInView(true)
+        const replay = pendingReplay.current
+        pendingReplay.current = null
+        replay?.()
+      },
+      { threshold: 0.5 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   const onLoad = useCallback(() => {
     // The frame's own ResizeObserver, since the observed body lives in the frame's document.
@@ -173,23 +204,64 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
     next.observe(doc.body)
     observer.current = next
     fit()
+
+    // Loop. The page's controller marks a finished run with data-frame="end"; with reduced
+    // motion it shows a static frame instead, so nothing loops.
+    const root = doc.querySelector<HTMLElement>("[data-motion-root]")
+    const replay = doc.querySelector<HTMLButtonElement>('[data-motion-action="replay"]')
+    looper.current?.disconnect()
+    pendingReplay.current = null
+    if (!root || !replay) return
+    let stopped = false
+    let timer = 0
+    const stop = () => {
+      stopped = true
+      win.clearTimeout(timer)
+      pendingReplay.current = null
+    }
+    doc.addEventListener("pointerdown", stop, true)
+    doc.addEventListener("keydown", stop, true)
+    const replayNow = () => {
+      if (!stopped && !replay.disabled) replay.click()
+    }
+    const loop = new win.MutationObserver(() => {
+      if (stopped || root.dataset.frame !== "end") return
+      win.clearTimeout(timer)
+      timer = win.setTimeout(() => {
+        if (onScreen.current) replayNow()
+        else pendingReplay.current = replayNow
+      }, LOOP_HOLD_MS)
+    })
+    loop.observe(root, { attributes: true, attributeFilter: ["data-frame"] })
+    looper.current = loop
   }, [])
 
-  useEffect(() => () => observer.current?.disconnect(), [])
+  useEffect(
+    () => () => {
+      observer.current?.disconnect()
+      looper.current?.disconnect()
+    },
+    [],
+  )
 
   return (
     <figure>
-      <div className="overflow-hidden rounded-xl border border-border">
-        <iframe
-          key={src}
-          ref={frame}
-          src={src}
-          title={figure.title}
-          loading="lazy"
-          onLoad={onLoad}
-          className="block w-full"
-          style={height ? { height } : { aspectRatio: `${figure.width} / ${figure.height + 96}` }}
-        />
+      <div
+        ref={box}
+        className="overflow-hidden rounded-xl border border-border"
+        style={height ? undefined : { aspectRatio: `${figure.width} / ${figure.height + 96}` }}
+      >
+        {inView && (
+          <iframe
+            key={src}
+            ref={frame}
+            src={src}
+            title={figure.title}
+            onLoad={onLoad}
+            className="block h-full w-full"
+            style={height ? { height } : undefined}
+          />
+        )}
       </div>
       <figcaption className="mt-2 text-sm text-muted-foreground">
         {figure.caption}{" "}
