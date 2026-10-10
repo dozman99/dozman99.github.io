@@ -160,10 +160,11 @@ function useDarkClass() {
 // controls wrapping both change it).
 // The page plays its animation once, when it loads. A lazy iframe loads well before it scrolls
 // into view, so the animation would be over before anyone saw it: the frame is only created
-// once half the figure is on screen. After that it loops: each finished run holds the complete
-// diagram for LOOP_HOLD_MS, then presses the page's own Replay button, but only while the figure
-// is on screen and only until the reader presses a playback button or a key in it.
-const LOOP_HOLD_MS = 4000
+// once half the figure is on screen. After that it loops: LOOP_HOLD_MS after a run is marked
+// finished, it presses the page's own Replay button, but only while the figure is on screen and
+// only until the reader presses a playback button or a key in it. The page marks the run finished
+// as the last step starts moving (--motion-step, 1.8 s), so the complete diagram shows for ~3.4 s.
+const LOOP_HOLD_MS = 5200
 
 function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   const dark = useDarkClass()
