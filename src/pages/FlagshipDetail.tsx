@@ -162,7 +162,7 @@ function useDarkClass() {
 // into view, so the animation would be over before anyone saw it: the frame is only created
 // once half the figure is on screen. After that it loops: each finished run holds the complete
 // diagram for LOOP_HOLD_MS, then presses the page's own Replay button, but only while the figure
-// is on screen and only until the reader clicks or presses a key in it.
+// is on screen and only until the reader presses a playback button or a key in it.
 const LOOP_HOLD_MS = 4000
 
 function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
@@ -222,7 +222,16 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
       win.clearTimeout(timer)
       pendingReplay.current = null
     }
-    doc.addEventListener("pointerdown", stop, true)
+    // Only a real press on a playback button stops it, not any touch: on a phone, scrolling the
+    // page with a finger over the figure starts with a pointerdown in the frame. The loop's own
+    // replay.click() is untrusted, so it doesn't count.
+    doc.addEventListener(
+      "click",
+      (e) => {
+        if (e.isTrusted && (e.target as Element).closest?.("[data-motion-action]")) stop()
+      },
+      true,
+    )
     doc.addEventListener("keydown", stop, true)
     const replayNow = () => {
       if (!stopped && !replay.disabled) replay.click()
