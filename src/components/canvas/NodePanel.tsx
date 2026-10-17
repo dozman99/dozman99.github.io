@@ -138,7 +138,7 @@ export function NodeInlinePanel({
       ref={ref}
       tabIndex={-1}
       aria-labelledby="node-panel-title"
-      className="mt-6 scroll-mt-6 rounded-xl border border-primary/40 bg-card p-6 shadow-md shadow-primary/5 outline-none animate-in fade-in-0 slide-in-from-top-1 duration-200 focus-visible:ring-2 focus-visible:ring-ring"
+      className="card-ambient mt-6 scroll-mt-6 rounded-xl border border-primary/40 bg-card p-6 shadow-md shadow-primary/5 outline-none animate-in fade-in-0 slide-in-from-top-1 duration-200 focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
