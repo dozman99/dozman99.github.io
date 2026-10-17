@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/layout/Sidebar"
 import { MobileHeader } from "@/components/layout/MobileHeader"
 import { MobileFooter } from "@/components/layout/MobileFooter"
 import { ScrollManager } from "@/components/ScrollManager"
+import { Starfield } from "@/components/Starfield"
 import { getRouteMeta } from "@/lib/routeMeta"
 
 export function Layout() {
@@ -24,6 +25,7 @@ export function Layout() {
         Skip to content
       </a>
       <ScrollManager />
+      <Starfield />
       <MobileHeader />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
