@@ -167,3 +167,11 @@
     }
   }
 }
+
+/* Faint diagonal wash on card surfaces: warm amber from the top-right,
+   olive from the bottom-left, over the card's own fill. */
+@utility card-ambient {
+  background-image:
+    radial-gradient(130% 130% at 100% 0, color-mix(in oklch, var(--chart-3) 12%, transparent), transparent 55%),
+    radial-gradient(130% 130% at 0 100%, color-mix(in oklch, var(--primary) 9%, transparent), transparent 55%);
+}

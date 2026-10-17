@@ -78,7 +78,7 @@ export default function Experience() {
                   href={cert.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-primary/50"
+                  className="group flex items-center justify-between gap-2 card-ambient rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-primary/50"
                 >
                   <div>
                     <p className="text-sm font-medium">{cert.name}</p>

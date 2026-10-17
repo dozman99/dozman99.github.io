@@ -23,7 +23,7 @@ function StoryEnd({ slug }: { slug: string }) {
       {next && next.slug !== slug && (
         <Link
           to={`/flagships/${next.slug}`}
-          className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50"
+          className="card-ambient group flex flex-col rounded-xl border border-border bg-card p-5 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50"
         >
           <span className="text-sm text-muted-foreground">Next story</span>
           <span className="mt-1 flex items-center justify-between gap-3 text-base font-semibold tracking-tight">

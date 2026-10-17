@@ -59,7 +59,7 @@ function route(a: Box, b: Box): string {
 }
 
 const nodeBase =
-  "group relative w-full rounded-lg border bg-card px-4 py-3 text-left shadow-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-md hover:shadow-primary/10 active:translate-y-0 active:scale-[0.99]"
+  "card-ambient group relative w-full rounded-lg border bg-card px-4 py-3 text-left shadow-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-md hover:shadow-primary/10 active:translate-y-0 active:scale-[0.99]"
 const nodeSelected = "border-primary bg-accent shadow-md shadow-primary/10 ring-1 ring-primary"
 
 type Labelled = { label: string; sublabel?: string; detail: { whatBroke?: string } }

@@ -27,7 +27,7 @@ export default function Home() {
 
         <dl className="mt-8 grid gap-3 sm:grid-cols-3">
           {hero.stats.map((stat) => (
-            <div key={stat.value} className="rounded-xl border border-border bg-card p-4">
+            <div key={stat.value} className="card-ambient rounded-xl border border-border bg-card p-4">
               <dt className="text-xl font-semibold tracking-tight text-foreground">{stat.value}</dt>
               <dd className="mt-1 text-sm text-muted-foreground">{stat.label}</dd>
             </div>
@@ -71,7 +71,7 @@ export default function Home() {
                   className={cn(
                     "group flex h-full flex-col rounded-xl border p-5 transition-[border-color,transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md hover:shadow-primary/5 active:translate-y-0",
                     // Built stories are solid cards; teasers are open outlines.
-                    hasCanvas ? "border-border bg-card" : "border-dashed border-foreground/20 bg-transparent",
+                    hasCanvas ? "card-ambient border-border bg-card" : "border-dashed border-foreground/20 bg-transparent",
                   )}
                 >
                   <div className="flex items-start justify-between gap-3">
