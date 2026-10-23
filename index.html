@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1d2016" />
+    <meta name="theme-color" content="#ffffff" />
     <title>Chiedozie Onyekwum · DevOps / MLOps Engineer</title>
     <meta
       name="description"
@@ -26,24 +26,25 @@
     <meta name="twitter:description" content="I build cloud platforms and the pipelines that deploy to them." />
     <meta name="twitter:image" content="https://dozman99.github.io/og-image.jpg" />
     <script>
-      // Applied before paint to avoid a flash of the wrong theme. Dark is the
-      // default; the theme toggle can store "light" or "system" instead.
+      // Applied before paint to avoid a flash of the wrong theme. Light is the
+      // default; the theme toggle can store "dark" or "system" instead.
       ;(function () {
         var t
         try {
           t = localStorage.getItem('theme')
         } catch (e) {}
         var dark =
-          t === 'light'
-            ? false
+          t === 'dark'
+            ? true
             : t === 'system'
               ? window.matchMedia('(prefers-color-scheme: dark)').matches
-              : true
-        if (dark) document.documentElement.classList.add('dark')
-        else
+              : false
+        if (dark) {
+          document.documentElement.classList.add('dark')
           document
             .querySelector('meta[name="theme-color"]')
-            .setAttribute('content', '#f6f1e3')
+            .setAttribute('content', '#16171b')
+        }
       })()
     </script>
     <script>

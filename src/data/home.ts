@@ -1,5 +1,10 @@
 // Homepage hero. Numbers match the Conclase bullets in experience.ts; change both together.
 
+// The large statement on the home page: the first three sentences of
+// aboutIntro[0] in about.ts. Change both together.
+export const statement =
+  "I'm a DevOps / MLOps engineer. I start with how a system can fail, then design it to keep working when that happens. I change systems in small, reversible steps and measure the result before I trust it."
+
 export const hero = {
   intro: [
     "I build cloud platforms and the pipelines that deploy to them.",

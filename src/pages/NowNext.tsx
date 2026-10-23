@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
-import { PageHeader } from "@/components/PageHeader"
+import { PageBody, PageHeader } from "@/components/PageHeader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { now, next } from "@/data/nowNext"
 
@@ -45,12 +45,12 @@ function ItemCard({ item }: { item: { title: string; detail: string; flagshipSlu
 export default function NowNext() {
   return (
     <div>
-      <PageHeader title="What I'm doing, and what's coming" />
+      <PageHeader label="Now / Next" title="What I'm doing, and what's coming" />
 
-      <section className="px-4 pb-20 sm:px-6">
-        <div className="grid gap-10 sm:grid-cols-2">
+      <PageBody>
+        <div className="grid gap-12 sm:grid-cols-2">
           <div>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">Now</h2>
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Now)</h2>
             <div className="space-y-4">
               {now.map((item) => (
                 <ItemCard key={item.title} item={item} />
@@ -59,7 +59,7 @@ export default function NowNext() {
           </div>
 
           <div>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">Next</h2>
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Next)</h2>
             <div className="space-y-4">
               {next.map((item) => (
                 <ItemCard key={item.title} item={item} />
@@ -67,7 +67,7 @@ export default function NowNext() {
             </div>
           </div>
         </div>
-      </section>
+      </PageBody>
     </div>
   )
 }

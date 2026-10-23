@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { ArrowLeft, ArrowRight, ExternalLink, FileText, Mail } from "lucide-react"
-import { PageHeader } from "@/components/PageHeader"
+import { PageBody, PageHeader } from "@/components/PageHeader"
 import { FlagshipCanvas } from "@/components/canvas/FlagshipCanvas"
 import { NodeInlinePanel, NodeSheet } from "@/components/canvas/NodePanel"
 import { Separator } from "@/components/ui/separator"
@@ -10,6 +10,8 @@ import { flagships } from "@/data/flagships"
 import type { CanvasNode, Figure, InteractiveFigure, SideNode } from "@/data/canvases/types"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import { site } from "@/data/site"
+import { wideSrc, workImage } from "@/data/work"
+import { flagshipStatus } from "@/lib/flagshipStatus"
 import { cn } from "@/lib/utils"
 
 // Every story ends by pointing somewhere: the next built canvas, and a way
@@ -286,6 +288,33 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   )
 }
 
+// The story's wide photo, across the full page width under the header.
+function StoryHero({ slug }: { slug: string }) {
+  const image = workImage(slug)
+  if (!image) return null
+  return (
+    <div className="page-frame pb-16 md:pb-24">
+      <img
+        src={wideSrc(slug)}
+        alt={image.alt}
+        width={2680}
+        height={1508}
+        className="aspect-video h-auto w-full object-cover"
+      />
+    </div>
+  )
+}
+
+function storyMeta(slug: string) {
+  const f = flagships.find((x) => x.slug === slug)
+  if (!f) return undefined
+  return [
+    { label: "Where", value: f.where },
+    { label: "Focus", value: f.depth },
+    { label: "Format", value: flagshipStatus(slug) },
+  ]
+}
+
 export default function FlagshipDetail() {
   const { slug } = useParams<{ slug: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -322,12 +351,14 @@ export default function FlagshipDetail() {
       <div>
         <PageHeader
           back={{ to: "/projects", label: "Projects" }}
+          label={flagship?.where}
           title={flagship?.title ?? "Not found"}
-          description={flagship ? `${flagship.where} · ${flagship.depth}` : undefined}
+          meta={slug ? storyMeta(slug) : undefined}
         />
-        <div className="px-4 pb-20 sm:px-6">
+        {slug && <StoryHero slug={slug} />}
+        <PageBody>
           {flagship && (
-            <p className="mb-8 max-w-2xl text-base text-muted-foreground">{flagship.teaser}</p>
+            <p className="mb-10 max-w-2xl text-lg leading-relaxed text-foreground/90">{flagship.teaser}</p>
           )}
           <Link
             to="/projects"
@@ -336,7 +367,7 @@ export default function FlagshipDetail() {
             <ArrowLeft className="size-3.5" />
             All flagship stories
           </Link>
-        </div>
+        </PageBody>
       </div>
     )
   }
@@ -345,11 +376,14 @@ export default function FlagshipDetail() {
     <div>
       <PageHeader
         back={{ to: "/projects", label: "Projects" }}
+        label={flagship?.where}
         title={canvas.title}
         description={canvas.summary}
+        meta={storyMeta(canvas.slug)}
       />
+      <StoryHero slug={canvas.slug} />
 
-      <div className="px-4 pb-20 sm:px-6">
+      <PageBody>
         <h2 className="sr-only">Architecture</h2>
         <FlagshipCanvas canvas={canvas} openNodeId={openNodeId} onNodeClick={handleNodeClick} />
         {isDesktop && <NodeInlinePanel node={openNode} onClose={closePanel} />}
@@ -444,7 +478,7 @@ export default function FlagshipDetail() {
         )}
 
         <StoryEnd slug={canvas.slug} />
-      </div>
+      </PageBody>
 
       {!isDesktop && <NodeSheet node={openNode} onClose={closePanel} />}
     </div>
