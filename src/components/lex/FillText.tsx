@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 // A statement that fills in word by word as it scrolls up the screen: words
-// start grey and turn to full ink. Renders fully inked without JS and for
+// start at half opacity and turn solid (the template's data-fill). Renders fully inked without JS and for
 // anyone who prefers reduced motion.
 export function FillText({ text, className }: { text: string; className?: string }) {
   const words = text.split(" ")
@@ -41,7 +41,7 @@ export function FillText({ text, className }: { text: string; className?: string
       {words.map((word, i) => (
         <span
           key={i}
-          className={i < lit ? "text-foreground transition-colors duration-300" : "text-foreground/25 transition-colors duration-300"}
+          className={i < lit ? "transition-opacity duration-300" : "opacity-50 transition-opacity duration-300"}
         >
           {word}{i < words.length - 1 ? " " : ""}
         </span>

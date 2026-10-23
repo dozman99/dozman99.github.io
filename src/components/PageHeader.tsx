@@ -33,7 +33,7 @@ export function PageHeader({
             {back.label}
           </Link>
         )}
-        <h1 className="display text-5xl sm:text-6xl lg:text-7xl">{title}</h1>
+        <h1 data-split className="display text-5xl sm:text-6xl lg:text-7xl">{title}</h1>
         {description && (
           <p className="mt-6 max-w-xl text-lg leading-snug text-muted-foreground text-pretty">{description}</p>
         )}

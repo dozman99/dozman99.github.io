@@ -25,7 +25,7 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="display mt-14 text-[17vw] leading-[0.86] md:mt-20 md:text-[11.5vw] 2xl:text-[10.5rem]">
+          <h1 data-split className="display mt-14 text-[17vw] leading-[0.86] md:mt-20 md:text-[11.5vw] 2xl:text-[10.5rem]">
             {firstName}
             <br />
             {lastName}
@@ -58,7 +58,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="md:col-span-4 md:pt-12">
+        <div data-reveal className="overflow-hidden md:col-span-4 md:mt-12 md:self-start">
           <img
             src="/portrait.webp"
             alt={`${site.name} against a blue studio backdrop`}
@@ -99,7 +99,7 @@ export default function Home() {
       <section className="page-frame pb-28 md:pb-40">
         <div className="mb-12 grid items-end gap-y-4 md:mb-16 md:grid-cols-12">
           <Label className="order-1 md:col-span-4">Selected work</Label>
-          <h2 className="display order-2 text-5xl sm:text-6xl md:col-span-6 lg:text-7xl">Flagship stories</h2>
+          <h2 data-split className="display order-2 text-5xl sm:text-6xl md:col-span-6 lg:text-7xl">Flagship stories</h2>
           <Link
             to="/projects"
             className="order-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary md:col-span-2 md:min-h-0 md:justify-self-end"
@@ -116,7 +116,7 @@ export default function Home() {
         <div className="grid gap-y-6 border-t border-border pt-16 md:grid-cols-12 md:pt-24">
           <Label className="md:col-span-4">Contact</Label>
           <div className="md:col-span-8">
-            <h2 className="display text-5xl sm:text-6xl lg:text-7xl">{lookingFor.intro}</h2>
+            <h2 data-split className="display text-5xl sm:text-6xl lg:text-7xl">{lookingFor.intro}</h2>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">{hero.intro[2]}</p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <a
@@ -137,14 +137,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <img
-          src="/workspace.webp"
-          alt="An empty white desk and chair beside an open door"
-          width={2680}
-          height={1508}
-          loading="lazy"
-          className="mt-16 aspect-video h-auto w-full object-cover md:mt-24"
-        />
+        <div data-reveal data-parallax className="mt-16 overflow-hidden md:mt-24">
+          <img
+            src="/workspace.webp"
+            alt="An empty white desk and chair beside an open door"
+            width={2680}
+            height={1508}
+            loading="lazy"
+            className="aspect-video h-auto w-full object-cover"
+          />
+        </div>
       </section>
     </div>
   )

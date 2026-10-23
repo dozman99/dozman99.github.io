@@ -203,3 +203,13 @@
   line-height: 0.95;
   text-wrap: balance;
 }
+
+/* Motion starting states (see src/lib/motion.ts). index.html adds .motion to
+   <html> only when JS runs and reduced motion isn't requested, and drops it
+   again if the motion code hasn't loaded within 4 s. */
+.motion [data-split] {
+  opacity: 0;
+}
+.motion [data-reveal] {
+  clip-path: inset(100% 0% 0% 0%);
+}

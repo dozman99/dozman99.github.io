@@ -48,6 +48,17 @@
       })()
     </script>
     <script>
+      // Start animated headings and photos hidden so they don't flash before
+      // animating in. If the motion code hasn't arrived in 4 s, show them.
+      ;(function (root) {
+        if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
+        root.classList.add('motion')
+        setTimeout(function () {
+          if (!window.__motionReady) root.classList.remove('motion')
+        }, 4000)
+      })(document.documentElement)
+    </script>
+    <script>
       // Unpacks the redirect from 404.html (see that file for why) before
       // react-router mounts, so a shared deep link resolves to the right page.
       ;(function (l) {

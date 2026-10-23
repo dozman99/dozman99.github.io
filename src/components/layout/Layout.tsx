@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Outlet, useLocation } from "react-router-dom"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { SiteFooter } from "@/components/layout/SiteFooter"
@@ -7,6 +7,35 @@ import { getRouteMeta } from "@/lib/routeMeta"
 
 export function Layout() {
   const { pathname } = useLocation()
+  const main = useRef<HTMLElement>(null)
+
+  // The animation code loads after first paint, in its own chunk.
+  useEffect(() => {
+    let stop: (() => void) | undefined
+    let cancelled = false
+    import("@/lib/motion").then(({ startSmoothScroll }) => {
+      if (!cancelled) stop = startSmoothScroll()
+    })
+    return () => {
+      cancelled = true
+      stop?.()
+    }
+  }, [])
+
+  // Each page brings new headings and photos; wire them up after it renders.
+  useEffect(() => {
+    const root = main.current
+    if (!root) return
+    let stop: (() => void) | undefined
+    let cancelled = false
+    import("@/lib/motion").then(({ animatePage }) => {
+      if (!cancelled) stop = animatePage(root)
+    })
+    return () => {
+      cancelled = true
+      stop?.()
+    }
+  }, [pathname])
 
   // Prerendered pages ship the right <title>, but client-side navigation
   // doesn't reload the document, so keep it in step here.
@@ -24,7 +53,7 @@ export function Layout() {
       </a>
       <ScrollManager />
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+      <main ref={main} id="main" tabIndex={-1} className="flex-1 focus:outline-none">
         <Outlet />
       </main>
       <SiteFooter />

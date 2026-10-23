@@ -294,13 +294,15 @@ function StoryHero({ slug }: { slug: string }) {
   if (!image) return null
   return (
     <div className="page-frame pb-16 md:pb-24">
-      <img
-        src={wideSrc(slug)}
-        alt={image.alt}
-        width={2680}
-        height={1508}
-        className="aspect-video h-auto w-full object-cover"
-      />
+      <div data-reveal data-parallax className="overflow-hidden">
+        <img
+          src={wideSrc(slug)}
+          alt={image.alt}
+          width={2680}
+          height={1508}
+          className="aspect-video h-auto w-full object-cover"
+        />
+      </div>
     </div>
   )
 }

@@ -5,10 +5,11 @@ import { Separator } from "@/components/ui/separator"
 import { workExperience, leadership, type Role } from "@/data/experience"
 import { certifications } from "@/data/certifications"
 import { canvases } from "@/data/canvases"
+import { HoverPreview } from "@/components/lex/HoverPreview"
 
 function RoleCard({ role }: { role: Role }) {
   return (
-    <article className="py-8 first:pt-0">
+    <article data-preview-index={role.flagshipSlug} className="py-8 first:pt-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-2xl font-medium tracking-tight">{role.company}</h3>
         <span className="text-sm text-muted-foreground">{role.dates}</span>
@@ -53,7 +54,7 @@ export default function Experience() {
           <section className="pb-16">
             <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Work)</h2>
             <Separator />
-            <div className="divide-y divide-border">
+            <div data-preview-list="experience" className="divide-y divide-border">
               {workExperience.map((role) => (
                 <RoleCard key={role.company + role.dates} role={role} />
               ))}
@@ -96,6 +97,10 @@ export default function Experience() {
 
         </div>
       </PageBody>
+      <HoverPreview
+        id="experience"
+        slugs={workExperience.flatMap((r) => (r.flagshipSlug ? [r.flagshipSlug] : []))}
+      />
     </div>
   )
 }

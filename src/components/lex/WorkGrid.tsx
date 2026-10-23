@@ -22,7 +22,7 @@ export function WorkGrid({ anchors = false }: { anchors?: boolean }) {
           className={i % 2 === 1 ? "scroll-mt-24 md:translate-y-48" : "scroll-mt-24"}
         >
           <Link to={`/flagships/${slug}`} className="group block">
-            <div className="relative overflow-hidden bg-muted">
+            <div data-reveal className="relative overflow-hidden bg-muted">
               <img
                 src={tileSrc(slug)}
                 alt={alt}
