@@ -7,7 +7,7 @@ export const statement =
 
 export const hero = {
   intro: [
-    "I build cloud platforms and the pipelines that deploy to them.",
+    "I build, deploy and secure reliable solutions: AI applications, migrations, and self-healing systems.",
     "M.Sc. Computer Science, Texas A&M University, December 2026.",
     "Open to full-time roles from January 2027.",
   ],
