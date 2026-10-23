@@ -17,10 +17,10 @@ const aspect: Record<Shape, string> = {
 const homeLayout: Record<string, { shape: Shape; span: string; sizes: string }> = {
   dozlab: { shape: "landscape", span: "md:col-span-7", sizes: "(min-width: 768px) min(56vw, 800px), 100vw" },
   fbt: { shape: "tile", span: "md:col-span-5", sizes: "(min-width: 768px) min(40vw, 560px), 100vw" },
-  research: { shape: "portrait", span: "md:col-span-4", sizes: "(min-width: 768px) min(32vw, 460px), 100vw" },
-  "kafka-strangler": { shape: "wide", span: "md:col-span-8", sizes: "(min-width: 768px) min(64vw, 900px), 100vw" },
-  "air-gapped-portal": { shape: "tile", span: "md:col-span-5", sizes: "(min-width: 768px) min(40vw, 560px), 100vw" },
   "ai-inference-lab": { shape: "landscape", span: "md:col-span-7", sizes: "(min-width: 768px) min(56vw, 800px), 100vw" },
+  "kafka-strangler": { shape: "tile", span: "md:col-span-5", sizes: "(min-width: 768px) min(40vw, 560px), 100vw" },
+  research: { shape: "portrait", span: "md:col-span-4", sizes: "(min-width: 768px) min(32vw, 460px), 100vw" },
+  "air-gapped-portal": { shape: "wide", span: "md:col-span-8", sizes: "(min-width: 768px) min(64vw, 900px), 100vw" },
 }
 
 /**
