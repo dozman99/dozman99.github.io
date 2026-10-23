@@ -85,6 +85,14 @@ function NodeLabel({ node }: { node: Labelled }) {
   )
 }
 
+// Columns for the supporting cards that never leave one card alone on a row:
+// four become 2 x 2 (four across on wide screens), two sit side by side.
+function sideGridCols(n: number) {
+  if (n % 4 === 0) return "sm:grid-cols-2 lg:grid-cols-4"
+  if (n === 2) return "sm:grid-cols-2"
+  return "sm:grid-cols-3"
+}
+
 export function FlagshipCanvas({
   canvas,
   openNodeId,
@@ -315,7 +323,7 @@ export function FlagshipCanvas({
       {canvas.sideNodes.length > 0 && (
         <div className="mt-8">
           <h3 className="mb-3 text-sm font-semibold tracking-tight">Supporting infrastructure</h3>
-          <ul className="grid gap-3 sm:grid-cols-3">
+          <ul className={cn("grid gap-3", sideGridCols(canvas.sideNodes.length))}>
             {canvas.sideNodes.map((node) => (
               <li key={node.id}>
                 <button

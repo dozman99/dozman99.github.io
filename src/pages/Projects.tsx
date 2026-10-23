@@ -32,14 +32,13 @@ export default function Projects() {
         <WorkGrid anchors />
       </section>
 
-      <section aria-labelledby="side-projects" className="page-frame grid gap-y-6 pb-28 xl:grid-cols-12">
-        <div className="xl:col-span-3">
-          <Label>Other work</Label>
+      <section aria-labelledby="side-projects" className="page-frame pb-28">
+        <div className="mx-auto w-full max-w-5xl">
+          <Label className="mb-6">Other work</Label>
           <h2 id="side-projects" className="sr-only">
             Other work
           </h2>
-        </div>
-        <ul className="border-t border-border xl:col-span-9">
+        <ul className="border-t border-border">
           {sideProjects.map((project) => (
             <li key={project.name} className="grid gap-y-3 border-b border-border py-8 sm:grid-cols-8 sm:gap-x-6">
               <div className="sm:col-span-5">
@@ -64,6 +63,7 @@ export default function Projects() {
             </li>
           ))}
         </ul>
+        </div>
       </section>
     </div>
   )

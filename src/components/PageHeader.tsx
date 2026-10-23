@@ -4,9 +4,8 @@ import { ArrowLeft } from "lucide-react"
 import { Label, Meta } from "@/components/lex/Label"
 import { cn } from "@/lib/utils"
 
-// Label in the left three columns, a large title and grey lead in the right nine
-// (on wide screens; below 1280px the label sits above and content runs full width),
-// then an optional row of small facts.
+// One centred column at every width: the small "(Label)" above a large title,
+// a grey lead, then an optional row of small facts. Equal space on both sides.
 export function PageHeader({
   back,
   label,
@@ -16,16 +15,16 @@ export function PageHeader({
 }: {
   /** Optional "back to parent" link, shown above the title. */
   back?: { to: string; label: string }
-  /** Small "(Section)" marker on the left. */
+  /** Small "(Section)" marker above the title. */
   label?: string
   title: ReactNode
   description?: ReactNode
   meta?: { label: string; value: ReactNode }[]
 }) {
   return (
-    <header className="page-frame grid gap-y-6 pt-16 pb-14 md:pt-28 md:pb-20 xl:grid-cols-12">
-      <div className="xl:col-span-3">{label && <Label>{label}</Label>}</div>
-      <div className="xl:col-span-9">
+    <header className="page-frame pt-16 pb-14 md:pt-28 md:pb-20">
+      <div className="mx-auto w-full max-w-5xl">
+        {label && <Label className="mb-6">{label}</Label>}
         {back && (
           <Link
             to={back.to}
@@ -37,7 +36,7 @@ export function PageHeader({
         )}
         <h1 data-split className="display text-5xl sm:text-6xl lg:text-7xl">{title}</h1>
         {description && (
-          <p className="mt-6 max-w-xl text-lg leading-snug text-muted-foreground text-pretty">{description}</p>
+          <p className="mt-6 max-w-2xl text-lg leading-snug text-muted-foreground text-pretty">{description}</p>
         )}
         {meta && <Meta items={meta} className="mt-10 sm:grid-cols-4" />}
       </div>
@@ -45,11 +44,11 @@ export function PageHeader({
   )
 }
 
-/** Body content aligned under the header's title column. */
+/** Body content in the same centred column as the header. */
 export function PageBody({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("page-frame grid pb-24 xl:grid-cols-12", className)}>
-      <div className="min-w-0 xl:col-span-9 xl:col-start-4">{children}</div>
+    <div className={cn("page-frame pb-24", className)}>
+      <div className="mx-auto w-full max-w-5xl min-w-0">{children}</div>
     </div>
   )
 }

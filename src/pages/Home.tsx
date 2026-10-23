@@ -70,9 +70,9 @@ export default function Home() {
       </section>
 
       {/* About: one statement that fills in as it scrolls, then the numbers. */}
-      <section className="page-frame grid gap-y-6 pb-28 md:pb-44 xl:grid-cols-12">
-        <Label className="xl:col-span-3">About</Label>
-        <div className="xl:col-span-9">
+      <section className="page-frame pb-28 md:pb-44">
+        <div className="mx-auto w-full max-w-5xl">
+          <Label className="mb-6">About</Label>
           <FillText
             text={statement}
             className="text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-pretty sm:text-4xl lg:text-[2.75rem]"
