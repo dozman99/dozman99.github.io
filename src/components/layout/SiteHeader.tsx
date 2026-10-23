@@ -14,7 +14,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur supports-backdrop-filter:bg-background/75">
       <div className="page-frame grid h-16 grid-cols-[1fr_auto] items-center md:grid-cols-12">
-        <NavLink to="/" className="text-sm font-semibold tracking-tight md:col-span-4">
+        <NavLink to="/" className="text-sm font-semibold tracking-tight md:col-span-3">
           {site.name}
         </NavLink>
 
@@ -35,7 +35,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center justify-end gap-6 lg:col-span-3 lg:flex">
+        <div className="hidden items-center justify-end gap-6 lg:col-span-4 lg:flex">
           <a
             href={`mailto:${site.email}`}
             className="truncate text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -51,7 +51,7 @@ export function SiteHeader() {
           </a>
         </div>
 
-        <div className="flex justify-end md:col-span-8 lg:hidden">
+        <div className="flex justify-end md:col-span-9 lg:hidden">
           <Sheet>
             <SheetTrigger
               render={

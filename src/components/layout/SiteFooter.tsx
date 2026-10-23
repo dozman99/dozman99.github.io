@@ -11,10 +11,10 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border">
       <div className="page-frame grid gap-y-6 py-10 text-sm md:grid-cols-12 md:items-center">
-        <p className="text-muted-foreground md:col-span-4">
+        <p className="text-muted-foreground md:col-span-3">
           &copy; {year} {site.name}
         </p>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 md:col-span-6">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 md:col-span-7">
           <a href={site.resume} target="_blank" rel="noreferrer" className={link}>
             <FileText className="size-4" />
             Résumé

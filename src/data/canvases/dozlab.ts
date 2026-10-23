@@ -24,12 +24,13 @@ export const dozlabCanvas: CanvasData = {
         height: 856,
       },
       {
-        src: "/dozlab/create-vm.webp",
+        // Cropped to the form and its cost table so it reads at gallery size.
+        src: "/dozlab/create-vm-form.webp",
         alt: "DozLab Create a VM form with a table of the CPU and memory reserved by the VM, the browser terminal and the browser editor",
         caption:
           "Before a VM is created, the form shows what it will take: the VM, the browser terminal and the browser editor, reserved and at most.",
         width: 1200,
-        height: 1572,
+        height: 1190,
       },
       {
         src: "/dozlab/terminal.webp",

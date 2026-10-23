@@ -4,7 +4,6 @@ import { ArrowLeft, ArrowRight, ExternalLink, FileText, Mail } from "lucide-reac
 import { PageBody, PageHeader } from "@/components/PageHeader"
 import { FlagshipCanvas } from "@/components/canvas/FlagshipCanvas"
 import { NodeInlinePanel, NodeSheet } from "@/components/canvas/NodePanel"
-import { Separator } from "@/components/ui/separator"
 import { canvases } from "@/data/canvases"
 import { flagships } from "@/data/flagships"
 import type { CanvasNode, Figure, InteractiveFigure, SideNode } from "@/data/canvases/types"
@@ -75,7 +74,7 @@ function StoryEnd({ slug }: { slug: string }) {
 // ever see what's actually in the page's HTML, never what a click would open.
 function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
   return (
-    <article id={node.id} className="scroll-mt-24 py-8 first:pt-0">
+    <article id={node.id} className="scroll-mt-24 border-t border-border py-8">
       <h3 className="text-base font-semibold tracking-tight">{node.label}</h3>
       {node.sublabel && <p className="mt-0.5 font-mono text-xs text-muted-foreground">{node.sublabel}</p>}
 
@@ -166,21 +165,10 @@ function FigureCard({
   )
 }
 
-/**
- * Rows for the screenshots: landscape shots pair up (an odd one stands alone),
- * and a portrait shot gets its own row so its text stays readable.
- */
-function shotRows<T extends { width: number; height: number }>(items: T[]): T[][] {
+/** Screenshot rows: consecutive pairs, in order; an odd last one stands alone. */
+function shotRows<T>(items: T[]): T[][] {
   const rows: T[][] = []
-  let pending: T | undefined
-  for (const item of items) {
-    if (item.height > item.width) rows.push([item])
-    else if (pending) {
-      rows.push([pending, item])
-      pending = undefined
-    } else pending = item
-  }
-  if (pending) rows.push([pending])
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2))
   return rows
 }
 
@@ -400,7 +388,7 @@ export default function FlagshipDetail() {
         />
         <div className="page-frame grid gap-y-10 pb-24 md:grid-cols-12 md:gap-x-8">
           {slug && workImage(slug) && (
-            <div data-reveal className="overflow-hidden bg-muted md:col-span-4 md:self-start">
+            <div data-reveal className="overflow-hidden bg-muted md:col-span-3 md:self-start">
               <img
                 {...workSet(slug, "tile")}
                 sizes="(min-width: 768px) 440px, 100vw"
@@ -410,7 +398,7 @@ export default function FlagshipDetail() {
               />
             </div>
           )}
-          <div className="min-w-0 md:col-span-8">
+          <div className="min-w-0 md:col-span-9">
           {flagship && (
             <p className="mb-10 max-w-2xl text-lg leading-relaxed text-foreground/90">{flagship.teaser}</p>
           )}
@@ -439,15 +427,15 @@ export default function FlagshipDetail() {
       />
       <StoryHero slug={canvas.slug} />
 
-      <PageBody>
+      <PageBody className={canvas.proof ? "pb-10" : undefined}>
         <h2 className="sr-only">Architecture</h2>
         <FlagshipCanvas canvas={canvas} openNodeId={openNodeId} onNodeClick={handleNodeClick} />
         {isDesktop && <NodeInlinePanel node={openNode} onClose={closePanel} />}
 
         {canvas.proof && (
-          <section id="running" className="mt-12 scroll-mt-24 border-t border-border pt-8">
+          <div id="running" className="mt-12 scroll-mt-24 border-t border-border pt-8">
             <h2 className="mb-2 text-xl font-semibold tracking-tight">See it running</h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">
+            <p className="max-w-3xl text-sm text-muted-foreground">
               Screenshots taken on {canvas.proof.capturedOn}. {canvas.proof.note}
             </p>
             {canvas.proof.liveUrl && (
@@ -461,29 +449,42 @@ export default function FlagshipDetail() {
                 <ExternalLink className="size-3.5" />
               </a>
             )}
-            <div className="mt-6 space-y-8">
-              {shotRows(canvas.proof.shots).map((pair) => (
-                <div key={pair[0].src} className="flex flex-col gap-6 sm:flex-row">
-                  {pair.map((shot) => (
-                    <FigureCard
-                      key={shot.src}
-                      figure={shot}
-                      // A portrait shot alone is capped so it isn't a screen tall.
-                      className={shot.height > shot.width ? "min-w-0 sm:max-w-xl" : "min-w-0"}
-                      // flex-grow by aspect ratio: the pair's images come out the same height.
-                      style={pair.length > 1 ? { flex: `${shot.width / shot.height} 1 0%` } : undefined}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </section>
+          </div>
         )}
+      </PageBody>
 
+      {/* The gallery, as in the template: paired screenshots run the full page
+          width, edge to edge with the header photo, at one shared height. A lone
+          last shot sits in the content column instead. */}
+      {canvas.proof && (
+        <div className="space-y-10 pb-12">
+          {shotRows(canvas.proof.shots).map((row) =>
+            row.length > 1 ? (
+              <div key={row[0].src} className="page-frame flex flex-col gap-6 sm:flex-row">
+                {row.map((shot) => (
+                  <FigureCard
+                    key={shot.src}
+                    figure={shot}
+                    className="min-w-0"
+                    // flex-grow by aspect ratio: the pair's images come out the same height.
+                    style={{ flex: `${shot.width / shot.height} 1 0%` }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <PageBody key={row[0].src} className="pb-0">
+                <FigureCard figure={row[0]} />
+              </PageBody>
+            ),
+          )}
+        </div>
+      )}
+
+      <PageBody>
         {canvas.diagrams && (
           <section id="diagrams" className="mt-12 scroll-mt-24 border-t border-border pt-8">
             <h2 className="mb-2 text-xl font-semibold tracking-tight">Architecture diagrams</h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
+            <p className="max-w-3xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
             <div className="mt-6 space-y-8">
               {canvas.diagrams.figures.map((figure) =>
                 "kind" in figure ? (
@@ -500,13 +501,12 @@ export default function FlagshipDetail() {
           </section>
         )}
 
-        <div className="mt-12 max-w-2xl border-t border-border pt-8">
+        <div className="mt-12 border-t border-border pt-8">
           <h2 className="mb-2 text-xl font-semibold tracking-tight">Full breakdown</h2>
           <p className="mb-4 text-sm text-muted-foreground">
             Same content as clicking a node above, written out in full.
           </p>
-          <Separator />
-          <div className="divide-y divide-border">
+          <div className="grid gap-x-12 md:grid-cols-2">
             {canvas.nodes.map((node) => (
               <NodeBreakdown key={node.id} node={node} />
             ))}

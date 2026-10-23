@@ -2,8 +2,9 @@ import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { Label, Meta } from "@/components/lex/Label"
+import { cn } from "@/lib/utils"
 
-// Label in the left column, a large title and grey lead in the right eight,
+// Label in the left three columns, a large title and grey lead in the right nine,
 // then an optional row of small facts.
 export function PageHeader({
   back,
@@ -22,8 +23,8 @@ export function PageHeader({
 }) {
   return (
     <header className="page-frame grid gap-y-6 pt-16 pb-14 md:grid-cols-12 md:pt-28 md:pb-20">
-      <div className="md:col-span-4">{label && <Label>{label}</Label>}</div>
-      <div className="md:col-span-8">
+      <div className="md:col-span-3">{label && <Label>{label}</Label>}</div>
+      <div className="md:col-span-9">
         {back && (
           <Link
             to={back.to}
@@ -46,8 +47,8 @@ export function PageHeader({
 /** Body content aligned under the header's title column. */
 export function PageBody({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`page-frame grid pb-24 md:grid-cols-12 ${className ?? ""}`}>
-      <div className="min-w-0 md:col-span-8 md:col-start-5">{children}</div>
+    <div className={cn("page-frame grid pb-24 md:grid-cols-12", className)}>
+      <div className="min-w-0 md:col-span-9 md:col-start-4">{children}</div>
     </div>
   )
 }

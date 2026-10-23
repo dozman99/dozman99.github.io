@@ -33,13 +33,13 @@ export default function Projects() {
       </section>
 
       <section aria-labelledby="side-projects" className="page-frame grid gap-y-6 pb-28 md:grid-cols-12">
-        <div className="md:col-span-4">
+        <div className="md:col-span-3">
           <Label>Side projects</Label>
           <h2 id="side-projects" className="sr-only">
             Side projects
           </h2>
         </div>
-        <ul className="border-t border-border md:col-span-8">
+        <ul className="border-t border-border md:col-span-9">
           {sideProjects.map((project) => (
             <li key={project.name} className="grid gap-y-3 border-b border-border py-8 sm:grid-cols-8 sm:gap-x-6">
               <div className="sm:col-span-5">
