@@ -45,8 +45,7 @@ export default function Experience() {
     <div>
       <PageHeader
         label="Experience"
-        title="Full timeline"
-        description="This page gives more detail than my résumé."
+        title="Every role, with the outcomes behind the résumé."
       />
 
       <PageBody>

@@ -18,12 +18,12 @@ export default function Projects() {
     <div>
       <PageHeader
         label="Projects"
-        title="Flagship stories, then side projects"
-        description={`${countWord(builtCount)} stories have an interactive architecture canvas: pick a node for why it exists and how it works. The rest are summaries.`}
+        title="Systems I've designed and run"
+        description={`${countWord(builtCount)} come with an interactive architecture map: pick any part to see why it exists, how it works and what was hard.`}
         meta={[
           { label: "Flagship stories", value: pad(flagships.length) },
-          { label: "Interactive canvases", value: pad(builtCount) },
-          { label: "Side projects", value: pad(sideProjects.length) },
+          { label: "Architecture deep dives", value: pad(builtCount) },
+          { label: "Other work", value: pad(sideProjects.length) },
         ]}
       />
 
@@ -34,9 +34,9 @@ export default function Projects() {
 
       <section aria-labelledby="side-projects" className="page-frame grid gap-y-6 pb-28 xl:grid-cols-12">
         <div className="xl:col-span-3">
-          <Label>Side projects</Label>
+          <Label>Other work</Label>
           <h2 id="side-projects" className="sr-only">
-            Side projects
+            Other work
           </h2>
         </div>
         <ul className="border-t border-border xl:col-span-9">

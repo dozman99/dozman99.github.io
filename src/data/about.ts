@@ -2,11 +2,11 @@
 
 export const aboutIntro = [
   "I'm a DevOps / MLOps engineer. I start with how a system can fail, then design it to keep working when that happens. I change systems in small, reversible steps and measure the result before I trust it. When something breaks, I find the root cause, fix it, and write down what I learned so the team can use it.",
-  "I'm finishing an M.Sc. in Computer Science at Texas A&M University (expected Dec 2026), where I research machine unlearning, privacy, and autonomous systems. I have also spent six years building and running production infrastructure across healthcare, fintech, and semiconductor environments.",
+  "Six years building and running production infrastructure across healthcare, fintech, and semiconductor environments. I'm completing an M.Sc. in Computer Science at Texas A&M University (December 2026), researching machine unlearning, privacy, and autonomous systems.",
 ]
 
 export const dream =
-  "My goal is to lead an engineering organization that solves hard problems correctly. Each project taught me to design for load and failure."
+  "I want to lead an engineering organization that solves hard problems correctly. Every system I've run taught me to design for load and failure first."
 
 export interface Interest {
   title: string
@@ -27,7 +27,7 @@ export const interests: Interest[] = [
   {
     title: "What fascinates me",
     description:
-      "I study distributed systems and AI infrastructure.",
+      "Distributed systems and AI infrastructure, and how they fail under load.",
   },
 ]
 
@@ -46,7 +46,7 @@ export const education = [
 
 // Mirrors the "next role" answer on the user's job-board profile; keep them in sync.
 export const lookingFor = {
-  intro: "I'm looking for a team, a people, a company to believe in.",
+  intro: "What I want next: real ownership, on a team that takes reliability seriously.",
   points: [
     {
       label: "Role",
@@ -62,7 +62,7 @@ export const lookingFor = {
     },
     {
       label: "Timing",
-      text: "I finish my master's in Computer Science at Texas A&M University in December 2026.",
+      text: "Available from January 2027.",
     },
   ],
 }

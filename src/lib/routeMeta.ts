@@ -17,7 +17,7 @@ export function getRouteMeta(url: string): { title: string; description: string 
   if (path === "/about") {
     return {
       title: `About${SITE_SUFFIX}`,
-      description: "Who I am outside the bullet points, and the long-term dream behind the work.",
+      description: "How I work, and why: the approach behind the systems, and what I want next.",
     }
   }
   if (path === "/experience") {
@@ -29,7 +29,7 @@ export function getRouteMeta(url: string): { title: string; description: string 
   if (path === "/projects") {
     return {
       title: `Projects${SITE_SUFFIX}`,
-      description: "Flagship architecture stories, then side projects. Pick a node for why each piece exists and how it works.",
+      description: "Systems I've designed and run, with interactive architecture maps: pick any part to see why it exists and how it works.",
     }
   }
   if (path === "/now-next") {

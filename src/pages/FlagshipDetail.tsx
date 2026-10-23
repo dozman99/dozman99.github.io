@@ -43,7 +43,7 @@ function StoryEnd({ slug }: { slug: string }) {
         </Link>
       )}
       <div className="flex flex-col justify-center rounded-xl border border-dashed border-foreground/20 p-5">
-        <p className="text-base font-semibold tracking-tight">Want the long version?</p>
+        <p className="text-base font-semibold tracking-tight">Happy to walk through the system in depth.</p>
         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
           <a
             href={`mailto:${site.email}`}

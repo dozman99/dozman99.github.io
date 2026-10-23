@@ -38,7 +38,7 @@ export const flagships: Flagship[] = [
   {
     slug: "dozlab",
     title: "DozLab",
-    where: "Side project",
+    where: "Independent build",
     depth: "Building a platform on Kubernetes",
     teaser:
       "I built DozLab after I tutored DevOps students and had to fix each student's Mac, Linux or Windows setup before a lab could start. DozLab is a multi-tenant SaaS platform that I built on Kubernetes, with sidecar containers, VM-backed hands-on labs, and real-time WebSocket proxying for a DevOps/security education product.",
@@ -46,7 +46,7 @@ export const flagships: Flagship[] = [
   {
     slug: "ai-inference-lab",
     title: "AI Inference Infrastructure Lab",
-    where: "Side project",
+    where: "Independent build",
     depth: "GPU orchestration and LLM serving",
     teaser:
       "An end-to-end LLM serving lab on Kubernetes: open-weight models deployed across multiple serving engines, GPUs shared with MIG and time slicing. I measure latency and cost per request for each model.",

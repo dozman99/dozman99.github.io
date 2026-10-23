@@ -8,7 +8,7 @@ export default function About() {
     <div>
       <PageHeader
         label="About"
-        title="Who I am, outside the bullet points"
+        title="How I work, and why"
         description={`${site.role}, based in ${site.location}.`}
       />
 

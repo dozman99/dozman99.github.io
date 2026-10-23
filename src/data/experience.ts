@@ -56,7 +56,7 @@ export const workExperience: Role[] = [
       // to "40+ clients" — the one number the user supplied himself. Sanity-check every
       // one against what actually happened before this goes public.
       "Owned AWS infrastructure (ECS, EC2, ALB, Route 53, RDS, S3, CloudFormation, CodePipeline/CodeBuild) for 40+ clients as an outsourced platform engineer.",
-      "Supported 85+ production services across 4 environments.",
+      "Kept 85+ production services running across 4 environments.",
       "Standardized observability for 40+ clients by codifying dashboards, alerts, and data sources as Terraform modules, giving every new tenant consistent SLO monitoring from day one.",
       "Designed a Terraform-based Feature Branch Testing platform that creates isolated, disposable per-branch AWS environments in about 12 minutes.",
       "Increased pre-merge testing from 6 to 24 runs a week and cut integration defects reaching staging by 35%.",
@@ -128,7 +128,7 @@ export const leadership: Role[] = [
     dates: "Jan 2025 - Present",
     blurb: "",
     bullets: [
-      "Help members with career development and cross-disciplinary collaboration through targeted projects that expand members' competitive edge and professional opportunities.",
+      "Run career-development and cross-disciplinary projects for members.",
     ],
   },
   {

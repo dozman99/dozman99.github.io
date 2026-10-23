@@ -3,9 +3,8 @@ import { ArrowRight, Download } from "lucide-react"
 import { Label, Meta } from "@/components/lex/Label"
 import { FillText } from "@/components/lex/FillText"
 import { WorkGrid } from "@/components/lex/WorkGrid"
-import { lookingFor } from "@/data/about"
 import { flagships } from "@/data/flagships"
-import { hero, statement } from "@/data/home"
+import { contact, hero, statement } from "@/data/home"
 import { site } from "@/data/site"
 import { imageSet } from "@/data/work"
 
@@ -100,7 +99,7 @@ export default function Home() {
       <section className="page-frame pb-28 md:pb-40">
         <div className="mb-12 grid items-end gap-y-4 md:mb-16 xl:grid-cols-12">
           <Label className="order-1 xl:col-span-3">Selected work</Label>
-          <h2 data-split className="display order-2 text-5xl sm:text-6xl xl:col-span-7 lg:text-7xl">Flagship stories</h2>
+          <h2 data-split className="display order-2 text-5xl sm:text-6xl xl:col-span-7 lg:text-7xl">Selected systems</h2>
           <Link
             to="/projects"
             className="order-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary md:min-h-0 xl:col-span-2 xl:justify-self-end"
@@ -130,9 +129,9 @@ export default function Home() {
             <div className="md:col-span-7">
               <p className="mb-6 text-sm text-white/80">(Contact)</p>
               <h2 data-split className="display text-5xl sm:text-6xl lg:text-7xl">
-                {lookingFor.intro}
+                {contact.headline}
               </h2>
-              <p className="mt-6 max-w-md text-lg text-white/90">{hero.intro[2]}</p>
+              <p className="mt-6 max-w-md text-lg text-white/90">{contact.line}</p>
               <div className="mt-10 flex flex-wrap items-center gap-3">
                 <a
                   href={`mailto:${site.email}`}
