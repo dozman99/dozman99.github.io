@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, ExternalLink } from "lucide-react"
-import { PageHeader } from "@/components/PageHeader"
+import { PageBody, PageHeader } from "@/components/PageHeader"
 import { Separator } from "@/components/ui/separator"
 import { workExperience, leadership, type Role } from "@/data/experience"
 import { certifications } from "@/data/certifications"
 import { canvases } from "@/data/canvases"
+import { HoverPreview } from "@/components/lex/HoverPreview"
 
 function RoleCard({ role }: { role: Role }) {
   return (
-    <article className="py-8 first:pt-0">
+    <article data-preview-index={role.flagshipSlug} className="py-8 first:pt-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="text-lg font-semibold tracking-tight">{role.company}</h3>
+        <h3 className="text-2xl font-medium tracking-tight">{role.company}</h3>
         <span className="text-sm text-muted-foreground">{role.dates}</span>
       </div>
       <p className="text-sm text-muted-foreground">
@@ -43,16 +44,16 @@ export default function Experience() {
   return (
     <div>
       <PageHeader
-        title="Full timeline"
-        description="This page gives more detail than my résumé."
+        label="Experience"
+        title="Every role, with the outcomes behind the résumé."
       />
 
-      <div className="px-4 pb-20 sm:px-6">
-        <div className="max-w-3xl">
+      <PageBody>
+        <div>
           <section className="pb-16">
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">Work</h2>
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Work)</h2>
             <Separator />
-            <div className="divide-y divide-border">
+            <div data-preview-list="experience" className="divide-y divide-border">
               {workExperience.map((role) => (
                 <RoleCard key={role.company + role.dates} role={role} />
               ))}
@@ -60,7 +61,7 @@ export default function Experience() {
           </section>
 
           <section className="pb-16">
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">Leadership &amp; Volunteering</h2>
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Leadership &amp; volunteering)</h2>
             <Separator />
             <div className="divide-y divide-border">
               {leadership.map((role) => (
@@ -69,16 +70,16 @@ export default function Experience() {
             </div>
           </section>
           <section>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">Certifications</h2>
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Certifications)</h2>
             <Separator className="mb-4" />
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-x-8 sm:grid-cols-2">
               {certifications.map((cert) => (
                 <a
                   key={cert.name}
                   href={cert.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-center justify-between gap-2 card-ambient rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-primary/50"
+                  className="group flex items-center justify-between gap-2 border-b border-border py-4 transition-colors hover:text-primary"
                 >
                   <div>
                     <p className="text-sm font-medium">{cert.name}</p>
@@ -94,7 +95,11 @@ export default function Experience() {
           </section>
 
         </div>
-      </div>
+      </PageBody>
+      <HoverPreview
+        id="experience"
+        slugs={workExperience.flatMap((r) => (r.flagshipSlug ? [r.flagshipSlug] : []))}
+      />
     </div>
   )
 }

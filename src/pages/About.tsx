@@ -1,73 +1,51 @@
 import { PageHeader } from "@/components/PageHeader"
-import { Headshot } from "@/components/Headshot"
+import { Rows, Section } from "@/components/lex/Section"
 import { aboutIntro, dream, education, interests, lookingFor } from "@/data/about"
+import { site } from "@/data/site"
 
 export default function About() {
   return (
     <div>
-      <PageHeader title="Who I am, outside the bullet points" />
+      <PageHeader
+        label="About"
+        title="How I work, and why"
+        description={`${site.role}, based in ${site.location}.`}
+      />
 
-      <section className="px-4 pb-14 sm:px-6">
-        <div className="flex max-w-3xl flex-col gap-6 sm:flex-row">
-          {/* Desktop already shows the photo in the sidebar; only phones need it here. */}
-          <Headshot width={160} height={240} className="h-60 w-40 shrink-0 rounded-lg lg:hidden" />
-          <div className="space-y-4 text-base text-muted-foreground">
-            {aboutIntro.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 pb-14 sm:px-6">
-        <div className="max-w-3xl">
-          <h2 className="mb-3 text-xl font-semibold tracking-tight">The dream</h2>
-          <p className="text-base text-muted-foreground">{dream}</p>
-        </div>
-      </section>
-
-      <section className="px-4 pb-14 sm:px-6">
-        <h2 className="mb-3 text-xl font-semibold tracking-tight">What I'm looking for</h2>
-        <p className="mb-4 max-w-3xl text-base text-muted-foreground">{lookingFor.intro}</p>
-        <dl className="max-w-3xl divide-y divide-border border-y border-border">
-          {lookingFor.points.map((point) => (
-            <div key={point.label} className="grid gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
-              <dt className="text-base font-semibold tracking-tight">{point.label}</dt>
-              <dd className="text-base text-muted-foreground">{point.text}</dd>
-            </div>
+      <Section label="Story">
+        <p className="text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-pretty sm:text-4xl lg:text-[2.75rem]">
+          {dream}
+        </p>
+        <div className="mt-12 grid gap-8 text-base leading-relaxed text-muted-foreground sm:grid-cols-2">
+          {aboutIntro.map((p, i) => (
+            <p key={i}>{p}</p>
           ))}
-        </dl>
-      </section>
-
-      <section className="px-4 pb-14 sm:px-6">
-        <h2 className="mb-6 text-xl font-semibold tracking-tight">Outside of work</h2>
-        {/* A term/description list, not a row of three identical cards. */}
-        <dl className="max-w-3xl divide-y divide-border border-y border-border">
-          {interests.map((interest) => (
-            <div key={interest.title} className="grid gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
-              <dt className="text-base font-semibold tracking-tight">{interest.title}</dt>
-              <dd className="text-base text-muted-foreground">{interest.description}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="px-4 pb-20 sm:px-6">
-        <div className="max-w-3xl">
-          <h2 className="mb-4 text-xl font-semibold tracking-tight">Education</h2>
-          <ul className="space-y-3">
-            {education.map((e) => (
-              <li key={e.school} className="border-l-2 border-border pl-4">
-                <p className="font-medium">{e.school}</p>
-                <p className="text-sm text-muted-foreground">
-                  {e.degree}
-                  {e.detail && ` · ${e.detail}`}
-                </p>
-              </li>
-            ))}
-          </ul>
         </div>
-      </section>
+      </Section>
+
+      <Section label="Looking for">
+        <p className="mb-8 max-w-2xl text-xl leading-snug tracking-tight">{lookingFor.intro}</p>
+        <Rows items={lookingFor.points.map((p) => ({ key: p.label, term: p.label, text: p.text }))} />
+      </Section>
+
+      <Section label="Outside of work">
+        <Rows items={interests.map((i) => ({ key: i.title, term: i.title, text: i.description }))} />
+      </Section>
+
+      <Section label="Education">
+        <Rows
+          items={education.map((e) => ({
+            key: e.school,
+            term: e.school,
+            text: (
+              <>
+                {e.degree}
+                {e.detail && <span className="block text-sm">{e.detail}</span>}
+              </>
+            ),
+          }))}
+        />
+      </Section>
     </div>
   )
 }

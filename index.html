@@ -2,49 +2,72 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- CO monogram, white on black. SVG for modern tabs, .ico for older
+         browsers, apple-touch-icon for iOS home screens and link previews,
+         and the manifest for Chrome shortcuts, the taskbar and Android. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1d2016" />
+    <meta name="theme-color" content="#ffffff" />
     <title>Chiedozie Onyekwum · DevOps / MLOps Engineer</title>
     <meta
       name="description"
-      content="I build cloud platforms and the pipelines that deploy to them."
+      content="From the first commit to long after launch, the system is mine: built secure, run steady, shipped fast. Applications and AI services that heal themselves before anyone notices they were hurt."
     />
     <!-- Link previews (LinkedIn, Slack, X). Title, description and URL are
          rewritten per route by scripts/prerender.mjs. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Chiedozie Onyekwum" />
     <meta property="og:title" content="Chiedozie Onyekwum · DevOps / MLOps Engineer" />
-    <meta property="og:description" content="I build cloud platforms and the pipelines that deploy to them." />
+    <meta property="og:description" content="From the first commit to long after launch, the system is mine: built secure, run steady, shipped fast. Applications and AI services that heal themselves before anyone notices they were hurt." />
     <meta property="og:url" content="https://dozman99.github.io/" />
-    <meta property="og:image" content="https://dozman99.github.io/og-image.jpg" />
+    <meta property="og:image" content="https://dozman99.github.io/og/home.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="A white modular robot on a dark table" />
+    <meta property="og:image:alt" content="Chiedozie Onyekwum, DevOps / MLOps Engineer" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Chiedozie Onyekwum · DevOps / MLOps Engineer" />
-    <meta name="twitter:description" content="I build cloud platforms and the pipelines that deploy to them." />
-    <meta name="twitter:image" content="https://dozman99.github.io/og-image.jpg" />
+    <meta name="twitter:description" content="From the first commit to long after launch, the system is mine: built secure, run steady, shipped fast. Applications and AI services that heal themselves before anyone notices they were hurt." />
+    <meta name="twitter:image" content="https://dozman99.github.io/og/home.jpg" />
     <script>
-      // Applied before paint to avoid a flash of the wrong theme. Dark is the
-      // default; the theme toggle can store "light" or "system" instead.
+      // Applied before paint to avoid a flash of the wrong theme. Light is the
+      // default; the theme toggle can store "dark" or "system" instead.
       ;(function () {
         var t
         try {
           t = localStorage.getItem('theme')
         } catch (e) {}
         var dark =
-          t === 'light'
-            ? false
+          t === 'dark'
+            ? true
             : t === 'system'
               ? window.matchMedia('(prefers-color-scheme: dark)').matches
-              : true
-        if (dark) document.documentElement.classList.add('dark')
-        else
+              : false
+        if (dark) {
+          document.documentElement.classList.add('dark')
           document
             .querySelector('meta[name="theme-color"]')
-            .setAttribute('content', '#f6f1e3')
+            .setAttribute('content', '#16171b')
+        }
       })()
+    </script>
+    <script>
+      // Start animated headings and photos hidden so they don't flash before
+      // animating in. If the motion code hasn't arrived in 4 s, show them.
+      ;(function (root) {
+        var motion = window.matchMedia('(prefers-reduced-motion: no-preference)')
+        // Follow the setting if it changes mid-visit, so nothing is left hidden.
+        motion.addEventListener('change', function (e) {
+          root.classList.toggle('motion', e.matches)
+        })
+        if (!motion.matches) return
+        root.classList.add('motion')
+        setTimeout(function () {
+          if (!window.__motionReady) root.classList.remove('motion')
+        }, 4000)
+      })(document.documentElement)
     </script>
     <script>
       // Unpacks the redirect from 404.html (see that file for why) before

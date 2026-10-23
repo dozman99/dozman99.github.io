@@ -1,39 +1,49 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { ArrowLeft, ArrowRight, ExternalLink, FileText, Mail } from "lucide-react"
-import { PageHeader } from "@/components/PageHeader"
+import { PageBody, PageHeader } from "@/components/PageHeader"
 import { FlagshipCanvas } from "@/components/canvas/FlagshipCanvas"
 import { NodeInlinePanel, NodeSheet } from "@/components/canvas/NodePanel"
-import { Separator } from "@/components/ui/separator"
 import { canvases } from "@/data/canvases"
 import { flagships } from "@/data/flagships"
 import type { CanvasNode, Figure, InteractiveFigure, SideNode } from "@/data/canvases/types"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import { site } from "@/data/site"
+import { workImage, workImages, workSet } from "@/data/work"
+import { flagshipStatus } from "@/lib/flagshipStatus"
 import { cn } from "@/lib/utils"
 
-// Every story ends by pointing somewhere: the next built canvas, and a way
-// to get in touch.
+// Every story ends by pointing somewhere: the next story (with its photo, as in
+// the template), and a way to get in touch.
 function StoryEnd({ slug }: { slug: string }) {
-  const built = flagships.filter((f) => f.slug in canvases)
-  const next = built[(built.findIndex((f) => f.slug === slug) + 1) % built.length]
+  const order = workImages.map((w) => w.slug)
+  const nextSlug = order[(order.indexOf(slug) + 1) % order.length]
+  const next = flagships.find((f) => f.slug === nextSlug)
+  const nextImage = workImage(nextSlug)
 
   return (
-    <div className="mt-16 grid gap-4 border-t border-border pt-10 sm:grid-cols-2">
-      {next && next.slug !== slug && (
-        <Link
-          to={`/flagships/${next.slug}`}
-          className="card-ambient group flex flex-col rounded-xl border border-border bg-card p-5 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50"
-        >
-          <span className="text-sm text-muted-foreground">Next story</span>
-          <span className="mt-1 flex items-center justify-between gap-3 text-base font-semibold tracking-tight">
+    <div className="mt-16 grid items-end gap-8 border-t border-border pt-10 sm:grid-cols-2">
+      {next && nextImage && next.slug !== slug && (
+        <Link to={`/flagships/${next.slug}`} className="group block">
+          <span className="text-sm text-muted-foreground">(Next story)</span>
+          <div className="mt-3 overflow-hidden bg-muted">
+            <img
+              {...workSet(next.slug, "wide")}
+              sizes="(min-width: 768px) 440px, 100vw"
+              alt={nextImage.alt}
+              loading="lazy"
+              decoding="async"
+              className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+            />
+          </div>
+          <span className="mt-3 flex items-baseline justify-between gap-3 text-xl font-medium tracking-tight transition-colors group-hover:text-primary">
             {next.title}
-            <ArrowRight className="size-4 shrink-0 text-primary transition-transform duration-200 group-hover:translate-x-0.5" />
+            <ArrowRight className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
           </span>
         </Link>
       )}
       <div className="flex flex-col justify-center rounded-xl border border-dashed border-foreground/20 p-5">
-        <p className="text-base font-semibold tracking-tight">Want the long version?</p>
+        <p className="text-base font-semibold tracking-tight">Happy to walk through the system in depth.</p>
         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
           <a
             href={`mailto:${site.email}`}
@@ -64,7 +74,7 @@ function StoryEnd({ slug }: { slug: string }) {
 // ever see what's actually in the page's HTML, never what a click would open.
 function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
   return (
-    <article id={node.id} className="scroll-mt-24 py-8 first:pt-0">
+    <article id={node.id} className="scroll-mt-24 border-t border-border py-8">
       <h3 className="text-base font-semibold tracking-tight">{node.label}</h3>
       {node.sublabel && <p className="mt-0.5 font-mono text-xs text-muted-foreground">{node.sublabel}</p>}
 
@@ -102,43 +112,64 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
 
 // A screenshot or diagram with its caption. The image links to itself so it
 // can be opened at full size, which the dense diagrams need on a phone.
-function FigureCard({ figure, className }: { figure: Figure; className?: string }) {
-  // With a dark version, both images are in the page and the theme class picks one.
-  const versions = figure.srcDark
-    ? [
-        { src: figure.src, className: "dark:hidden" },
-        { src: figure.srcDark, className: "hidden dark:block" },
-      ]
-    : [{ src: figure.src, className: "block" }]
+function FigureCard({
+  figure,
+  className,
+  style,
+  scrollOnPhone = false,
+}: {
+  figure: Figure
+  className?: string
+  style?: React.CSSProperties
+  /** Dense diagrams keep a readable width on phones and scroll sideways. */
+  scrollOnPhone?: boolean
+}) {
+  // Only the image for the current theme is rendered, so the other is never downloaded.
+  const dark = useDarkClass()
+  const src = dark && figure.srcDark ? figure.srcDark : figure.src
+  // Large images also ship an 800px copy (name-800.webp) for phones.
+  const srcSet = figure.width > 1000 ? `${src} ${figure.width}w, ${src.replace(/\.webp$/, "-800.webp")} 800w` : undefined
   return (
-    <figure className={className}>
-      {versions.map((version) => (
+    <figure className={className} style={style}>
+      <div className={scrollOnPhone ? "max-sm:-mx-4 max-sm:overflow-x-auto max-sm:px-4" : undefined}>
         <a
-          key={version.src}
-          href={version.src}
+          href={src}
           target="_blank"
           rel="noreferrer"
           className={cn(
-            "overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50",
-            version.className,
+            "block overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50",
+            scrollOnPhone && "max-sm:w-[44rem]",
           )}
         >
           <img
-            src={version.src}
+            src={src}
+            srcSet={srcSet}
+            sizes={scrollOnPhone ? "(min-width: 640px) 900px, 704px" : "(min-width: 768px) 900px, 100vw"}
             alt={figure.alt}
             width={figure.width}
             height={figure.height}
             loading="lazy"
+            decoding="async"
             className="h-auto w-full"
             // w-full/h-auto override the width and height attributes, so state the ratio in CSS
             // too: the box has its final size before the image loads, and Chrome stops flagging it.
             style={{ aspectRatio: `${figure.width} / ${figure.height}` }}
           />
         </a>
-      ))}
-      <figcaption className="mt-2 text-sm text-muted-foreground">{figure.caption}</figcaption>
+      </div>
+      <figcaption className="mt-2 text-sm text-muted-foreground">
+        {figure.caption}
+        {scrollOnPhone && <span className="sm:hidden"> Scroll sideways, or tap to open full size.</span>}
+      </figcaption>
     </figure>
   )
+}
+
+/** Screenshot rows: consecutive pairs, in order; an odd last one stands alone. */
+function shotRows<T>(items: T[]): T[][] {
+  const rows: T[][] = []
+  for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2))
+  return rows
 }
 
 // Follows the `dark` class the theme toggle puts on <html>.
@@ -286,6 +317,35 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   )
 }
 
+// The story's wide photo, across the full page width under the header.
+function StoryHero({ slug }: { slug: string }) {
+  const image = workImage(slug)
+  if (!image) return null
+  return (
+    <div className="page-frame pb-16 md:pb-24">
+      <div data-reveal data-parallax className="overflow-hidden">
+        <img
+          {...workSet(slug, "wide")}
+          sizes="(min-width: 1440px) 1344px, calc(100vw - 2rem)"
+          alt={image.alt}
+          decoding="async"
+          className="aspect-video h-auto w-full object-cover"
+        />
+      </div>
+    </div>
+  )
+}
+
+function storyMeta(slug: string) {
+  const f = flagships.find((x) => x.slug === slug)
+  if (!f) return undefined
+  return [
+    { label: "Where", value: f.where },
+    { label: "Focus", value: f.depth },
+    { label: "Format", value: flagshipStatus(slug) },
+  ]
+}
+
 export default function FlagshipDetail() {
   const { slug } = useParams<{ slug: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -322,12 +382,26 @@ export default function FlagshipDetail() {
       <div>
         <PageHeader
           back={{ to: "/projects", label: "Projects" }}
+          label={flagship?.where}
           title={flagship?.title ?? "Not found"}
-          description={flagship ? `${flagship.where} · ${flagship.depth}` : undefined}
+          meta={slug ? storyMeta(slug) : undefined}
         />
-        <div className="px-4 pb-20 sm:px-6">
+        <div className="page-frame pb-24">
+        <div className="mx-auto grid w-full max-w-5xl gap-y-10 md:grid-cols-12 md:gap-x-8">
+          {slug && workImage(slug) && (
+            <div data-reveal className="overflow-hidden bg-muted md:col-span-4 md:self-start">
+              <img
+                {...workSet(slug, "tile")}
+                sizes="(min-width: 768px) 440px, 100vw"
+                alt={workImage(slug)!.alt}
+                decoding="async"
+                className="aspect-[4/5] h-auto w-full object-cover"
+              />
+            </div>
+          )}
+          <div className="min-w-0 md:col-span-8">
           {flagship && (
-            <p className="mb-8 max-w-2xl text-base text-muted-foreground">{flagship.teaser}</p>
+            <p className="mb-10 max-w-2xl text-lg leading-relaxed text-foreground/90">{flagship.teaser}</p>
           )}
           <Link
             to="/projects"
@@ -336,6 +410,9 @@ export default function FlagshipDetail() {
             <ArrowLeft className="size-3.5" />
             All flagship stories
           </Link>
+          {slug && <StoryEnd slug={slug} />}
+          </div>
+        </div>
         </div>
       </div>
     )
@@ -345,19 +422,22 @@ export default function FlagshipDetail() {
     <div>
       <PageHeader
         back={{ to: "/projects", label: "Projects" }}
+        label={flagship?.where}
         title={canvas.title}
         description={canvas.summary}
+        meta={storyMeta(canvas.slug)}
       />
+      <StoryHero slug={canvas.slug} />
 
-      <div className="px-4 pb-20 sm:px-6">
+      <PageBody className={canvas.proof ? "pb-10" : undefined}>
         <h2 className="sr-only">Architecture</h2>
         <FlagshipCanvas canvas={canvas} openNodeId={openNodeId} onNodeClick={handleNodeClick} />
         {isDesktop && <NodeInlinePanel node={openNode} onClose={closePanel} />}
 
         {canvas.proof && (
-          <section id="running" className="mt-12 scroll-mt-24 border-t border-border pt-8">
+          <div id="running" className="mt-12 scroll-mt-24 border-t border-border pt-8">
             <h2 className="mb-2 text-xl font-semibold tracking-tight">See it running</h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">
+            <p className="max-w-3xl text-sm text-muted-foreground">
               Screenshots taken on {canvas.proof.capturedOn}. {canvas.proof.note}
             </p>
             {canvas.proof.liveUrl && (
@@ -371,44 +451,64 @@ export default function FlagshipDetail() {
                 <ExternalLink className="size-3.5" />
               </a>
             )}
-            <div className="mt-6 grid items-start gap-6 sm:grid-cols-2">
-              {canvas.proof.shots.map((shot) => (
-                <FigureCard
-                  key={shot.src}
-                  figure={shot}
-                  // A portrait shot takes the right column beside the landscape ones.
-                  className={
-                    shot.height > shot.width ? "sm:col-start-2 sm:row-span-2 sm:row-start-1" : undefined
-                  }
-                />
-              ))}
-            </div>
-          </section>
+          </div>
         )}
+      </PageBody>
 
+      {/* The gallery, as in the template: paired screenshots run the full page
+          width, edge to edge with the header photo, at one shared height. A lone
+          last shot sits in the content column instead. */}
+      {canvas.proof && (
+        <div className="space-y-10 pb-12">
+          {shotRows(canvas.proof.shots).map((row) =>
+            row.length > 1 ? (
+              <div key={row[0].src} className="page-frame flex flex-col gap-6 sm:flex-row">
+                {row.map((shot) => (
+                  <FigureCard
+                    key={shot.src}
+                    figure={shot}
+                    className="min-w-0"
+                    // flex-grow by aspect ratio: the pair's images come out the same height.
+                    style={{ flex: `${shot.width / shot.height} 1 0%` }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <PageBody key={row[0].src} className="pb-0">
+                <FigureCard figure={row[0]} />
+              </PageBody>
+            ),
+          )}
+        </div>
+      )}
+
+      <PageBody>
         {canvas.diagrams && (
           <section id="diagrams" className="mt-12 scroll-mt-24 border-t border-border pt-8">
             <h2 className="mb-2 text-xl font-semibold tracking-tight">Architecture diagrams</h2>
-            <p className="max-w-2xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
+            <p className="max-w-3xl text-sm text-muted-foreground">{canvas.diagrams.note}</p>
             <div className="mt-6 space-y-8">
               {canvas.diagrams.figures.map((figure) =>
                 "kind" in figure ? (
                   <InteractiveFigureCard key={figure.src} figure={figure} />
                 ) : (
-                  <FigureCard key={figure.src} figure={figure} />
+                  <FigureCard
+                    key={figure.src}
+                    figure={figure}
+                    scrollOnPhone={figure.width / figure.height > 1.6}
+                  />
                 ),
               )}
             </div>
           </section>
         )}
 
-        <div className="mt-12 max-w-2xl border-t border-border pt-8">
+        <div className="mt-12 border-t border-border pt-8">
           <h2 className="mb-2 text-xl font-semibold tracking-tight">Full breakdown</h2>
           <p className="mb-4 text-sm text-muted-foreground">
             Same content as clicking a node above, written out in full.
           </p>
-          <Separator />
-          <div className="divide-y divide-border">
+          <div className="grid gap-x-12 md:grid-cols-2">
             {canvas.nodes.map((node) => (
               <NodeBreakdown key={node.id} node={node} />
             ))}
@@ -444,7 +544,7 @@ export default function FlagshipDetail() {
         )}
 
         <StoryEnd slug={canvas.slug} />
-      </div>
+      </PageBody>
 
       {!isDesktop && <NodeSheet node={openNode} onClose={closePanel} />}
     </div>

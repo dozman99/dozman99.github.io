@@ -85,6 +85,14 @@ function NodeLabel({ node }: { node: Labelled }) {
   )
 }
 
+// Columns for the supporting cards that never leave one card alone on a row:
+// four become 2 x 2 (four across on wide screens), two sit side by side.
+function sideGridCols(n: number) {
+  if (n % 4 === 0) return "sm:grid-cols-2 lg:grid-cols-4"
+  if (n === 2) return "sm:grid-cols-2"
+  return "sm:grid-cols-3"
+}
+
 export function FlagshipCanvas({
   canvas,
   openNodeId,
@@ -253,10 +261,17 @@ export function FlagshipCanvas({
                 )}
                 <ol
                   className="flex flex-col sm:grid sm:gap-x-10 sm:[grid-template-columns:repeat(var(--cols),minmax(0,1fr))]"
-                  style={{ "--cols": maxCol } as CSSProperties}
+                  // Half-step tracks (two per card) so a short lane can sit centred.
+                  style={{ "--cols": maxCol * 2 } as CSSProperties}
                 >
                   {lane.map((node) => {
                     const i = ordered.indexOf(node)
+                    // A lane filling columns 1..n of a wider grid is shifted by half a
+                    // card per missing card, so it centres instead of leaning left.
+                    // Lanes with gaps keep their columns: those line up with nodes above.
+                    const contiguous = lane.every((n, k) => n.col === k + 1)
+                    const shift = contiguous ? maxCol - lane.length : 0
+                    const start = (node.col - 1) * 2 + 1 + shift
                     const next = ordered[i + 1]
                     const selected = openNodeId === node.id
                     const targets = node.connectsTo?.map(labelOf)
@@ -265,7 +280,7 @@ export function FlagshipCanvas({
                       <Fragment key={node.id}>
                         <li
                           className="sm:[grid-column:var(--col)]"
-                          style={{ "--col": node.col } as CSSProperties}
+                          style={{ "--col": `${start} / span 2` } as CSSProperties}
                         >
                           <button
                             type="button"
@@ -315,7 +330,7 @@ export function FlagshipCanvas({
       {canvas.sideNodes.length > 0 && (
         <div className="mt-8">
           <h3 className="mb-3 text-sm font-semibold tracking-tight">Supporting infrastructure</h3>
-          <ul className="grid gap-3 sm:grid-cols-3">
+          <ul className={cn("grid gap-3", sideGridCols(canvas.sideNodes.length))}>
             {canvas.sideNodes.map((node) => (
               <li key={node.id}>
                 <button

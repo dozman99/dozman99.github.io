@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <style>
-    .bg { fill: #4f5a2b; } .fg { fill: #f6f1e3; }
-    @media (prefers-color-scheme: dark) { .bg { fill: #a9b87a; } .fg { fill: #1d2016; } }
+    .bg { fill: #0a0a0a; } .fg { fill: #ffffff; }
+    /* Stay black in dark mode; a faint edge keeps it visible on a dark tab bar. */
+    @media (prefers-color-scheme: dark) { .bg { stroke: rgba(255, 255, 255, 0.28); stroke-width: 2; } }
   </style>
-  <rect class="bg" width="64" height="64" rx="14"/>
-  <text class="fg" x="32" y="42" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="28" font-weight="700" letter-spacing="-1">CO</text>
+  <rect class="bg" x="1" y="1" width="62" height="62" rx="14"/>
+  <text class="fg" x="32" y="41.2" text-anchor="middle" font-family="Helvetica Neue, Arial, Liberation Sans, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" letter-spacing="-1">CO</text>
 </svg>

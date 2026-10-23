@@ -21,7 +21,7 @@ export const now = [
   {
     // Kept brief until there's a specific project to point to.
     title: "Building retrieval-augmented generation (RAG) systems",
-    detail: "I build RAG systems that answer from retrieved documents.",
+    detail: "Systems that answer from your own documents rather than a model summary.",
   },
 ]
 

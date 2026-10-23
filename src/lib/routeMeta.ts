@@ -8,7 +8,18 @@ const SITE_SUFFIX = ` · ${site.name}`
 // crawlers and search engines. scripts/prerender.mjs swaps these into the
 // template for each route it writes; Layout also sets document.title from
 // them on client-side navigation.
-export function getRouteMeta(url: string): { title: string; description: string } {
+// `image` is the link-preview card in public/og/ (see design/og/render.py):
+// a story uses its own card, every other page the home card.
+export function getRouteMeta(url: string): { title: string; description: string; image: string; imageAlt: string } {
+  const meta = routeText(url)
+  const slug = url.split("?")[0].match(/^\/flagships\/([^/]+)/)?.[1]
+  const flagship = slug ? flagships.find((f) => f.slug === slug) : undefined
+  return flagship
+    ? { ...meta, image: `/og/${flagship.slug}.jpg`, imageAlt: `${flagship.title}, by ${site.name}` }
+    : { ...meta, image: "/og/home.jpg", imageAlt: `${site.name}, ${site.role}` }
+}
+
+function routeText(url: string): { title: string; description: string } {
   const path = url.split("?")[0]
 
   if (path === "/") {
@@ -17,7 +28,7 @@ export function getRouteMeta(url: string): { title: string; description: string 
   if (path === "/about") {
     return {
       title: `About${SITE_SUFFIX}`,
-      description: "Who I am outside the bullet points, and the long-term dream behind the work.",
+      description: "How I work, and why: the approach behind the systems, and what I want next.",
     }
   }
   if (path === "/experience") {
@@ -29,7 +40,7 @@ export function getRouteMeta(url: string): { title: string; description: string 
   if (path === "/projects") {
     return {
       title: `Projects${SITE_SUFFIX}`,
-      description: "Flagship architecture stories, then side projects. Pick a node for why each piece exists and how it works.",
+      description: "Systems I've designed and run, with interactive architecture maps: pick any part to see why it exists and how it works.",
     }
   }
   if (path === "/now-next") {

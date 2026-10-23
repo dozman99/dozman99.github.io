@@ -3,9 +3,9 @@ import { flagships } from "@/data/flagships"
 
 // One vocabulary for a flagship's state, wherever it's shown.
 export function flagshipStatus(slug: string): string {
-  if (slug in canvases) return "Interactive canvas"
-  if (slug === "air-gapped-portal") return "Under NDA"
-  return "Summary only"
+  if (slug in canvases) return "Architecture deep dive"
+  if (slug === "air-gapped-portal") return "Overview, under NDA"
+  return "Overview"
 }
 
 /** Flagships with a built canvas first, teasers after; stable within each group. */

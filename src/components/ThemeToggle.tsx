@@ -13,9 +13,9 @@ const options: { value: Theme; label: string; Icon: typeof Sun }[] = [
   { value: "dark", label: "Dark theme", Icon: Moon },
 ]
 
-// Dark (olive-black) is the site's default look; "system" is an explicit
-// opt-in to follow the OS, so it's stored like the other two.
-const DEFAULT_THEME: Theme = "dark"
+// Light (white page) is the default look; "system" is an explicit opt-in
+// to follow the OS, so it's stored like the other two.
+const DEFAULT_THEME: Theme = "light"
 
 function readStored(): Theme {
   if (typeof window === "undefined") return DEFAULT_THEME
@@ -34,7 +34,7 @@ function apply(theme: Theme) {
   document.documentElement.classList.toggle("dark", dark)
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute("content", dark ? "#1d2016" : "#f6f1e3")
+    ?.setAttribute("content", dark ? "#16171b" : "#ffffff")
 }
 
 // Mirrors the pre-paint script in index.html, which applies the stored choice
