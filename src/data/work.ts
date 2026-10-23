@@ -21,10 +21,10 @@ export const workImage = (slug: string) => workImages.find((w) => w.slug === slu
 // Each shape is exported at several widths: the first is the full size
 // (name.webp), the rest are name-<width>.webp for phones and small columns.
 export const shapes = {
-  tile: { ratio: 4 / 5, widths: [1300, 700] },
+  tile: { ratio: 4 / 5, widths: [1300, 800] },
   wide: { ratio: 16 / 9, widths: [2680, 1400, 800] },
   landscape: { ratio: 4 / 3, widths: [1600, 800] },
-  portrait: { ratio: 3 / 4, widths: [1200, 700] },
+  portrait: { ratio: 3 / 4, widths: [1200, 800] },
 } as const
 export type Shape = keyof typeof shapes
 

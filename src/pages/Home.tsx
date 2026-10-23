@@ -22,7 +22,6 @@ export default function Home() {
             <Label className="sm:col-span-3">Intro</Label>
             <div className="max-w-md text-lg leading-snug text-pretty sm:col-span-5 md:text-xl">
               <p>{hero.intro[0]}</p>
-              <p className="mt-2 text-muted-foreground">{hero.intro[1]}</p>
             </div>
           </div>
 
@@ -113,20 +112,11 @@ export default function Home() {
         <WorkGrid layout="home" />
       </section>
 
-      {/* Contact, set on the photo as in the template: a dark fade from the left
-          (an even wash on phones) keeps white text readable over the pale room. */}
+      {/* Contact: a plain navy panel (the headshot's T-shirt colour) until there's
+          a photo of Chiedozie to set the text on, as the template does. */}
       <section className="page-frame pb-16 md:pb-24">
-        <div data-reveal data-parallax className="relative isolate overflow-hidden bg-neutral-800">
-          <img
-            {...imageSet("/workspace", "wide")}
-            sizes="(min-width: 768px) min(100vw, 1440px), 320vw"
-            alt="An empty white desk and chair beside an open door"
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 -z-10 size-full object-cover object-[45%_bottom]"
-          />
-          <div className="absolute inset-0 -z-10 bg-black/50 md:bg-transparent md:bg-linear-to-r md:from-black/75 md:via-black/50 md:to-black/10" />
-          <div className="grid min-h-[80svh] content-end gap-y-6 p-6 text-white md:grid-cols-12 md:p-12">
+        <div data-reveal className="relative overflow-hidden bg-[#0a274c]">
+          <div className="grid min-h-[60svh] content-end gap-y-6 p-6 text-white md:grid-cols-12 md:p-12">
             <div className="md:col-span-7">
               <p className="mb-6 text-sm text-white/80">(Contact)</p>
               <h2 data-split className="display text-5xl sm:text-6xl lg:text-7xl">

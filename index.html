@@ -51,7 +51,12 @@
       // Start animated headings and photos hidden so they don't flash before
       // animating in. If the motion code hasn't arrived in 4 s, show them.
       ;(function (root) {
-        if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
+        var motion = window.matchMedia('(prefers-reduced-motion: no-preference)')
+        // Follow the setting if it changes mid-visit, so nothing is left hidden.
+        motion.addEventListener('change', function (e) {
+          root.classList.toggle('motion', e.matches)
+        })
+        if (!motion.matches) return
         root.classList.add('motion')
         setTimeout(function () {
           if (!window.__motionReady) root.classList.remove('motion')
