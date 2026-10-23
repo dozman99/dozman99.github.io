@@ -71,9 +71,9 @@ export default function Home() {
       </section>
 
       {/* About: one statement that fills in as it scrolls, then the numbers. */}
-      <section className="page-frame grid gap-y-6 pb-28 md:grid-cols-12 md:pb-44">
-        <Label className="md:col-span-3">About</Label>
-        <div className="md:col-span-9">
+      <section className="page-frame grid gap-y-6 pb-28 md:pb-44 xl:grid-cols-12">
+        <Label className="xl:col-span-3">About</Label>
+        <div className="xl:col-span-9">
           <FillText
             text={statement}
             className="text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-pretty sm:text-4xl lg:text-[2.75rem]"
@@ -98,12 +98,12 @@ export default function Home() {
 
       {/* Selected work */}
       <section className="page-frame pb-28 md:pb-40">
-        <div className="mb-12 grid items-end gap-y-4 md:mb-16 md:grid-cols-12">
-          <Label className="order-1 md:col-span-3">Selected work</Label>
-          <h2 data-split className="display order-2 text-5xl sm:text-6xl md:col-span-7 lg:text-7xl">Flagship stories</h2>
+        <div className="mb-12 grid items-end gap-y-4 md:mb-16 xl:grid-cols-12">
+          <Label className="order-1 xl:col-span-3">Selected work</Label>
+          <h2 data-split className="display order-2 text-5xl sm:text-6xl xl:col-span-7 lg:text-7xl">Flagship stories</h2>
           <Link
             to="/projects"
-            className="order-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary md:col-span-2 md:min-h-0 md:justify-self-end"
+            className="order-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary md:min-h-0 xl:col-span-2 xl:justify-self-end"
           >
             All projects ({flagships.length})
             <ArrowRight className="size-3.5" />

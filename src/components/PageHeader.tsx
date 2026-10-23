@@ -4,7 +4,8 @@ import { ArrowLeft } from "lucide-react"
 import { Label, Meta } from "@/components/lex/Label"
 import { cn } from "@/lib/utils"
 
-// Label in the left three columns, a large title and grey lead in the right nine,
+// Label in the left three columns, a large title and grey lead in the right nine
+// (on wide screens; below 1280px the label sits above and content runs full width),
 // then an optional row of small facts.
 export function PageHeader({
   back,
@@ -22,9 +23,9 @@ export function PageHeader({
   meta?: { label: string; value: ReactNode }[]
 }) {
   return (
-    <header className="page-frame grid gap-y-6 pt-16 pb-14 md:grid-cols-12 md:pt-28 md:pb-20">
-      <div className="md:col-span-3">{label && <Label>{label}</Label>}</div>
-      <div className="md:col-span-9">
+    <header className="page-frame grid gap-y-6 pt-16 pb-14 md:pt-28 md:pb-20 xl:grid-cols-12">
+      <div className="xl:col-span-3">{label && <Label>{label}</Label>}</div>
+      <div className="xl:col-span-9">
         {back && (
           <Link
             to={back.to}
@@ -47,8 +48,8 @@ export function PageHeader({
 /** Body content aligned under the header's title column. */
 export function PageBody({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("page-frame grid pb-24 md:grid-cols-12", className)}>
-      <div className="min-w-0 md:col-span-9 md:col-start-4">{children}</div>
+    <div className={cn("page-frame grid pb-24 xl:grid-cols-12", className)}>
+      <div className="min-w-0 xl:col-span-9 xl:col-start-4">{children}</div>
     </div>
   )
 }

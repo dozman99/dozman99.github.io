@@ -4,9 +4,9 @@ import { Label } from "@/components/lex/Label"
 /** A page section: grey "(Label)" on the left, content in the right nine columns. */
 export function Section({ label, children, id }: { label: string; children: ReactNode; id?: string }) {
   return (
-    <section id={id} className="page-frame grid scroll-mt-24 gap-y-6 pb-24 md:grid-cols-12 md:pb-32">
-      <Label className="md:col-span-3">{label}</Label>
-      <div className="min-w-0 md:col-span-9">{children}</div>
+    <section id={id} className="page-frame grid scroll-mt-24 gap-y-6 pb-24 md:pb-32 xl:grid-cols-12">
+      <Label className="xl:col-span-3">{label}</Label>
+      <div className="min-w-0 xl:col-span-9">{children}</div>
     </section>
   )
 }

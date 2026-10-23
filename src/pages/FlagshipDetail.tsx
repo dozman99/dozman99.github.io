@@ -388,7 +388,7 @@ export default function FlagshipDetail() {
         />
         <div className="page-frame grid gap-y-10 pb-24 md:grid-cols-12 md:gap-x-8">
           {slug && workImage(slug) && (
-            <div data-reveal className="overflow-hidden bg-muted md:col-span-3 md:self-start">
+            <div data-reveal className="overflow-hidden bg-muted md:col-span-4 md:self-start xl:col-span-3">
               <img
                 {...workSet(slug, "tile")}
                 sizes="(min-width: 768px) 440px, 100vw"
@@ -398,7 +398,7 @@ export default function FlagshipDetail() {
               />
             </div>
           )}
-          <div className="min-w-0 md:col-span-9">
+          <div className="min-w-0 md:col-span-8 xl:col-span-9">
           {flagship && (
             <p className="mb-10 max-w-2xl text-lg leading-relaxed text-foreground/90">{flagship.teaser}</p>
           )}
