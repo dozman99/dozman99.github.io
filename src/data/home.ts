@@ -13,7 +13,7 @@ export const contact = {
 
 export const hero = {
   intro: [
-    "I own systems end to end: built secure, run reliably, shipped fast. Applications and AI services that recover without a page at 3 a.m.",
+    "From the first commit to long after launch, the system is mine: built secure, run steady, shipped fast. Applications and AI services that heal themselves before anyone notices they were hurt.",
     "M.Sc. Computer Science, Texas A&M University, December 2026.",
     "Open to full-time roles from January 2027.",
   ],
