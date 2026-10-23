@@ -36,7 +36,7 @@ const sitemapUrls = []
 
 for (const route of routes) {
   const appHtml = render(route)
-  const { title, description } = getRouteMeta(route)
+  const { title, description, image, imageAlt } = getRouteMeta(route)
 
   let pageHtml = template.replace(
     '<div id="root"></div>',
@@ -64,6 +64,9 @@ for (const route of routes) {
   setMeta("property", "og:url", pageUrl)
   setMeta("name", "twitter:title", title)
   setMeta("name", "twitter:description", description)
+  setMeta("property", "og:image", `${siteOrigin}${image}`)
+  setMeta("property", "og:image:alt", imageAlt)
+  setMeta("name", "twitter:image", `${siteOrigin}${image}`)
 
   const outPath =
     route === "/"
