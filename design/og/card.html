@@ -14,14 +14,13 @@
   .muted { color: rgba(255, 255, 255, 0.72); }
   .faint { color: rgba(255, 255, 255, 0.55); }
 
-  /* Home: portrait on the left, name and line on black. */
+  /* Home: portrait on the left, role and intro on black. The name is the
+     chat text under the image, so it isn't repeated here. */
   .home { display: grid; grid-template-columns: 473px 1fr; height: 630px; }
   .home img { width: 473px; height: 630px; object-fit: cover; object-position: top; display: block; }
-  .home .panel { display: flex; flex-direction: column; justify-content: space-between; padding: 56px 64px; }
-  .home .name { font-size: 92px; margin-top: 8px; }
-  .home .role { font-size: 30px; font-weight: 500; margin-top: 28px; }
-  .home .line { font-size: 25px; line-height: 1.3; margin-top: 14px; max-width: 600px; }
-  .home .url { font-size: 20px; }
+  .home .panel { display: flex; flex-direction: column; justify-content: center; padding: 56px 64px; }
+  .home .role { font-size: 80px; }
+  .home .line { font-size: 28px; line-height: 1.35; margin-top: 32px; max-width: 600px; }
 
   /* Project: its photo full bleed, a dark fade from the left, text on it. */
   .project { position: relative; height: 630px; }
@@ -57,13 +56,8 @@
       <div class="home">
         <img src="../../public/portrait.webp" alt="" />
         <div class="panel">
-          <span class="mark">CO</span>
-          <div>
-            <h1 class="name">Chiedozie<br />Onyekwum</h1>
-            <p class="role">${esc(q.get("role"))}</p>
-            <p class="line muted">${esc(q.get("line"))}</p>
-          </div>
-          <p class="url faint">${esc(q.get("url"))}</p>
+          <h1 class="role name">${esc(q.get("role"))}</h1>
+          <p class="line muted">${esc(q.get("line"))}</p>
         </div>
       </div>`
   }

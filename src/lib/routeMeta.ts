@@ -3,6 +3,7 @@ import { canvases } from "@/data/canvases"
 import { site } from "@/data/site"
 
 const SITE_SUFFIX = ` · ${site.name}`
+const SITE_HOST = "dozman99.github.io"
 
 // Per-route <title>/description, so prerendered pages aren't all identical to
 // crawlers and search engines. scripts/prerender.mjs swaps these into the
@@ -10,13 +11,28 @@ const SITE_SUFFIX = ` · ${site.name}`
 // them on client-side navigation.
 // `image` is the link-preview card in public/og/ (see design/og/render.py):
 // a story uses its own card, every other page the home card.
-export function getRouteMeta(url: string): { title: string; description: string; image: string; imageAlt: string } {
+// `shareTitle`/`shareDescription` are the text chat apps show under the card.
+// On the home page the card already shows the role and intro, so the text
+// under it is just the name and the address.
+export function getRouteMeta(url: string): {
+  title: string
+  description: string
+  shareTitle: string
+  shareDescription: string
+  image: string
+  imageAlt: string
+} {
   const meta = routeText(url)
-  const slug = url.split("?")[0].match(/^\/flagships\/([^/]+)/)?.[1]
+  const path = url.split("?")[0]
+  const share =
+    path === "/"
+      ? { shareTitle: site.name, shareDescription: SITE_HOST }
+      : { shareTitle: meta.title, shareDescription: meta.description }
+  const slug = path.match(/^\/flagships\/([^/]+)/)?.[1]
   const flagship = slug ? flagships.find((f) => f.slug === slug) : undefined
   return flagship
-    ? { ...meta, image: `/og/${flagship.slug}.jpg`, imageAlt: `${flagship.title}, by ${site.name}` }
-    : { ...meta, image: "/og/home.jpg", imageAlt: `${site.name}, ${site.role}` }
+    ? { ...meta, ...share, image: `/og/${flagship.slug}.jpg`, imageAlt: `${flagship.title}, by ${site.name}` }
+    : { ...meta, ...share, image: "/og/home.jpg", imageAlt: `${site.name}, ${site.role}` }
 }
 
 function routeText(url: string): { title: string; description: string } {

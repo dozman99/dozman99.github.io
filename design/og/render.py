@@ -40,7 +40,7 @@ def render(name, params):
 os.makedirs(OUT, exist_ok=True)
 role = field(read("src/data/site.ts"), "role")
 intro = re.search(r'intro:\s*\[\s*"((?:[^"\\]|\\.)*)"', read("src/data/home.ts")).group(1)
-render("home", {"kind": "home", "role": role, "line": intro, "url": SITE})
+render("home", {"kind": "home", "role": role, "line": intro})
 
 for block in read("src/data/flagships.ts").split("  {\n")[1:]:
     slug = field(block, "slug")

@@ -36,7 +36,7 @@ const sitemapUrls = []
 
 for (const route of routes) {
   const appHtml = render(route)
-  const { title, description, image, imageAlt } = getRouteMeta(route)
+  const { title, description, shareTitle, shareDescription, image, imageAlt } = getRouteMeta(route)
 
   let pageHtml = template.replace(
     '<div id="root"></div>',
@@ -51,7 +51,7 @@ for (const route of routes) {
     `$1${escapeHtml(description)}$2`,
   )
 
-  // Open Graph / Twitter card tags, so a shared link previews this page.
+  // Open Graph tags, so a shared link previews this page (X reads them too).
   const pageUrl = `${siteOrigin}${route === "/" ? "/" : route + "/"}`
   const setMeta = (attr, key, value) => {
     pageHtml = pageHtml.replace(
@@ -59,14 +59,11 @@ for (const route of routes) {
       `$1${escapeHtml(value)}$2`,
     )
   }
-  setMeta("property", "og:title", title)
-  setMeta("property", "og:description", description)
+  setMeta("property", "og:title", shareTitle)
+  setMeta("property", "og:description", shareDescription)
   setMeta("property", "og:url", pageUrl)
-  setMeta("name", "twitter:title", title)
-  setMeta("name", "twitter:description", description)
   setMeta("property", "og:image", `${siteOrigin}${image}`)
   setMeta("property", "og:image:alt", imageAlt)
-  setMeta("name", "twitter:image", `${siteOrigin}${image}`)
 
   const outPath =
     route === "/"
