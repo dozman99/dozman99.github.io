@@ -261,10 +261,17 @@ export function FlagshipCanvas({
                 )}
                 <ol
                   className="flex flex-col sm:grid sm:gap-x-10 sm:[grid-template-columns:repeat(var(--cols),minmax(0,1fr))]"
-                  style={{ "--cols": maxCol } as CSSProperties}
+                  // Half-step tracks (two per card) so a short lane can sit centred.
+                  style={{ "--cols": maxCol * 2 } as CSSProperties}
                 >
                   {lane.map((node) => {
                     const i = ordered.indexOf(node)
+                    // A lane filling columns 1..n of a wider grid is shifted by half a
+                    // card per missing card, so it centres instead of leaning left.
+                    // Lanes with gaps keep their columns: those line up with nodes above.
+                    const contiguous = lane.every((n, k) => n.col === k + 1)
+                    const shift = contiguous ? maxCol - lane.length : 0
+                    const start = (node.col - 1) * 2 + 1 + shift
                     const next = ordered[i + 1]
                     const selected = openNodeId === node.id
                     const targets = node.connectsTo?.map(labelOf)
@@ -273,7 +280,7 @@ export function FlagshipCanvas({
                       <Fragment key={node.id}>
                         <li
                           className="sm:[grid-column:var(--col)]"
-                          style={{ "--col": node.col } as CSSProperties}
+                          style={{ "--col": `${start} / span 2` } as CSSProperties}
                         >
                           <button
                             type="button"
