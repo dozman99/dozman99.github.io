@@ -10,7 +10,7 @@ import { flagships } from "@/data/flagships"
 import type { CanvasNode, Figure, InteractiveFigure, SideNode } from "@/data/canvases/types"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 import { site } from "@/data/site"
-import { wideSrc, workImage } from "@/data/work"
+import { workImage, workSet } from "@/data/work"
 import { flagshipStatus } from "@/lib/flagshipStatus"
 import { cn } from "@/lib/utils"
 
@@ -104,16 +104,28 @@ function NodeBreakdown({ node }: { node: CanvasNode | SideNode }) {
 
 // A screenshot or diagram with its caption. The image links to itself so it
 // can be opened at full size, which the dense diagrams need on a phone.
-function FigureCard({ figure, className }: { figure: Figure; className?: string }) {
+function FigureCard({
+  figure,
+  className,
+  style,
+  scrollOnPhone = false,
+}: {
+  figure: Figure
+  className?: string
+  style?: React.CSSProperties
+  /** Dense diagrams keep a readable width on phones and scroll sideways. */
+  scrollOnPhone?: boolean
+}) {
   // With a dark version, both images are in the page and the theme class picks one.
   const versions = figure.srcDark
     ? [
-        { src: figure.src, className: "dark:hidden" },
+        { src: figure.src, className: "block dark:hidden" },
         { src: figure.srcDark, className: "hidden dark:block" },
       ]
     : [{ src: figure.src, className: "block" }]
   return (
-    <figure className={className}>
+    <figure className={className} style={style}>
+      <div className={scrollOnPhone ? "max-sm:-mx-4 max-sm:overflow-x-auto max-sm:px-4" : undefined}>
       {versions.map((version) => (
         <a
           key={version.src}
@@ -122,6 +134,7 @@ function FigureCard({ figure, className }: { figure: Figure; className?: string 
           rel="noreferrer"
           className={cn(
             "overflow-hidden rounded-xl border border-border transition-colors hover:border-primary/50",
+            scrollOnPhone && "max-sm:w-[44rem]",
             version.className,
           )}
         >
@@ -138,9 +151,20 @@ function FigureCard({ figure, className }: { figure: Figure; className?: string 
           />
         </a>
       ))}
-      <figcaption className="mt-2 text-sm text-muted-foreground">{figure.caption}</figcaption>
+      </div>
+      <figcaption className="mt-2 text-sm text-muted-foreground">
+        {figure.caption}
+        {scrollOnPhone && <span className="sm:hidden"> Scroll sideways, or tap to open full size.</span>}
+      </figcaption>
     </figure>
   )
+}
+
+/** Groups figures two by two; an odd last one stands alone at full width. */
+function pairs<T>(items: T[]): T[][] {
+  const out: T[][] = []
+  for (let i = 0; i < items.length; i += 2) out.push(items.slice(i, i + 2))
+  return out
 }
 
 // Follows the `dark` class the theme toggle puts on <html>.
@@ -288,19 +312,23 @@ function InteractiveFigureCard({ figure }: { figure: InteractiveFigure }) {
   )
 }
 
-// The story's wide photo, across the full page width under the header.
+// The story's wide photo, across the full page width under the header. Stories
+// with an interactive canvas get the full 16:9; summary-only stories have
+// little text below, so they get a shorter 21:9 strip that doesn't bury it.
 function StoryHero({ slug }: { slug: string }) {
   const image = workImage(slug)
   if (!image) return null
+  const full = slug in canvases
   return (
     <div className="page-frame pb-16 md:pb-24">
       <div data-reveal data-parallax className="overflow-hidden">
         <img
-          src={wideSrc(slug)}
+          {...workSet(slug, "wide")}
+          sizes="(min-width: 1440px) 1344px, calc(100vw - 2rem)"
           alt={image.alt}
-          width={2680}
-          height={1508}
-          className="aspect-video h-auto w-full object-cover"
+          fetchPriority="high"
+          decoding="async"
+          className={cn("h-auto w-full object-cover", full ? "aspect-video" : "aspect-[21/9]")}
         />
       </div>
     </div>
@@ -407,16 +435,19 @@ export default function FlagshipDetail() {
                 <ExternalLink className="size-3.5" />
               </a>
             )}
-            <div className="mt-6 grid items-start gap-6 sm:grid-cols-2">
-              {canvas.proof.shots.map((shot) => (
-                <FigureCard
-                  key={shot.src}
-                  figure={shot}
-                  // A portrait shot takes the right column beside the landscape ones.
-                  className={
-                    shot.height > shot.width ? "sm:col-start-2 sm:row-span-2 sm:row-start-1" : undefined
-                  }
-                />
+            <div className="mt-6 space-y-8">
+              {pairs(canvas.proof.shots).map((pair) => (
+                <div key={pair[0].src} className="flex flex-col gap-6 sm:flex-row">
+                  {pair.map((shot) => (
+                    <FigureCard
+                      key={shot.src}
+                      figure={shot}
+                      className="min-w-0"
+                      // flex-grow by aspect ratio: the pair's images come out the same height.
+                      style={{ flex: `${shot.width / shot.height} 1 0%` }}
+                    />
+                  ))}
+                </div>
               ))}
             </div>
           </section>
@@ -431,7 +462,11 @@ export default function FlagshipDetail() {
                 "kind" in figure ? (
                   <InteractiveFigureCard key={figure.src} figure={figure} />
                 ) : (
-                  <FigureCard key={figure.src} figure={figure} />
+                  <FigureCard
+                    key={figure.src}
+                    figure={figure}
+                    scrollOnPhone={figure.width / figure.height > 1.6}
+                  />
                 ),
               )}
             </div>

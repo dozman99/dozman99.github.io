@@ -16,6 +16,29 @@ export const workImages: WorkImage[] = [
   { slug: "ai-inference-lab", alt: "Close-up of a silicon chip's grid, glowing copper" },
 ]
 
-export const tileSrc = (slug: string) => `/work/${slug}-tile.webp`
-export const wideSrc = (slug: string) => `/work/${slug}-wide.webp`
 export const workImage = (slug: string) => workImages.find((w) => w.slug === slug)
+
+// Each shape is exported at several widths: the first is the full size
+// (name.webp), the rest are name-<width>.webp for phones and small columns.
+export const shapes = {
+  tile: { ratio: 4 / 5, widths: [1300, 700] },
+  wide: { ratio: 16 / 9, widths: [2680, 1400, 800] },
+  landscape: { ratio: 4 / 3, widths: [1600, 800] },
+  portrait: { ratio: 3 / 4, widths: [1200, 700] },
+} as const
+export type Shape = keyof typeof shapes
+
+/** src, srcSet, width and height for `base` (a path without .webp) in a shape. */
+export function imageSet(base: string, shape: Shape) {
+  const { ratio, widths } = shapes[shape]
+  const file = (w: number, i: number) => (i === 0 ? `${base}.webp` : `${base}-${w}.webp`)
+  return {
+    src: file(widths[0], 0),
+    srcSet: widths.map((w, i) => `${file(w, i)} ${w}w`).join(", "),
+    width: widths[0],
+    height: Math.round(widths[0] / ratio),
+  }
+}
+
+export const workSet = (slug: string, shape: Shape) => imageSet(`/work/${slug}-${shape}`, shape)
+export const tileSrc = (slug: string) => workSet(slug, "tile").src

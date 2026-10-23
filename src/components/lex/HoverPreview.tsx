@@ -1,4 +1,4 @@
-import { tileSrc, workImage } from "@/data/work"
+import { workImage, workSet } from "@/data/work"
 
 // The floating photo for a list marked data-preview-list={id}; rows marked
 // data-preview-index={slug} show that story's photo. Moved by src/lib/motion.ts,
@@ -14,7 +14,8 @@ export function HoverPreview({ id, slugs }: { id: string; slugs: string[] }) {
         workImage(slug) ? (
           <img
             key={slug}
-            src={tileSrc(slug)}
+            {...workSet(slug, "tile")}
+            sizes="224px"
             alt=""
             data-preview-image={slug}
             loading="lazy"
