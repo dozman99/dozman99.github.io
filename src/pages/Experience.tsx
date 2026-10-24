@@ -51,6 +51,25 @@ export default function Experience() {
       <PageBody>
         <div>
           <section className="pb-16">
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Work)</h2>
+            <Separator />
+            <div data-preview-list="experience" className="divide-y divide-border">
+              {workExperience.map((role) => (
+                <RoleCard key={role.company + role.dates} role={role} />
+              ))}
+            </div>
+          </section>
+
+          <section className="pb-16">
+            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Leadership &amp; volunteering)</h2>
+            <Separator />
+            <div className="divide-y divide-border">
+              {leadership.map((role) => (
+                <RoleCard key={role.company + role.dates} role={role} />
+              ))}
+            </div>
+          </section>
+          <section>
             <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Certifications)</h2>
             <Separator className="mb-4" />
             <div className="grid gap-x-8 sm:grid-cols-2">
@@ -71,26 +90,6 @@ export default function Experience() {
                     <ExternalLink className="size-3.5" />
                   </span>
                 </a>
-              ))}
-            </div>
-          </section>
-
-          <section className="pb-16">
-            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Work)</h2>
-            <Separator />
-            <div data-preview-list="experience" className="divide-y divide-border">
-              {workExperience.map((role) => (
-                <RoleCard key={role.company + role.dates} role={role} />
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-sm font-normal text-muted-foreground">(Leadership &amp; volunteering)</h2>
-            <Separator />
-            <div className="divide-y divide-border">
-              {leadership.map((role) => (
-                <RoleCard key={role.company + role.dates} role={role} />
               ))}
             </div>
           </section>
