@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ArrowRight, Download } from "lucide-react"
+import { ArrowRight, CalendarDays, Download } from "lucide-react"
 import { Label, Meta } from "@/components/lex/Label"
 import { FillText } from "@/components/lex/FillText"
 import { WorkGrid } from "@/components/lex/WorkGrid"
@@ -139,6 +139,15 @@ export default function Home() {
                 >
                   Email me
                   <ArrowRight className="size-4" />
+                </a>
+                <a
+                  href={site.booking}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 items-center gap-2 rounded-full border border-white/40 px-6 text-sm font-medium text-white transition-colors hover:border-white"
+                >
+                  <CalendarDays className="size-4" />
+                  Book a call
                 </a>
                 <a
                   href={site.resume}

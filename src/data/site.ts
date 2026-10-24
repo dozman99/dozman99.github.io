@@ -12,6 +12,8 @@ export const site = {
   // decide whether you want this public before filling it in.
   phone: "",
   location: "Austin, TX",
+  // Cal.com booking page: 30-minute call, Google Meet or Teams.
+  booking: "https://cal.com/chiedozie-onyekwum/30min",
   // Public copy of the résumé (includes phone number): served from public/.
   resume: "/resume.pdf",
 }
