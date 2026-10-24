@@ -1,7 +1,7 @@
 // Personal content for the About page. Facts here are limited to what's confirmed.
 
 export const aboutIntro = [
-  "I'm a DevOps / MLOps engineer. I start by identifying how a system can fail, then design it to keep working when failures occur. I make changes in small, reversible steps and measure the results before trusting them. When something breaks, I find the root cause, fix it, and write down what I learned so the team can use it.",
+  "I'm a DevOps / MLOps engineer. I start by identifying how infrastructure can fail, then design it to keep applications and AI services running when failures occur. I make changes in small, reversible steps and measure the results before trusting them. When something breaks, I find the root cause, fix it, and write down what I learned so the team can use it.",
   "Six years building and running production infrastructure across healthcare, fintech, and semiconductor environments. I'm completing an M.Sc. in Computer Science at Texas A&M University (December 2026), researching machine unlearning, privacy, and autonomous systems.",
 ]
 

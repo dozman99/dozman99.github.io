@@ -3,7 +3,7 @@
 // The large statement on the home page: sentences two and three of
 // aboutIntro[0] in about.ts. Change both together.
 export const statement =
-  "I start by identifying how a system can fail, then design it to keep working when failures occur. I make changes in small, reversible steps and measure the results before trusting them."
+  "I start by identifying how infrastructure can fail, then design it to keep applications and AI services running when failures occur. I make changes in small, reversible steps and measure the results before trusting them."
 
 // The closing contact panel on the home page.
 export const contact = {
@@ -13,7 +13,7 @@ export const contact = {
 
 export const hero = {
   intro: [
-    "From the first commit to long after launch, the system is mine: built secure, run steady, shipped fast. Applications and AI services that heal themselves before anyone notices they were hurt.",
+    "From the first commit to long after launch, the infrastructure is mine: built secure, run steady, shipped fast. The applications and AI services it carries heal themselves before anyone notices they were hurt.",
     "M.Sc. Computer Science, Texas A&M University, December 2026.",
     "Open to full-time roles from January 2027.",
   ],
