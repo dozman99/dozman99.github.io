@@ -13,7 +13,7 @@ export const contact = {
 
 export const hero = {
   intro: [
-    "From the first commit to long after launch, the infrastructure is mine: built secure, run steady, shipped fast. The applications and AI services it carries heal themselves before anyone notices they were hurt.",
+    "From the first commit to long after launch, the infrastructure is mine: built secure, run steady, shipped fast. It heals itself before anyone notices it was hurt, so the applications and AI services it hosts run with zero downtime.",
     "M.Sc. Computer Science, Texas A&M University, December 2026.",
     "Open to full-time roles from January 2027.",
   ],

@@ -4,7 +4,7 @@ export const site = {
   name: "Chiedozie Onyekwum",
   role: "DevOps / MLOps Engineer",
   tagline:
-    "From the first commit to long after launch, the infrastructure is mine: built secure, run steady, shipped fast. The applications and AI services it carries heal themselves before anyone notices they were hurt.",
+    "From the first commit to long after launch, the infrastructure is mine: built secure, run steady, shipped fast. It heals itself before anyone notices it was hurt, so the applications and AI services it hosts run with zero downtime.",
   email: "chiedozieonyekwum@outlook.com",
   linkedin: "https://www.linkedin.com/in/chiedozie-onyekwum/",
   github: "https://github.com/Dozman99",
