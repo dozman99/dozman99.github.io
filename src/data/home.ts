@@ -3,7 +3,7 @@
 // The large statement on the home page: sentences two and three of
 // aboutIntro[0] in about.ts. Change both together.
 export const statement =
-  "I start with how a system can fail, then design it to keep working when that happens. I change systems in small, reversible steps and measure the result before I trust it."
+  "I start by identifying how a system can fail, then design it to keep working when failures occur. I make changes in small, reversible steps and measure the results before trusting them."
 
 // The closing contact panel on the home page.
 export const contact = {
