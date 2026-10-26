@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
+import { ContactLinks } from "@/components/ContactLinks"
 import { Label, Meta } from "@/components/lex/Label"
 import { cn } from "@/lib/utils"
 
@@ -24,16 +25,24 @@ export function PageHeader({
   return (
     <header className="page-frame pt-16 pb-14 md:pt-28 md:pb-20">
       <div className="mx-auto w-full max-w-5xl">
-        {label && <Label className="mb-6">{label}</Label>}
-        {back && (
-          <Link
-            to={back.to}
-            className="mb-8 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:min-h-0"
-          >
-            <ArrowLeft className="size-3.5" />
-            {back.label}
-          </Link>
-        )}
+        {/* Breadcrumb on the left, contact links on the right; they stack on phones. */}
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-x-8 gap-y-4">
+          {(label || back) && (
+            <div className="flex flex-col items-start gap-6">
+              {label && <Label>{label}</Label>}
+              {back && (
+                <Link
+                  to={back.to}
+                  className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:min-h-0"
+                >
+                  <ArrowLeft className="size-3.5" />
+                  {back.label}
+                </Link>
+              )}
+            </div>
+          )}
+          <ContactLinks />
+        </div>
         <h1 data-split className="display text-5xl sm:text-6xl lg:text-7xl">{title}</h1>
         {description && (
           <p className="mt-6 max-w-2xl text-lg leading-snug text-muted-foreground text-pretty">{description}</p>
