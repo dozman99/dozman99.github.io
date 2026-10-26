@@ -117,7 +117,7 @@ export default function Home() {
       {/* Contact, set on the desk photo as in the template (tinted like the
           project photos). A dark fade from the left, an even wash on phones,
           keeps the white text readable over the pale room. */}
-      <section className="page-frame pb-16 md:pb-24">
+      <section id="contact" className="page-frame scroll-mt-24 pb-16 md:pb-24">
         <div data-reveal data-parallax className="relative isolate overflow-hidden bg-[#0a274c]">
           <img
             {...imageSet("/workspace", "wide")}

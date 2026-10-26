@@ -26,7 +26,7 @@ export function PageHeader({
     <header className="page-frame pt-16 pb-14 md:pt-28 md:pb-20">
       <div className="mx-auto w-full max-w-5xl">
         {/* Breadcrumb on the left, contact links on the right; they stack on phones. */}
-        <div className="mb-8 flex flex-wrap items-start justify-between gap-x-8 gap-y-4">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
           {(label || back) && (
             <div className="flex flex-col items-start gap-6">
               {label && <Label>{label}</Label>}
