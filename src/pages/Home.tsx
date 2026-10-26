@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, CalendarDays, Download } from "lucide-react"
+import { ContactLinks } from "@/components/ContactLinks"
 import { Label, Meta } from "@/components/lex/Label"
 import { FillText } from "@/components/lex/FillText"
 import { WorkGrid } from "@/components/lex/WorkGrid"
@@ -55,6 +56,8 @@ export default function Home() {
               },
             ]}
           />
+
+          <ContactLinks className="mt-8" />
         </div>
 
         <div data-reveal className="overflow-hidden md:col-span-4 md:mt-12 md:self-start">
