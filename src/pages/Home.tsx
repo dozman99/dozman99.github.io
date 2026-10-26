@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, CalendarDays, Download } from "lucide-react"
-import { ContactLinks } from "@/components/ContactLinks"
 import { Label, Meta } from "@/components/lex/Label"
 import { FillText } from "@/components/lex/FillText"
 import { WorkGrid } from "@/components/lex/WorkGrid"
@@ -56,8 +55,6 @@ export default function Home() {
               },
             ]}
           />
-
-          <ContactLinks className="mt-8" />
         </div>
 
         <div data-reveal className="overflow-hidden md:col-span-4 md:mt-12 md:self-start">
@@ -117,7 +114,7 @@ export default function Home() {
       {/* Contact, set on the desk photo as in the template (tinted like the
           project photos). A dark fade from the left, an even wash on phones,
           keeps the white text readable over the pale room. */}
-      <section id="contact" className="page-frame scroll-mt-24 pb-16 md:pb-24">
+      <section className="page-frame pb-16 md:pb-24">
         <div data-reveal data-parallax className="relative isolate overflow-hidden bg-[#0a274c]">
           <img
             {...imageSet("/workspace", "wide")}
