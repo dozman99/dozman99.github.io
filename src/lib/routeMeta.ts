@@ -23,7 +23,7 @@ function routeText(url: string): { title: string; description: string } {
   const path = url.split("?")[0]
 
   if (path === "/") {
-    return { title: `${site.name} · ${site.role}`, description: site.tagline }
+    return { title: `${site.name} · ${site.role}`, description: site.description }
   }
   if (path === "/about") {
     return {
@@ -63,5 +63,5 @@ function routeText(url: string): { title: string; description: string } {
     }
   }
 
-  return { title: `${site.name} · ${site.role}`, description: site.tagline }
+  return { title: `${site.name} · ${site.role}`, description: site.description }
 }
