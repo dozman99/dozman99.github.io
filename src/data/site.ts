@@ -5,6 +5,10 @@ export const site = {
   role: "DevOps / MLOps Engineer",
   tagline:
     "I build and maintain the infrastructure that applications and AI services run on, from the first commit to long after launch. I keep it secure, stable, and quick to deploy to, and I design it to heal itself, so the services it hosts run with zero downtime.",
+  // Search and link-preview description. Keep it near 150 characters so search
+  // results do not cut it off; the longer tagline above stays on the page.
+  description:
+    "DevOps and MLOps engineer building secure, resilient infrastructure for applications and AI services on AWS and Azure. Open to roles from Jan 2027.",
   email: "chiedozieonyekwum@outlook.com",
   linkedin: "https://www.linkedin.com/in/chiedozie-onyekwum/",
   github: "https://github.com/Dozman99",
