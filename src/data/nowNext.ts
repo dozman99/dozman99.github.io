@@ -16,7 +16,7 @@ export const now = [
   {
     title: "Leading engineering at EDAT",
     detail:
-      "VP of Engineering (volunteer), designing ECO-T (a full-stack GHG accounting and ESG-verification platform) and directing the engineering team.",
+      "Lead software engineer (volunteer), designing ECO-T (a full-stack GHG accounting and ESG-verification platform) and directing the engineering team.",
   },
   {
     // Kept brief until there's a specific project to point to.
