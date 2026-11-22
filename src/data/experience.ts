@@ -108,7 +108,7 @@ export const workExperience: Role[] = [
 export const leadership: Role[] = [
   {
     company: "EDAT - VA (Independent Sustainability Assurance)",
-    role: "VP of Engineering (Volunteer)",
+    role: "Lead Software Engineer (Volunteer)",
     location: "USA (Remote)",
     dates: "Apr 2025 - Present",
     blurb:
